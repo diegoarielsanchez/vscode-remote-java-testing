@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package com.das;
 
 import org.junit.Test;
 

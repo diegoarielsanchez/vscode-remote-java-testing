@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mycompany.app</groupId>
-  <artifactId>my-app</artifactId>
-  <packaging>pom</packaging>
+  <groupId>com.das</groupId>
+  <artifactId>clean-ddd</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>my-app</name>
+  <name>clean-ddd</name>
   <url>https://github.com/microsoft/vscode-remote-try-java</url>
   <dependencies>
     <dependency>
@@ -15,9 +14,9 @@
     </dependency>
   </dependencies>
   <properties>
-    <jdk.version>11</jdk.version>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <jdk.version>21</jdk.version>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
@@ -31,9 +30,4 @@
       </plugins>
     </pluginManagement>
   </build>
-  <modules>
-    <module>core</module>
-    <module>service</module>
-    <module>webapp</module>
-  </modules>
 </project>
