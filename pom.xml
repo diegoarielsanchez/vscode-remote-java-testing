@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!-- <module>infra</module> -->
+        <module>domain</module>
         <module>library</module>
         <module>application</module>
     </modules>
