@@ -4,11 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>gs-multi-module</artifactId>
+    <artifactId>das-clean-ddd</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
     <modules>
+        <!-- <module>infra</module> -->
         <module>library</module>
         <module>application</module>
     </modules>
