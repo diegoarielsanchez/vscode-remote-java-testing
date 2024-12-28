@@ -8,7 +8,7 @@ Serializable – implementing the Serializable interface allows us to store the 
 
  */
 
-package com.das.cleanddd.domain.share;
+package com.das.cleanddd.domain.shared;
 
 import java.io.Serializable;
 import java.time.LocalDate;

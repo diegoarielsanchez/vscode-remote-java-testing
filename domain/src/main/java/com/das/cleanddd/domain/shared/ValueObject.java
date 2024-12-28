@@ -1,21 +1,17 @@
-package com.das.cleanddd.domain.share;
+package com.das.cleanddd.domain.shared;
 
 import java.util.Objects;
 
-public abstract class StringValueObject {
-    private String value;
+public abstract class ValueObject {
 
-    public StringValueObject(String value) {
+   private Object value;
+
+    public ValueObject(Object value) {
         this.value = value;
     }
 
-    public String value() {
+    public Object value() {
         return value;
-    }
-
-    @Override
-    public String toString() {
-        return this.value();
     }
 
     @Override
@@ -23,10 +19,10 @@ public abstract class StringValueObject {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof StringValueObject)) {
+        if (!(o instanceof ValueObject)) {
             return false;
         }
-        StringValueObject that = (StringValueObject) o;
+        ValueObject that = (ValueObject) o;
         return Objects.equals(value, that.value);
     }
 
