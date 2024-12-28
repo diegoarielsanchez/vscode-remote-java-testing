@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.visit;
+package com.das.cleanddd.domain.visitBoundedContext;
 
 import java.time.LocalDate;
 //import java.util.LinkedHashSet;

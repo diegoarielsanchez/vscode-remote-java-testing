@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.visit;
+package com.das.cleanddd.domain.visitBoundedContext;
 
 import java.util.List;
 import java.util.Optional;
