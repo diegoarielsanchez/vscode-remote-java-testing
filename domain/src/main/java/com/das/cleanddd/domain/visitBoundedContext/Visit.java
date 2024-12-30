@@ -46,12 +46,15 @@ public final class Visit extends AggregateRoot {
     public Identifier visitId() {
         return _visitId;
     }
+
     public Identifier prescriberId() {
         return _prescriberId;
     }
+
     public Identifier visitSideId() {
         return _visitSiteId;
     }
+
     public TextValueObject visitComments() {
         return _visitComments;
     }
@@ -59,7 +62,7 @@ public final class Visit extends AggregateRoot {
     public LocalDate visitDate() {
         return _visitDate;
     }
-
+    
     public Identifier medicalSalesRepresentativeId () {
         return _medicalSalesRepresentativeId;
     }
