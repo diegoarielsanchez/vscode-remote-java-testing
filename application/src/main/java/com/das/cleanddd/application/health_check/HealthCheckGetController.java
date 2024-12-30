@@ -1,4 +1,4 @@
-package com.das.cleanddd.application;
+package com.das.cleanddd.application.health_check;
 
 import java.util.HashMap;
 

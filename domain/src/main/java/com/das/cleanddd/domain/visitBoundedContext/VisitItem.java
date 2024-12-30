@@ -1,5 +1,6 @@
 package com.das.cleanddd.domain.visitBoundedContext;
 
+//import java.time.LocalDate;
 import java.util.UUID;
 
 import com.das.cleanddd.domain.shared.Identifier;
@@ -19,6 +20,15 @@ public class VisitItem {
         else
         {
             _quantity += units;
-        }        
+        }
+    }        
+    public int quantity() {
+        return this._quantity;
+    }
+    public Identifier productId() {
+        return this._productId;
+    }
+    public UUID visitItemId() {
+        return this._visitItemId;
     }
 }
