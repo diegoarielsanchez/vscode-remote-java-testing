@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
-public interface VisitRepository {
+public interface IVisitRepository {
     void save(Visit visit);
 
     Optional<Visit> search(Identifier id);
