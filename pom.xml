@@ -3,15 +3,25 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.springframework</groupId>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.1</version>
+    </parent>
+  
+    <groupId>org.springframework.cleanddd</groupId>
     <artifactId>das-clean-ddd</artifactId>
-    <version>0.1.0</version>
+    <version>3.4.1</version>
+     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
     <modules>
+        <module>application</module>
         <module>domain</module>
         <module>library</module>
-        <module>application</module>
     </modules>
-
+    <properties>
+        <!-- The main class to start by executing "java -jar" -->
+        <start-class>com.das.cleanddd.application.DemoApplication</start-class>
+    </properties>
 </project>

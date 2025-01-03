@@ -13,4 +13,6 @@ public interface IVisitRepository {
 
     List<Visit> matching(Criteria criteria);
 
+    List<Visit> searchAll();
+
 }

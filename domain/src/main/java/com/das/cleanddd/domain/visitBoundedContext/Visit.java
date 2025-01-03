@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 //import java.util.LinkedHashSet;
 import java.util.Objects;
+
+import org.springframework.stereotype.Service;
+
 import com.das.cleanddd.domain.shared.AggregateRoot;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.TextValueObject;
 
+@Service
 public final class Visit extends AggregateRoot {
 
-    private Identifier _visitId;
+    private VisitId _visitId;
     private LocalDate _visitDate;
     private Identifier _prescriberId;
     private TextValueObject _visitComments;
@@ -20,7 +24,7 @@ public final class Visit extends AggregateRoot {
     private final List<VisitItem> _visitItems = new ArrayList<>();
     //private final Set<ShoppingItem> shoppingItems = new LinkedHashSet<>();
 
-    public Visit(Identifier visitId
+    public Visit(VisitId visitId
         , LocalDate visitDate
         , Identifier prescriberId
         , TextValueObject visitComments
@@ -97,6 +101,5 @@ public final class Visit extends AggregateRoot {
     public int hashCode() {
         return Objects.hash(_visitId, _visitDate);
     }
-
 
 }

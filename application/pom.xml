@@ -8,11 +8,11 @@
 		<version>3.3.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.das</groupId>
+	<groupId>com.das.application</groupId>
 	<artifactId>application</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>3.4.1-SNAPSHOT</version>
 	<name>application</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Demo project for Spring Boot Domain-Driven-Design</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -22,20 +22,25 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.das</groupId>
-            <artifactId>library</artifactId>
+		<dependency>
+			<groupId>com.das.domain</groupId>
+			<artifactId>domain</artifactId>
             <version>${project.version}</version>
-            </dependency>
+		</dependency>
+		<dependency>
+			<groupId>com.das.library</groupId>
+			<artifactId>library</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -46,5 +51,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
