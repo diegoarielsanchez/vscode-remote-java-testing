@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.visitBoundedContext;
+package com.das.cleanddd.domain.visit;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

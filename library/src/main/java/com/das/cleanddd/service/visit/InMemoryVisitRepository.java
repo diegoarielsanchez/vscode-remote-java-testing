@@ -1,4 +1,4 @@
-package com.das.cleanddd.service;
+package com.das.cleanddd.service.visit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.UuidGenerator;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
-import com.das.cleanddd.domain.visitBoundedContext.IVisitRepository;
-import com.das.cleanddd.domain.visitBoundedContext.Visit;
-import com.das.cleanddd.domain.visitBoundedContext.VisitId;
+import com.das.cleanddd.domain.visit.IVisitRepository;
+import com.das.cleanddd.domain.visit.Visit;
+import com.das.cleanddd.domain.visit.VisitId;
 
 @Service
-public final class InMemoryStudentRepository implements IVisitRepository {
+public final class InMemoryVisitRepository implements IVisitRepository {
     private UuidGenerator generator;
 
-    public InMemoryStudentRepository(UuidGenerator generator) {
+    public InMemoryVisitRepository(UuidGenerator generator) {
         this.generator = generator;
     }
 

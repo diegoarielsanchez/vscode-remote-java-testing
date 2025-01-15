@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.visitBoundedContext;
+package com.das.cleanddd.domain.visit;
 
 import com.das.cleanddd.domain.shared.Identifier;
 
