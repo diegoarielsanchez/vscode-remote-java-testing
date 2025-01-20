@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.medicalSalesRepresentative;
+package com.das.cleanddd.domain.medicalSalesRepresentative.entities;
 
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.PersonJavaBean;

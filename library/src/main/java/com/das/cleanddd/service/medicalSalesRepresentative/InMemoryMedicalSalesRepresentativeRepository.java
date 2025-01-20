@@ -1,8 +1,7 @@
 package com.das.cleanddd.service.medicalSalesRepresentative;
 
-import com.das.cleanddd.domain.medicalSalesRepresentative.IMedicalSalesRepresentativeRepository;
-
-import com.das.cleanddd.domain.medicalSalesRepresentative.MedicalSalesRepresentative;
+import com.das.cleanddd.domain.medicalSalesRepresentative.entities.IMedicalSalesRepresentativeRepository;
+import com.das.cleanddd.domain.medicalSalesRepresentative.entities.MedicalSalesRepresentative;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 

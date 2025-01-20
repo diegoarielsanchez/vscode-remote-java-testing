@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.medicalSalesRepresentative;
+package com.das.cleanddd.domain.medicalSalesRepresentative.entities;
 
 import java.util.List;
 import java.util.Optional;
