@@ -22,7 +22,7 @@ public class MedicalSalesRepFactory {
     MedicalSalesRep keepActiveValueForExistingMedicalSalesRepresentative(MedicalSalesRep existingMedicalSalesRepresentative, Boolean activeValue) {
        if(activeValue!=null) {
         if(Boolean.TRUE.equals(activeValue)) return existingMedicalSalesRepresentative.activate();
-        else return existingMedicalSalesRepresentative.deactivate();
+        else return existingMedicalSalesRepresentative.activate();
       }
       return existingMedicalSalesRepresentative;
     }

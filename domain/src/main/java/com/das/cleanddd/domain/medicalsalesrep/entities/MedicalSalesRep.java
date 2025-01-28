@@ -6,6 +6,7 @@ import com.das.cleanddd.domain.shared.ValidationUtils;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
 import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 
+
 public class MedicalSalesRep extends PersonJavaBean {
 
     private final MedicalSalesRepId id;
@@ -56,34 +57,34 @@ public class MedicalSalesRep extends PersonJavaBean {
         return medicalSR;
     }
     //@Override
-    public MedicalSalesRep changeName(String newName) throws BusinessException {
+/*     public MedicalSalesRep changeName(String newName) throws BusinessException {
         MedicalSalesRep c = this.firstName.equals(newName) ? this : this.withName(newName);
         c.validate();
         return c;
     }
-
-    public MedicalSalesRep changeSurname(String newSurname) throws BusinessException {
+ */
+/*     public MedicalSalesRep changeSurname(String newSurname) throws BusinessException {
         MedicalSalesRep c = this.firstName.equals(newSurname) ? this : this.withName(newSurname);
         c.validate();
         return c;
     }
-    //@Override
-    public MedicalSalesRep activate() {
+ */    //@Override
+/*     public MedicalSalesRep activate() {
       return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
     }
-
+ */
     //@Override
-    public MedicalSalesRep deactivate() {
+/*     public MedicalSalesRep deactivate() {
       return this.active.equals(Boolean.FALSE) ? this : this.withActive(false);
       
     }
-    //@Override
-    public MedicalSalesRep changeEmail(String newEmail) throws BusinessException {
+ */    //@Override
+/*     public MedicalSalesRep changeEmail(String newEmail) throws BusinessException {
       DefaultMedicalSalesRep c = this.email.equals(newEmail) ? this : this.withEmail(newEmail);
       c.validate();
       return c;
     }
-
+ */
   //@Override
   public void validate() throws BusinessException {
     if(this.validationUtils.isNull(this.id)) throw new RequiredFieldException("id");
@@ -93,4 +94,10 @@ public class MedicalSalesRep extends PersonJavaBean {
     //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
     //this.address.validate();
   }
+
+
+public MedicalSalesRep activate() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'activate'");
+}
 }

@@ -5,6 +5,11 @@ import com.das.cleanddd.domain.shared.ValidationUtils;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
 import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 
+
+//import lombok.AccessLevel;
+//import lombok.AllArgsConstructor;
+//import lombok.With;
+
 //@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DefaultMedicalSalesRep extends MedicalSalesRep {
 
@@ -74,20 +79,21 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   }
   
   
-  @Override
-  public MedicalSalesRep changeName(String newName) throws BusinessException {
+  //@Override
+/*   public MedicalSalesRep changeName(String newName) throws BusinessException {
     DefaultMedicalSalesRep c = this.lastName.equals(newName) ? this : this.withName(newName);
+    //DefaultMedicalSalesRep c = this.lastName.equals(newName) ? this : this.withName(newName);
     c.validate();
     return c;
   }
-
-  @Override
-  public MedicalSalesRep changeEmail(String newEmail) throws BusinessException {
+ */
+  //@Override
+/*   public MedicalSalesRep changeEmail(String newEmail) throws BusinessException {
     DefaultMedicalSalesRep c = this.email.equals(newEmail) ? this : this.withEmail(newEmail);
     c.validate();
     return c;
   }
-
+ */
   /*
   @Override
   public MedicalSalesRep changeAddress(Address newAddr) throws BusinessException {
@@ -97,13 +103,14 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   }
   */
 
-  @Override
-  public MedicalSalesRep activate() {
-    return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
+  //@Override
+/*   public MedicalSalesRep activate() {
+    //return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
+    return this.active.equals(Boolean.TRUE) ? this : this.activate = true;
   }
-
-  @Override
-  public MedicalSalesRep deactivate() {
+ */
+  //@Override
+/*   public MedicalSalesRep deactivate() {
     return this.active.equals(Boolean.FALSE) ? this : this.withActive(false);
-  }
+  } */
 }
