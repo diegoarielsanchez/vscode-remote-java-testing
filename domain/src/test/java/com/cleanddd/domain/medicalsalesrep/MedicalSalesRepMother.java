@@ -8,7 +8,7 @@ public final class MedicalSalesRepMother {
         return new MedicalSalesRep(id, name, surname, email, isActive);
     }
     public static MedicalSalesRep random() {
-        return create(MedicalSalesRepId.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepSurnameMother.random(), MedicalSalesEMail.random(), MedicalSalesActive.random())
+        return create(MedicalSalesRepId.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(), MedicalSalesEMail.random(), MedicalSalesActive.random())
     }
     
 }
