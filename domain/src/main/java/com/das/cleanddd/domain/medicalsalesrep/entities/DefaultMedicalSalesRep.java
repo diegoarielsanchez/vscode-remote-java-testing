@@ -1,5 +1,7 @@
 package com.das.cleanddd.domain.medicalsalesrep.entities;
 
+import com.das.cleanddd.domain.shared.BoolValueObject;
+import com.das.cleanddd.domain.shared.StringValueObject;
 import com.das.cleanddd.domain.shared.UtilsFactory;
 import com.das.cleanddd.domain.shared.ValidationUtils;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
@@ -19,25 +21,25 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   //private final String name;
 
   //@With(AccessLevel.PRIVATE)
-  private final String email;
+  private final MedicalSalesRepEmail email;
 
   //@With(AccessLevel.PRIVATE)
   //private final String surname;
 
-  private final Boolean active;
+  private final MedicalSalesRepActive active;
 
   private final ValidationUtils validationUtils;
 
-  protected DefaultMedicalSalesRep(MedicalSalesRepId id, String name, String surname, String email, Boolean isActive) throws BusinessException {
-    super(id, name, surname, email, isActive);
+  protected DefaultMedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) throws BusinessException {
+    super(id, name, surname, email2, isActive);
     
     this.validationUtils = (new UtilsFactory()).getValidationUtils();
 
     this.id = MedicalSalesRepId.random();
-    this.firstName = name;
-    this.email = email;
-    this.lastName = surname;
-    this.active = isActive;
+    this.firstName    = name.toString();
+    this.lastName = surname.toString();
+    this.email   = email2;
+    this.active =  isActive;
     //this.validate();
   }
 
@@ -47,7 +49,7 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
     if(this.validationUtils.isNull(this.id)) throw new RequiredFieldException("id");
     if(this.validationUtils.isNullOrEmpty(this.firstName)) throw new RequiredFieldException("firstName");
     if(this.validationUtils.isNullOrEmpty(this.lastName)) throw new RequiredFieldException("lastName");
-    if(this.validationUtils.isNullOrEmpty(this.email)) throw new RequiredFieldException("email");
+    if(this.validationUtils.isNullOrEmpty(this.email.toString())) throw new RequiredFieldException("email");
     //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
     //this.address.validate();
   }
@@ -60,7 +62,7 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
 
   @Override
   public String getFirstName() {
-    return this.lastName;
+    return  this.firstName;
   }
 
   @Override
@@ -69,12 +71,12 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   }
 
   @Override
-  public String email() {
+  public MedicalSalesRepEmail email() {
     return this.email;
   }
 
   @Override
-  public Boolean isActive() {
+  public BoolValueObject isActive() {
     return this.active;
   }
   

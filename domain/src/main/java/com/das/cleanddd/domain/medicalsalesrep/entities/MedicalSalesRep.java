@@ -1,6 +1,8 @@
 package com.das.cleanddd.domain.medicalsalesrep.entities;
 
+import com.das.cleanddd.domain.shared.BoolValueObject;
 import com.das.cleanddd.domain.shared.PersonJavaBean;
+import com.das.cleanddd.domain.shared.StringValueObject;
 import com.das.cleanddd.domain.shared.UtilsFactory;
 import com.das.cleanddd.domain.shared.ValidationUtils;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
@@ -12,16 +14,16 @@ public class MedicalSalesRep extends PersonJavaBean {
     private final MedicalSalesRepId id;
 /*     private final String    name;
     private final String    surname;
- */    private final String    email;
-       private final Boolean active;
+ */    private final StringValueObject    email;
+       private final BoolValueObject active;
        private final ValidationUtils validationUtils;
 
-    public MedicalSalesRep(MedicalSalesRepId id, String name, String surname, String email, Boolean isActive) {
-        this.id      = id;
-        this.firstName    = name;
-        this.lastName = surname;
-        this.email   = email;
-        this.active =  isActive;
+    public MedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) {
+            this.id      = id;
+            this.firstName    = name.toString();
+            this.lastName = surname.toString();
+            this.email   = email2;
+            this.active =  isActive;
         this.validationUtils = (new UtilsFactory()).getValidationUtils();
     }
 
@@ -30,27 +32,29 @@ public class MedicalSalesRep extends PersonJavaBean {
         return id;
     }
 
-    public String name() {
-        return firstName;
+    public StringValueObject name() {
+        return new StringValueObject(firstName) {
+        } ;
     }
 
-    public String surname() {
-        return lastName;
+    public StringValueObject surname() {
+        return new StringValueObject(lastName) {
+        } ;
     }
 
-    public String email() {
+    public StringValueObject email() {
         return email;
     }
 
-    public Boolean isActive() {
+    public BoolValueObject isActive() {
         return active;
     }
     public MedicalSalesRepId getId() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getId'");
     }
-    public static MedicalSalesRep create(MedicalSalesRepId id, String name, String surname, String email, Boolean isActive) {
-        MedicalSalesRep medicalSR = new MedicalSalesRep(id, name, surname, email, isActive);
+    public static MedicalSalesRep create(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) {
+        MedicalSalesRep medicalSR = new MedicalSalesRep(id, name, surname, email2, isActive);
 
         //medicalSR.record(new CourseCreatedDomainEvent(id.value(), name.value(), duration.value()));
 
@@ -90,7 +94,7 @@ public class MedicalSalesRep extends PersonJavaBean {
     if(this.validationUtils.isNull(this.id)) throw new RequiredFieldException("id");
     if(this.validationUtils.isNullOrEmpty(this.firstName)) throw new RequiredFieldException("firstName");
     if(this.validationUtils.isNullOrEmpty(this.lastName)) throw new RequiredFieldException("lastName");
-    if(this.validationUtils.isNullOrEmpty(this.email)) throw new RequiredFieldException("email");
+    if(this.validationUtils.isNullOrEmpty(this.email.toString())) throw new RequiredFieldException("email");
     //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
     //this.address.validate();
   }
