@@ -1,6 +1,7 @@
 package com.das.cleanddd.service.medicalsalesrep;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.UuidGenerator;
@@ -47,5 +48,11 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 	public Optional<MedicalSalesRep> search(Identifier identifier) {
 		// Implement the method logic here
 		return Optional.empty();
+	}
+
+	@Override
+	public Optional<MedicalSalesRep> findByEmail(MedicalSalesRepEmail email) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
 	}
 }

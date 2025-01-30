@@ -16,4 +16,6 @@ public interface MedicalSalesRepRepository {
 
     List<MedicalSalesRep> searchAll();
 
+    Optional<MedicalSalesRep> findByEmail(MedicalSalesRepEmail email);
+
 }
