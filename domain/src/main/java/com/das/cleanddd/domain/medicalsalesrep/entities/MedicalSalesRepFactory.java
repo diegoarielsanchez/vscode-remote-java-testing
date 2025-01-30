@@ -1,7 +1,5 @@
 package com.das.cleanddd.domain.medicalsalesrep.entities;
 
-import com.das.cleanddd.domain.shared.BoolValueObject;
-import com.das.cleanddd.domain.shared.StringValueObject;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
 import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 

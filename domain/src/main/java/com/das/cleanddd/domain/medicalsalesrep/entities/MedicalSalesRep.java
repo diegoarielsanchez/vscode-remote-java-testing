@@ -2,7 +2,6 @@ package com.das.cleanddd.domain.medicalsalesrep.entities;
 
 import com.das.cleanddd.domain.shared.BoolValueObject;
 import com.das.cleanddd.domain.shared.PersonJavaBean;
-import com.das.cleanddd.domain.shared.StringValueObject;
 import com.das.cleanddd.domain.shared.UtilsFactory;
 import com.das.cleanddd.domain.shared.ValidationUtils;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
@@ -14,8 +13,8 @@ public class MedicalSalesRep extends PersonJavaBean {
     private final MedicalSalesRepId id;
 /*     private final String    name;
     private final String    surname;
- */    private final StringValueObject    email;
-       private final BoolValueObject active;
+ */    private final MedicalSalesRepEmail    email;
+       private final MedicalSalesRepActive active;
        private final ValidationUtils validationUtils;
 
     public MedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) {
@@ -32,17 +31,17 @@ public class MedicalSalesRep extends PersonJavaBean {
         return id;
     }
 
-    public StringValueObject name() {
-        return new StringValueObject(firstName) {
+    public MedicalSalesRepName name() {
+        return new MedicalSalesRepName(firstName) {
         } ;
     }
 
-    public StringValueObject surname() {
-        return new StringValueObject(lastName) {
+    public MedicalSalesRepName surname() {
+        return new MedicalSalesRepName(lastName) {
         } ;
     }
 
-    public StringValueObject email() {
+    public MedicalSalesRepEmail email() {
         return email;
     }
 

@@ -1,8 +1,11 @@
 package com.das.cleanddd.domain.medicalsalesrep.usecases.services;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepActive;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
@@ -26,7 +29,7 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         this.mapper = mapper;   
     }
 
-    public void create(MedicalSalesRepId id, String name, String surname, String email, Boolean active) {
+    public void create(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email,MedicalSalesRepActive active) {
         MedicalSalesRep medicalSalesRepresentative = MedicalSalesRep.create(id, name, surname, email, active);
 
         repository.save(medicalSalesRepresentative);

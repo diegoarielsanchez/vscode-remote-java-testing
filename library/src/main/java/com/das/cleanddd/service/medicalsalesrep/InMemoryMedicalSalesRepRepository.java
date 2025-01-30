@@ -1,13 +1,11 @@
 package com.das.cleanddd.service.medicalsalesrep;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.UuidGenerator;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
