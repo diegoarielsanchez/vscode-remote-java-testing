@@ -9,7 +9,7 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
-import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalRepInputDTO;
+import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
 import com.das.cleanddd.domain.shared.UseCase;
@@ -17,7 +17,7 @@ import com.das.cleanddd.domain.shared.exceptions.BusinessException;
 import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
-public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedicalRepInputDTO, MedicalSalesRepOutputDTO> {
+public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> {
 
     //private final CustomerDataAccess customerDataAccess;
     private final MedicalSalesRepRepository repository; 
@@ -41,18 +41,19 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
     } */
 
     @Override
-    public MedicalSalesRepOutputDTO execute(CreateMedicalRepInputDTO inputDTO)
+    public MedicalSalesRepOutputDTO execute(CreateMedicalSalesRepInputDTO inputDTO)
             throws DomainException {
 
         MedicalSalesRep medicalSalesRep;
         try {
             
             medicalSalesRep = factory.createMedicalSalesRepresentative(
-                new MedicalSalesRepId(inputDTO.id())
-                , new MedicalSalesRepName(inputDTO.name())
-                , new MedicalSalesRepName(inputDTO.surname())
-                , new MedicalSalesRepEmail(inputDTO.email())
-                , new MedicalSalesRepActive(inputDTO.active()));
+                inputDTO.id()
+                , inputDTO.name()
+                , inputDTO.surname()
+                , inputDTO.email()
+                , false
+                );
                 
         } catch (BusinessException  e) {
             // TODO: handle exception
