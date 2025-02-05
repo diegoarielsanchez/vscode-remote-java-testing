@@ -5,8 +5,8 @@ import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 
 public class MedicalSalesRepFactory {
 
-    public MedicalSalesRep createMedicalSalesRepresentative(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) throws BusinessException {
-      return new DefaultMedicalSalesRep(MedicalSalesRepId.random(), name, surname, email2, isActive);
+    public MedicalSalesRep createMedicalSalesRep(MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2) throws BusinessException {
+      return new DefaultMedicalSalesRep(MedicalSalesRepId.random(), name, surname, email2);
     }
   
     public MedicalSalesRep recreateExistingMedicalSalesRepresentative(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) throws BusinessException {
@@ -14,7 +14,7 @@ public class MedicalSalesRepFactory {
         throw new RequiredFieldException("id");
       }
   
-      MedicalSalesRep existingMedicalSalesRepresentative = new DefaultMedicalSalesRep(id, name, surname, email2, isActive);
+      MedicalSalesRep existingMedicalSalesRepresentative = new DefaultMedicalSalesRep(id, name, surname, email2);
   
       return keepActiveValueForExistingMedicalSalesRepresentative(existingMedicalSalesRepresentative, isActive);
     }

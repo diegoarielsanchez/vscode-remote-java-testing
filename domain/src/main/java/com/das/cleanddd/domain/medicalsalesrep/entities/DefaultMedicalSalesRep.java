@@ -29,8 +29,8 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
 
   private final ValidationUtils validationUtils;
 
-  protected DefaultMedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) throws BusinessException {
-    super(id, name, surname, email2, isActive);
+  protected DefaultMedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2) throws BusinessException {
+    super(id, name, surname, email2, new MedicalSalesRepActive(null));
     
     this.validationUtils = (new UtilsFactory()).getValidationUtils();
 
@@ -38,8 +38,8 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
     this.firstName    = name.toString();
     this.lastName = surname.toString();
     this.email   = email2;
-    this.active =  isActive;
-    //this.validate();
+    this.active = new MedicalSalesRepActive(false);
+    this.validate();
   }
 
 
@@ -75,7 +75,7 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   }
 
   @Override
-  public BoolValueObject isActive() {
+  public MedicalSalesRepActive isActive() {
     return this.active;
   }
   

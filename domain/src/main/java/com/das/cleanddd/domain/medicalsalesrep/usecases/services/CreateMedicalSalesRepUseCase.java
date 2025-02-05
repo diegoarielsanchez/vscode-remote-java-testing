@@ -3,11 +3,7 @@ package com.das.cleanddd.domain.medicalsalesrep.usecases.services;
 import java.util.Optional;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepActive;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
@@ -47,12 +43,13 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         MedicalSalesRep medicalSalesRep;
         try {
             
-            medicalSalesRep = factory.createMedicalSalesRepresentative(
-                inputDTO.id()
-                , inputDTO.name()
+            medicalSalesRep = factory.createMedicalSalesRep(
+                //inputDTO.id()
+                //, 
+                inputDTO.name()
                 , inputDTO.surname()
                 , inputDTO.email()
-                , false
+                //, false
                 );
                 
         } catch (BusinessException  e) {

@@ -45,7 +45,7 @@ public class MedicalSalesRep extends PersonJavaBean {
         return email;
     }
 
-    public BoolValueObject isActive() {
+    public MedicalSalesRepActive isActive() {
         return active;
     }
     public MedicalSalesRepId getId() {

@@ -9,7 +9,8 @@ public class MedicalSalesRepMapper {
         c.getId(),
         c.name(),
         c.surname(),
-        c.email()
+        c.email(),
+        c.isActive()
       );
     }
   }
