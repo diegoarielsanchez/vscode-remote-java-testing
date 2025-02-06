@@ -10,7 +10,7 @@ public interface MedicalSalesRepRepository {
 
     void save(MedicalSalesRep medicalSalesRepresentative);
 
-    Optional<MedicalSalesRep> search(Identifier id);
+    Optional<MedicalSalesRep> search(MedicalSalesRepId id);
 
     List<MedicalSalesRep> matching(Criteria criteria);
 
