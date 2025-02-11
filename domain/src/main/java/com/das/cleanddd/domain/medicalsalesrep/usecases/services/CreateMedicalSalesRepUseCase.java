@@ -71,7 +71,7 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         }
         // Create
         repository.save(medicalSalesRep);
-        // Convert respose to output and return
+        // Convert response to output and return
         return mapper.outputFromEntity(medicalSalesRep);
         //throw new UnsupportedOperationException("Unimplemented method 'execute'");
     }

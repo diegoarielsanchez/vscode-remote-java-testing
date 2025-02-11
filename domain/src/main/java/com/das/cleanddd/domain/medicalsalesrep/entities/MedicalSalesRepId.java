@@ -8,7 +8,6 @@ public class MedicalSalesRepId extends Identifier{
     }
 
     public static MedicalSalesRepId random() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'random'");
+        return new MedicalSalesRepId(java.util.UUID.randomUUID().toString());
     }
 }
