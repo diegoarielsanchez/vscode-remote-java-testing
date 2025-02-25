@@ -13,6 +13,7 @@ import com.das.cleanddd.domain.shared.exceptions.BusinessException;
 import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
+//@RequiredArgsConstructor
 public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> {
 
     //private final CustomerDataAccess customerDataAccess;
@@ -29,40 +30,17 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         this.mapper = mapper;   
     }
 
-/*     public void create(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email,MedicalSalesRepActive active) {
-
-        MedicalSalesRep medicalSalesRepresentative = MedicalSalesRep.create(id, name, surname, email, active);
-        repository.save(medicalSalesRepresentative);
-        //eventBus.publish(medicalSalesRepresentative.pullDomainEvents());
-    } */
-
     @Override
     public MedicalSalesRepOutputDTO execute(CreateMedicalSalesRepInputDTO inputDTO)
             throws DomainException {
 
         MedicalSalesRep medicalSalesRep;
         try {
-            
-            medicalSalesRep = factory.createMedicalSalesRep(
-                //inputDTO.id()
-                //, 
-                inputDTO.name()
-                , inputDTO.surname()
-                , inputDTO.email()
-                //, false
-                );
-                
+            medicalSalesRep = factory.createMedicalSalesRep(inputDTO.name(), inputDTO.surname(), inputDTO.email());
         } catch (BusinessException  e) {
             // TODO: handle exception
             throw new BusinessValidationException(e.getMessage());
         }
-
-/*         medicalSalesRep = MedicalSalesRep.create( 
-            new MedicalSalesRepId(inputDTO.id())
-            , new MedicalSalesRepName(inputDTO.name())
-            , new MedicalSalesRepName(inputDTO.surname())
-            , new MedicalSalesRepEmail(inputDTO.email())
-            , new MedicalSalesRepActive(inputDTO.active())); */
 
         // Validate Unique Email
         Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(inputDTO.email());
@@ -71,9 +49,10 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         }
         // Create
         repository.save(medicalSalesRep);
+
         // Convert response to output and return
         return mapper.outputFromEntity(medicalSalesRep);
-        //throw new UnsupportedOperationException("Unimplemented method 'execute'");
+
     }
 
 }

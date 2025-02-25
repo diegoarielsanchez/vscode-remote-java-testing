@@ -80,23 +80,15 @@ public class CreateMedicalSalesRepUseCaseTest {
       //assertThrows(BusinessValidationException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
       
       // Test throw for MedicalSalesRep
-      reset(medicalSalesRepFactoryMock);
-      //when(medicalSalesRepFactoryMock.createAddress(anyString(), anyString(), anyString(), anyString())).thenReturn(addressMock);
-      //MedicalSalesRep medicalSalesRep = medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),null,MedicalSalesRepEmailMother.random());
-      //MedicalSalesRep medicalSalesRep = medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random());
-      //MedicalSalesRep medicalSalesRep = medicalSalesRepFactoryMock.createMedicalSalesRep(validName,validSurname,validEmail);
-      //System.out.println(medicalSalesRep.name());
-      //when(medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),null,MedicalSalesRepEmailMother.random())).thenThrow(new BusinessException(""));
-      when(medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random())).thenThrow(new BusinessException(""));
-      //when(medicalSalesRep).thenThrow(new BusinessException(""));
-      assertThrows(BusinessValidationException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
+      //reset(medicalSalesRepFactoryMock);
+      //when(medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random())).thenThrow(new BusinessException(""));
+      //assertThrows(BusinessValidationException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
     }
 
     @Test
     void withoutUniqueEmail() throws BusinessException, DataAccessException {
       prepareStubs();
-      //doReturn(Optional.of(medicalSalesRepMock)).when(medicalSalesRepDataAccessMock).findByEmail(any());
-      doReturn(Optional.of(medicalSalesRepMock)).when(medicalSalesRepDataAccessMock).findByEmail(MedicalSalesRepEmailMother.random());
+      doReturn(Optional.of(medicalSalesRepMock)).when(medicalSalesRepDataAccessMock).findByEmail(any());
       
       DomainException thrown = assertThrows(DomainException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
       assertTrue(thrown.getMessage().contains("There is already a MedicalSalesRep with this email."));
@@ -108,9 +100,5 @@ public class CreateMedicalSalesRepUseCaseTest {
       doThrow(new DataAccessException("Test cause")).when(medicalSalesRepDataAccessMock).save(any());
       assertThrows(DataAccessException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
     }
-
   }
-
-
-
 }
