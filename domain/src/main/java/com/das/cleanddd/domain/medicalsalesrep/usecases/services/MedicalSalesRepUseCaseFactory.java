@@ -1,6 +1,6 @@
 package com.das.cleanddd.domain.medicalsalesrep.usecases.services;
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
+import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
@@ -9,6 +9,7 @@ import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapp
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
 import com.das.cleanddd.domain.shared.UseCase;
 
+@Service
 public class MedicalSalesRepUseCaseFactory {
 
     private final MedicalSalesRepRepository medicalSalesRepRepository;
