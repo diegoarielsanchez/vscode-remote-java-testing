@@ -2,8 +2,13 @@ package com.das.cleanddd.domain.medicalsalesrep.usecases.services;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
@@ -14,11 +19,15 @@ import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 //@RequiredArgsConstructor
+@Service
 public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> {
 
     //private final CustomerDataAccess customerDataAccess;
+    @Autowired
     private final MedicalSalesRepRepository repository; 
+    @Autowired
     private final MedicalSalesRepFactory factory;
+    @Autowired
     private final MedicalSalesRepMapper mapper;
     
     public CreateMedicalSalesRepUseCase(MedicalSalesRepRepository repository
@@ -35,8 +44,14 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
             throws DomainException {
 
         MedicalSalesRep medicalSalesRep;
+        MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
+        MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
+        MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
+
         try {
-            medicalSalesRep = factory.createMedicalSalesRep(inputDTO.name(), inputDTO.surname(), inputDTO.email());
+            //medicalSalesRep = factory.createMedicalSalesRep(inputDTO.name(), inputDTO.surname(), inputDTO.email());
+            medicalSalesRep = factory.createMedicalSalesRep(medicalSalesRepName, medicalSalesRepSurname, medicalSalesRepEmail);
+
         } catch (BusinessException  e) {
             // TODO: handle exception
             throw new BusinessValidationException(e.getMessage());
