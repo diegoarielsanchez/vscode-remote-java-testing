@@ -58,7 +58,8 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         }
 
         // Validate Unique Email
-        Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(inputDTO.email());
+        //Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(inputDTO.email());
+        Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(medicalSalesRepEmail);
         if(medicalSalesRepWithEmail.isPresent()) {
         throw new DomainException("There is already a Medical Sales Representative with this email.");
         }

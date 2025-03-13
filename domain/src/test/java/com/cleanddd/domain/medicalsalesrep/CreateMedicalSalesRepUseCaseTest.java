@@ -1,21 +1,20 @@
 package com.cleanddd.domain.medicalsalesrep;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepActive;
@@ -29,7 +28,6 @@ import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapp
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.services.CreateMedicalSalesRepUseCase;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
-import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DataAccessException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
@@ -47,9 +45,8 @@ public class CreateMedicalSalesRepUseCaseTest {
     private final MedicalSalesRepName validSurname = MedicalSalesRepNameMother.random();
     private final MedicalSalesRepEmail validEmail = MedicalSalesRepEmailMother.random();
     private final MedicalSalesRepActive validActive = MedicalSalesRepActiveMother.create(false);
-    private CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validId, validName, validSurname, validEmail);
-
-    private MedicalSalesRepOutputDTO validOutputDto = new MedicalSalesRepOutputDTO(validId, validName, validSurname, validEmail, validActive);
+    private final CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), validName.toString(), validSurname.toString(), validEmail.toString());
+    private final MedicalSalesRepOutputDTO validOutputDto = new MedicalSalesRepOutputDTO(validId, validName, validSurname, validEmail, validActive);
 
     void prepareStubs() throws BusinessException {
         //when(medicalSalesRepFactoryMock.createAddress(anyString(), anyString(), anyString(), anyString())).thenReturn(addressMock);
@@ -60,7 +57,8 @@ public class CreateMedicalSalesRepUseCaseTest {
     void shouldCallFactoriesAndDataAccess() throws BusinessException, DomainException {
       prepareStubs();
       createMedicalSalesRepUseCase.execute(validInputDTO);
-      verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(validInputDTO.name(), validInputDTO.surname(), validInputDTO.email());
+      //verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(new MedicalSalesRepName(inputDTO.name()), validInputDTO.surname(), validInputDTO.email());
+      verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(new MedicalSalesRepName(validInputDTO.name()), new MedicalSalesRepName(validInputDTO.surname()), new MedicalSalesRepEmail(validInputDTO.email()));
       verify(medicalSalesRepDataAccessMock, times(1)).save(any());
     }
 
