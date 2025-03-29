@@ -7,13 +7,13 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 @Service
 public class MedicalSalesRepMapper {
 
-    public MedicalSalesRepOutputDTO outputFromEntity(MedicalSalesRep c) {
+    public MedicalSalesRepOutputDTO outputFromEntity(MedicalSalesRep medicalSalesRep) {
       return new MedicalSalesRepOutputDTO(
-        c.getId(),
-        c.name(),
-        c.surname(),
-        c.email(),
-        c.isActive()
+        medicalSalesRep.id().value(),
+        medicalSalesRep.name().value(),
+        medicalSalesRep.surname().value(),
+        medicalSalesRep.email().value(),
+        medicalSalesRep.isActive().value()
       );
     }
   }

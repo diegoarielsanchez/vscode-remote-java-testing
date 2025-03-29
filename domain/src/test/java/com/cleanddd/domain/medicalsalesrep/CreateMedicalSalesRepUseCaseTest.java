@@ -46,7 +46,7 @@ public class CreateMedicalSalesRepUseCaseTest {
     private final MedicalSalesRepEmail validEmail = MedicalSalesRepEmailMother.random();
     private final MedicalSalesRepActive validActive = MedicalSalesRepActiveMother.create(false);
     private final CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), validName.toString(), validSurname.toString(), validEmail.toString());
-    private final MedicalSalesRepOutputDTO validOutputDto = new MedicalSalesRepOutputDTO(validId, validName, validSurname, validEmail, validActive);
+    private final MedicalSalesRepOutputDTO validOutputDto = new MedicalSalesRepOutputDTO(validId.value(), validName.value(), validSurname.value(), validEmail.value(), validActive.value());
 
     void prepareStubs() throws BusinessException {
         //when(medicalSalesRepFactoryMock.createAddress(anyString(), anyString(), anyString(), anyString())).thenReturn(addressMock);
