@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,10 +29,11 @@ import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapp
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.services.CreateMedicalSalesRepUseCase;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
+import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DataAccessException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
-public class CreateMedicalSalesRepUseCaseTest {
+class CreateMedicalSalesRepUseCaseTest {
 
     private final MedicalSalesRepRepository medicalSalesRepDataAccessMock = mock(MedicalSalesRepRepository.class);
     private final MedicalSalesRepFactory medicalSalesRepFactoryMock = mock(MedicalSalesRepFactory.class);
@@ -57,7 +59,6 @@ public class CreateMedicalSalesRepUseCaseTest {
     void shouldCallFactoriesAndDataAccess() throws BusinessException, DomainException {
       prepareStubs();
       createMedicalSalesRepUseCase.execute(validInputDTO);
-      //verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(new MedicalSalesRepName(inputDTO.name()), validInputDTO.surname(), validInputDTO.email());
       verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(new MedicalSalesRepName(validInputDTO.name()), new MedicalSalesRepName(validInputDTO.surname()), new MedicalSalesRepEmail(validInputDTO.email()));
       verify(medicalSalesRepDataAccessMock, times(1)).save(any());
     }
@@ -78,9 +79,9 @@ public class CreateMedicalSalesRepUseCaseTest {
       //assertThrows(BusinessValidationException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
       
       // Test throw for MedicalSalesRep
-      //reset(medicalSalesRepFactoryMock);
-      //when(medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random())).thenThrow(new BusinessException(""));
-      //assertThrows(BusinessValidationException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
+      reset(medicalSalesRepFactoryMock);
+      when(medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random())).thenThrow(new BusinessException(""));
+      assertThrows(BusinessValidationException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
     }
 
     @Test
