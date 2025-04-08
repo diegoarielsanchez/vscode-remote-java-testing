@@ -3,6 +3,7 @@ package com.cleanddd.domain.medicalsalesrep;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Nested;
@@ -35,10 +36,10 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 class CreateMedicalSalesRepUseCaseTest {
 
-    private final MedicalSalesRepRepository medicalSalesRepDataAccessMock = mock(MedicalSalesRepRepository.class);
+    private final MedicalSalesRepRepository medicalSalesRepRepositoryMock = mock(MedicalSalesRepRepository.class);
     private final MedicalSalesRepFactory medicalSalesRepFactoryMock = mock(MedicalSalesRepFactory.class);
     private final MedicalSalesRepMapper medicalSalesRepMapperMock = mock(MedicalSalesRepMapper.class);
-    private final CreateMedicalSalesRepUseCase createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(medicalSalesRepDataAccessMock,medicalSalesRepFactoryMock,medicalSalesRepMapperMock);
+    private final CreateMedicalSalesRepUseCase createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(medicalSalesRepRepositoryMock,medicalSalesRepFactoryMock,medicalSalesRepMapperMock);
 
     private final MedicalSalesRep medicalSalesRepMock = mock(MedicalSalesRep.class, Mockito.RETURNS_DEEP_STUBS);
      //private final UUID validId = UUID.fromString("e3119506-030a-4877-a219-389ef21118a4");
@@ -60,7 +61,7 @@ class CreateMedicalSalesRepUseCaseTest {
       prepareStubs();
       createMedicalSalesRepUseCase.execute(validInputDTO);
       verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(new MedicalSalesRepName(validInputDTO.name()), new MedicalSalesRepName(validInputDTO.surname()), new MedicalSalesRepEmail(validInputDTO.email()));
-      verify(medicalSalesRepDataAccessMock, times(1)).save(any());
+      verify(medicalSalesRepRepositoryMock, times(1)).save(any());
     }
 
     @Test
@@ -68,7 +69,19 @@ class CreateMedicalSalesRepUseCaseTest {
       prepareStubs();
       MedicalSalesRepOutputDTO outputDTO = createMedicalSalesRepUseCase.execute(validInputDTO);
       assertNotNull(outputDTO);
-  }
+    }
+
+    @Test
+    void shouldMedicalSalesRepNameInvalid() throws DomainException, BusinessException {
+      prepareStubs();
+      //MedicalSalesRepName invalidName = MedicalSalesRepNameMother.create("123456");
+      String invalidName = "123456";
+      CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), invalidName, validSurname.toString(), validEmail.toString());
+      MedicalSalesRepOutputDTO outputDTO = createMedicalSalesRepUseCase.execute(invalidInputDTO);
+      //assertNotNull(outputDTO);
+      assertNull(outputDTO);
+    }
+
   @Nested
   class CreatingMedicalSalesRepShouldThrow {
 
@@ -80,15 +93,15 @@ class CreateMedicalSalesRepUseCaseTest {
       
       // Test throw for MedicalSalesRep
       reset(medicalSalesRepFactoryMock);
-      when(medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random())).thenThrow(new BusinessException(""));
+      //when(medicalSalesRepFactoryMock.createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random())).thenThrow(new BusinessException(""));
+      when(medicalSalesRepFactoryMock.createMedicalSalesRep(any(),any(),any())).thenThrow(new BusinessException(""));
       assertThrows(BusinessValidationException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
     }
 
     @Test
     void withoutUniqueEmail() throws BusinessException, DataAccessException {
       prepareStubs();
-      doReturn(Optional.of(medicalSalesRepMock)).when(medicalSalesRepDataAccessMock).findByEmail(any());
-      
+      doReturn(Optional.of(medicalSalesRepMock)).when(medicalSalesRepRepositoryMock).findByEmail(any());
       DomainException thrown = assertThrows(DomainException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
       assertTrue(thrown.getMessage().contains("There is already a MedicalSalesRep with this email."));
     }
@@ -96,7 +109,7 @@ class CreateMedicalSalesRepUseCaseTest {
     @Test
     void whenDataAccessThrows() throws BusinessException, DataAccessException {
       prepareStubs();
-      doThrow(new DataAccessException("Test cause")).when(medicalSalesRepDataAccessMock).save(any());
+      doThrow(new DataAccessException("Test cause")).when(medicalSalesRepRepositoryMock).save(any());
       assertThrows(DataAccessException.class,() -> createMedicalSalesRepUseCase.execute(validInputDTO));
     }
   }
