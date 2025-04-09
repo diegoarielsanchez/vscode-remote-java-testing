@@ -7,7 +7,7 @@ import com.das.cleanddd.domain.shared.StringValueObject;
 public class MedicalSalesRepName extends StringValueObject {
     public static final int MAX_LENGTH = 100;
     public static final int MIN_LENGTH = 2;
-    public static final String REGEX = "^[a-zA-Z\\s]+$"; //"^[a-zA-Z\\s]+$";
+    public static final String REGEX = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$"; //"^[a-zA-Z\\s]+$";
     //public static final String ERROR_MESSAGE = "Name must be between " + MIN_LENGTH + " and " + MAX_LENGTH + " characters long and contain only letters and spaces.";
     public static final String ERROR_MESSAGE_NULL = "Name cannot be null.";
     public static final String ERROR_MESSAGE_EMPTY = "Name cannot be empty.";
