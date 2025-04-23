@@ -9,6 +9,8 @@ import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 public class MedicalSalesRepFactory {
 
     public MedicalSalesRep createMedicalSalesRep(MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2) throws BusinessException {
+      //return new DefaultMedicalSalesRep(MedicalSalesRepId.random(), name, surname, email2);
+      //return new DefaultMedicalSalesRep(medicalSalersRepId, name, surname, email2);
       return new DefaultMedicalSalesRep(MedicalSalesRepId.random(), name, surname, email2);
     }
   
@@ -23,10 +25,9 @@ public class MedicalSalesRepFactory {
     }
   
     MedicalSalesRep keepActiveValueForExistingMedicalSalesRepresentative(MedicalSalesRep existingMedicalSalesRepresentative, MedicalSalesRepActive activeValue) {
-       if(activeValue!=null) {
-        if(Boolean.TRUE.equals(activeValue)) return existingMedicalSalesRepresentative.activate();
-        else return existingMedicalSalesRepresentative.activate();
-      }
+       if (activeValue != null) {
+           return existingMedicalSalesRepresentative.activate();
+       }
       return existingMedicalSalesRepresentative;
     }
 

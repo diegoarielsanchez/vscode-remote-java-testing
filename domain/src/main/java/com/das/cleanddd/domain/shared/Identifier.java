@@ -5,9 +5,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Identifier implements Serializable {
-    final protected String value;
+    protected final String value;
 
-    public Identifier(String value) {
+    protected Identifier(String value) {
         ensureValidUuid(value);
 
         this.value = value;

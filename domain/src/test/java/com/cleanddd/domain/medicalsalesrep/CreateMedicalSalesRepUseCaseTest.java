@@ -48,11 +48,13 @@ class CreateMedicalSalesRepUseCaseTest {
     private final MedicalSalesRepName validSurname = MedicalSalesRepNameMother.random();
     private final MedicalSalesRepEmail validEmail = MedicalSalesRepEmailMother.random();
     private final MedicalSalesRepActive validActive = MedicalSalesRepActiveMother.create(false);
-    private final CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), validName.toString(), validSurname.toString(), validEmail.toString());
+    //private final CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), validName.toString(), validSurname.toString(), validEmail.toString());
+    private final CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validName.toString(), validSurname.toString(), validEmail.toString());
     private final MedicalSalesRepOutputDTO validOutputDto = new MedicalSalesRepOutputDTO(validId.value(), validName.value(), validSurname.value(), validEmail.value(), validActive.value());
 
     void prepareStubs() throws BusinessException {
         //when(medicalSalesRepFactoryMock.createAddress(anyString(), anyString(), anyString(), anyString())).thenReturn(addressMock);
+        //doReturn(medicalSalesRepMock).when(medicalSalesRepFactoryMock).createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random());
         doReturn(medicalSalesRepMock).when(medicalSalesRepFactoryMock).createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random());
         when(medicalSalesRepMapperMock.outputFromEntity(any())).thenReturn(validOutputDto);
     }
@@ -60,7 +62,9 @@ class CreateMedicalSalesRepUseCaseTest {
     void shouldCallFactoriesAndDataAccess() throws BusinessException, DomainException {
       prepareStubs();
       createMedicalSalesRepUseCase.execute(validInputDTO);
-      verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(new MedicalSalesRepName(validInputDTO.name()), new MedicalSalesRepName(validInputDTO.surname()), new MedicalSalesRepEmail(validInputDTO.email()));
+      //verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep( new MedicalSalesRepName(validInputDTO.name()), new MedicalSalesRepName(validInputDTO.surname()), new MedicalSalesRepEmail(validInputDTO.email()));
+      verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(MedicalSalesRepNameMother.random(),MedicalSalesRepNameMother.random(),MedicalSalesRepEmailMother.random());
+      //verify(medicalSalesRepRepositoryMock, times(1)).save(any());
       verify(medicalSalesRepRepositoryMock, times(1)).save(any());
     }
 
@@ -76,7 +80,8 @@ class CreateMedicalSalesRepUseCaseTest {
       prepareStubs();
       //MedicalSalesRepName invalidName = MedicalSalesRepNameMother.create("123456");
       String invalidName = "123456";
-      CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), invalidName, validSurname.toString(), validEmail.toString());
+      //CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), invalidName, validSurname.toString(), validEmail.toString());
+      CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO(invalidName, validSurname.toString(), validEmail.toString());
       MedicalSalesRepOutputDTO outputDTO = createMedicalSalesRepUseCase.execute(invalidInputDTO);
       //assertNotNull(outputDTO);
       assertNull(outputDTO);

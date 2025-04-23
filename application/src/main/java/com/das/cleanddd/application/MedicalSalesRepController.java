@@ -17,7 +17,7 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("api/v1/createmedicasSalesrep")
+@RequestMapping("api/v1/createmedicalSalesrep")
 public class MedicalSalesRepController {
     @Autowired
     private final UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> createMedicalSalesRepUseCase;
@@ -28,7 +28,6 @@ public class MedicalSalesRepController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    //public MedicalSalesRepOutputDTO createMedicalSalesRep(CreateMedicalSalesRepInputDTO inputDTO) throws DomainException{
     public MedicalSalesRepOutputDTO createMedicalSalesRep(@RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws DomainException{
         return createMedicalSalesRepUseCase.execute(inputDTO);
     }

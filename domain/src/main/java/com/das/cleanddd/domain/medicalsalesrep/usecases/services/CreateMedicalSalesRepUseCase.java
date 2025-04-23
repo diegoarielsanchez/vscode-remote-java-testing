@@ -47,9 +47,11 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
         MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
         MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
+        //MedicalSalesRepId medicalSalesRepId = new MedicalSalesRepId(inputDTO.id());
+        
 
         try {
-            //medicalSalesRep = factory.createMedicalSalesRep(inputDTO.name(), inputDTO.surname(), inputDTO.email());
+            // Create a new MedicalSalesRep object using the factory
             medicalSalesRep = factory.createMedicalSalesRep(medicalSalesRepName, medicalSalesRepSurname, medicalSalesRepEmail);
 
         } catch (BusinessException  e) {
