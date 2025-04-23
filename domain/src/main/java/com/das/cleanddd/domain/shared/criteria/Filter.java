@@ -42,6 +42,6 @@ public final class Filter {
     }
 
     public String serialize() {
-        return String.format("%s.%s.%s", field.value(), operator.value(), value.value());
+        return "%s.%s.%s".formatted(field.value(), operator.value(), value.value());
     }
 }

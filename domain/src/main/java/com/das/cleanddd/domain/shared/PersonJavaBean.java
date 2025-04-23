@@ -10,11 +10,13 @@ Serializable – implementing the Serializable interface allows us to store the 
 
 package com.das.cleanddd.domain.shared;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class PersonJavaBean implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3760445487636086034L;
     protected String firstName;
     protected String lastName;

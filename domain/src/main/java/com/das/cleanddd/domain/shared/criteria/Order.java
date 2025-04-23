@@ -41,6 +41,6 @@ public final class Order {
     }
 
     public String serialize() {
-        return String.format("%s.%s", orderBy.value(), orderType.value());
+        return "%s.%s".formatted(orderBy.value(), orderType.value());
     }
 }
