@@ -48,58 +48,28 @@ public class MedicalSalesRep extends PersonJavaBean {
         return active;
     }
     public MedicalSalesRepId getId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+        return this.id;
     }
     public static MedicalSalesRep create(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) {
-        MedicalSalesRep medicalSR = new MedicalSalesRep(id, name, surname, email2, isActive);
-
-        //medicalSR.record(new CourseCreatedDomainEvent(id.value(), name.value(), duration.value()));
-
-        return medicalSR;
+        return new MedicalSalesRep(id, name, surname, email2, isActive);
     }
-    //@Override
-/*     public MedicalSalesRep changeName(String newName) throws BusinessException {
-        MedicalSalesRep c = this.firstName.equals(newName) ? this : this.withName(newName);
-        c.validate();
-        return c;
-    }
- */
-/*     public MedicalSalesRep changeSurname(String newSurname) throws BusinessException {
-        MedicalSalesRep c = this.firstName.equals(newSurname) ? this : this.withName(newSurname);
-        c.validate();
-        return c;
-    }
- */    //@Override
-/*     public MedicalSalesRep activate() {
-      return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
-    }
- */
-    //@Override
-/*     public MedicalSalesRep deactivate() {
-      return this.active.equals(Boolean.FALSE) ? this : this.withActive(false);
-      
-    }
- */    //@Override
-/*     public MedicalSalesRep changeEmail(String newEmail) throws BusinessException {
-      DefaultMedicalSalesRep c = this.email.equals(newEmail) ? this : this.withEmail(newEmail);
-      c.validate();
-      return c;
-    }
- */
-  //@Override
-  public void validate() throws BusinessException {
-    if(this.validationUtils.isNull(this.id)) throw new RequiredFieldException("id");
-    if(this.validationUtils.isNullOrEmpty(this.firstName)) throw new RequiredFieldException("firstName");
-    if(this.validationUtils.isNullOrEmpty(this.lastName)) throw new RequiredFieldException("lastName");
-    if(this.validationUtils.isNullOrEmpty(this.email.toString())) throw new RequiredFieldException("email");
-    //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
-    //this.address.validate();
-  }
+ 
+    public void validate() throws BusinessException {
+        if(this.validationUtils.isNull(this.id)) throw new RequiredFieldException("id");
+        if(this.validationUtils.isNullOrEmpty(this.firstName)) throw new RequiredFieldException("firstName");
+        if(this.validationUtils.isNullOrEmpty(this.lastName)) throw new RequiredFieldException("lastName");
+        if(this.validationUtils.isNullOrEmpty(this.email.toString())) throw new RequiredFieldException("email");
+        //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
+        //this.address.validate();
+        }
 
 
-public MedicalSalesRep activate() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'activate'");
-}
+    public MedicalSalesRep activate() {
+        return this.active.equals(Boolean.TRUE) ? this : this.activate();
+    //return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
+    }
+    public MedicalSalesRep deactivate() {
+        return this.active.equals(Boolean.FALSE) ? this : this.deactivate();
+        //return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
+    }
 }

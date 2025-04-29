@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
+import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepIDDto;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
 import com.das.cleanddd.domain.shared.UseCase;
+import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 
 @Service
 public class MedicalSalesRepUseCaseFactory {
@@ -17,14 +19,25 @@ public class MedicalSalesRepUseCaseFactory {
     private final MedicalSalesRepMapper medicalSalesRepMapper = new MedicalSalesRepMapper();
     
     private final CreateMedicalSalesRepUseCase createMedicalSalesRepUseCase;
+    private final ActivateMedicalSalesRepUseCase activateMedicalSalesRepUseCase;
+    private final DeactivateMedicalSalesRepUseCase deactivateMedicalSalesRepUseCase;
+    //private final DeactivateMedicalSalesRepUseCase deactivateMedicalSalesRepUseCase;
 
     public MedicalSalesRepUseCaseFactory(MedicalSalesRepRepository medicalSalesRepRepository) {
 
         this.medicalSalesRepRepository = medicalSalesRepRepository;
         this.createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(this.medicalSalesRepRepository, this.medicalSalesRepFactory, this.medicalSalesRepMapper);
+        this.activateMedicalSalesRepUseCase = new ActivateMedicalSalesRepUseCase(this.medicalSalesRepRepository);
+        this.deactivateMedicalSalesRepUseCase = new DeactivateMedicalSalesRepUseCase(this.medicalSalesRepRepository);
     }
 
     public UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> getCreateMedicalSalesRepUseCase() {
         return createMedicalSalesRepUseCase;
+    }
+    public UseCaseOnlyInput<MedicalSalesRepIDDto> getActivateMedicalSalesRepUseCase() {
+        return activateMedicalSalesRepUseCase;
+    }
+    public UseCaseOnlyInput<MedicalSalesRepIDDto> getDeActivateMedicalSalesRepUseCase() {
+        return deactivateMedicalSalesRepUseCase;
     }
 }
