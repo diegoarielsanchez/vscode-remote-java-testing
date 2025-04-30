@@ -21,6 +21,7 @@ public class MedicalSalesRepUseCaseFactory {
     private final CreateMedicalSalesRepUseCase createMedicalSalesRepUseCase;
     private final ActivateMedicalSalesRepUseCase activateMedicalSalesRepUseCase;
     private final DeactivateMedicalSalesRepUseCase deactivateMedicalSalesRepUseCase;
+    private final GetMedicalSalesRepByIdUseCase getMedicalSalesRepByIdUseCase;
     //private final DeactivateMedicalSalesRepUseCase deactivateMedicalSalesRepUseCase;
 
     public MedicalSalesRepUseCaseFactory(MedicalSalesRepRepository medicalSalesRepRepository) {
@@ -29,6 +30,8 @@ public class MedicalSalesRepUseCaseFactory {
         this.createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(this.medicalSalesRepRepository, this.medicalSalesRepFactory, this.medicalSalesRepMapper);
         this.activateMedicalSalesRepUseCase = new ActivateMedicalSalesRepUseCase(this.medicalSalesRepRepository);
         this.deactivateMedicalSalesRepUseCase = new DeactivateMedicalSalesRepUseCase(this.medicalSalesRepRepository);
+        this.getMedicalSalesRepByIdUseCase = new GetMedicalSalesRepByIdUseCase(this.medicalSalesRepRepository, this.medicalSalesRepMapper);
+
     }
 
     public UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> getCreateMedicalSalesRepUseCase() {
@@ -39,5 +42,8 @@ public class MedicalSalesRepUseCaseFactory {
     }
     public UseCaseOnlyInput<MedicalSalesRepIDDto> getDeActivateMedicalSalesRepUseCase() {
         return deactivateMedicalSalesRepUseCase;
+    }
+    public UseCase<MedicalSalesRepIDDto, MedicalSalesRepOutputDTO> getGetMedicalSalesRepByIdUseCase() {
+        return getMedicalSalesRepByIdUseCase;
     }
 }
