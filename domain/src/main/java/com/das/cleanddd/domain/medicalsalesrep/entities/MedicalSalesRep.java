@@ -10,24 +10,22 @@ import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 public class MedicalSalesRep extends PersonJavaBean {
 
     private final MedicalSalesRepId id;
-/*     private final String    name;
-    private final String    surname;
- */    private final MedicalSalesRepEmail    email;
-       private final MedicalSalesRepActive active;
-       private final ValidationUtils validationUtils;
+    private final transient MedicalSalesRepEmail    email;
+    private final transient MedicalSalesRepActive active;
+    private final transient ValidationUtils validationUtils;
 
-    public MedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) {
-            this.id      = id;
+    public MedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email, MedicalSalesRepActive active) {
+            this.id      = id == null ? MedicalSalesRepId.random() : id;
             this.firstName    = name.toString();
             this.lastName = surname.toString();
-            this.email   = email2;
-            this.active =  isActive;
+            this.email   = email == null ? new MedicalSalesRepEmail("") : email;
+            this.active =  active == null ? new MedicalSalesRepActive(false) : active;
         this.validationUtils = (new UtilsFactory()).getValidationUtils();
     }
 
 
     public MedicalSalesRepId id() {
-        return id;
+        return this.id;
     }
 
     public MedicalSalesRepName name() {
@@ -41,17 +39,20 @@ public class MedicalSalesRep extends PersonJavaBean {
     }
 
     public MedicalSalesRepEmail email() {
-        return email;
+        return this.email;
     }
 
-    public MedicalSalesRepActive isActive() {
-        return active;
+    public MedicalSalesRepActive active() {
+        return this.active;
+    }
+    public Boolean isActive() {
+        return this.active != null && Boolean.TRUE.equals(this.active.value()) ? Boolean.TRUE : Boolean.FALSE;
     }
     public MedicalSalesRepId getId() {
         return this.id;
     }
-    public static MedicalSalesRep create(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2, MedicalSalesRepActive isActive) {
-        return new MedicalSalesRep(id, name, surname, email2, isActive);
+    public static MedicalSalesRep create(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email, MedicalSalesRepActive active) {
+        return new MedicalSalesRep(id, name, surname, email, active);
     }
  
     public void validate() throws BusinessException {
@@ -64,12 +65,10 @@ public class MedicalSalesRep extends PersonJavaBean {
         }
 
 
-    public MedicalSalesRep activate() {
-        return this.active.equals(Boolean.TRUE) ? this : this.activate();
-    //return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
+    public MedicalSalesRep setActivate() {
+        return this.active != null && this.active.value() ? this : new MedicalSalesRep(this.id, new MedicalSalesRepName(this.firstName), new MedicalSalesRepName(this.lastName), this.email, new MedicalSalesRepActive(true));
     }
-    public MedicalSalesRep deactivate() {
-        return this.active.equals(Boolean.FALSE) ? this : this.deactivate();
-        //return this.active.equals(Boolean.TRUE) ? this : this.withActive(true);
+    public MedicalSalesRep setDeactivate() {
+        return this.active != null && !this.active.value() ? this : new MedicalSalesRep(this.id, new MedicalSalesRepName(this.firstName), new MedicalSalesRepName(this.lastName), this.email, new MedicalSalesRepActive(false));
     }
 }

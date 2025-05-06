@@ -8,6 +8,6 @@ public class MedicalSalesRepActive extends BoolValueObject {
     }
 
     public MedicalSalesRepActive() {
-        super("");
+        super(false);
     }
 }

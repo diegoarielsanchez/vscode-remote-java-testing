@@ -13,7 +13,7 @@ public class MedicalSalesRepMapper {
         medicalSalesRep.name().value(),
         medicalSalesRep.surname().value(),
         medicalSalesRep.email().value(),
-        medicalSalesRep.isActive().value()
+        medicalSalesRep.active().value()
       );
     }
   }

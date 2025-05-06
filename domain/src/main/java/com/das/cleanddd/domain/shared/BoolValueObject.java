@@ -3,7 +3,7 @@ package com.das.cleanddd.domain.shared;
 import java.util.Objects;
 
 public abstract class BoolValueObject {
-    private Boolean value;
+    protected Boolean value;
 
     public BoolValueObject(Boolean value) {
         this.value = value;

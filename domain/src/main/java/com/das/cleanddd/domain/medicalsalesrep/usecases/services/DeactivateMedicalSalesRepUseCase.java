@@ -16,7 +16,6 @@ public class DeactivateMedicalSalesRepUseCase implements UseCaseOnlyInput<Medica
     private final MedicalSalesRepRepository repository; 
 
     public DeactivateMedicalSalesRepUseCase(MedicalSalesRepRepository repository) {
-        //this.medicalSalesRep = medicalSalesRep;
         this.repository = repository;
     }
 
@@ -33,8 +32,7 @@ public class DeactivateMedicalSalesRepUseCase implements UseCaseOnlyInput<Medica
             throw new DomainException("Medical Sales Representative not found.");
         }
         if(Boolean.TRUE.equals(medicalSalesRep.get().isActive())) {
-            medicalSalesRep.get().deactivate();
-            repository.save(medicalSalesRep.get());
+            repository.save(medicalSalesRep.get().setDeactivate());
           }
     }
 }

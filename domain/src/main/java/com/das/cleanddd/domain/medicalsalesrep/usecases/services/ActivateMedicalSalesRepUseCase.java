@@ -14,7 +14,7 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 public class ActivateMedicalSalesRepUseCase implements UseCaseOnlyInput<MedicalSalesRepIDDto> {
     
     //private final MedicalSalesRep medicalSalesRep;
-        //private final CustomerDataAccess customerDataAccess;
+    //private final CustomerDataAccess customerDataAccess;
     @Autowired
     private final MedicalSalesRepRepository repository; 
 
@@ -35,9 +35,9 @@ public class ActivateMedicalSalesRepUseCase implements UseCaseOnlyInput<MedicalS
         if(!medicalSalesRep.isPresent()) {
             throw new DomainException("Medical Sales Representative not found.");
         }
+        //if(Boolean.FALSE.equals(medicalSalesRep.get().active())) {
         if(Boolean.FALSE.equals(medicalSalesRep.get().isActive())) {
-            medicalSalesRep.get().activate();
-            repository.save(medicalSalesRep.get());
+            repository.save(medicalSalesRep.get().setActivate());
           }
     }
 }

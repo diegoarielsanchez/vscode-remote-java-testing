@@ -19,24 +19,24 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   //private final String name;
 
   //@With(AccessLevel.PRIVATE)
-  private final MedicalSalesRepEmail email;
+  private final transient MedicalSalesRepEmail email;
 
   //@With(AccessLevel.PRIVATE)
   //private final String surname;
 
-  private final MedicalSalesRepActive active;
+  private final transient MedicalSalesRepActive active;
 
-  private final ValidationUtils validationUtils;
+  private final transient ValidationUtils validationUtils;
 
-  protected DefaultMedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email2) throws BusinessException {
-    super(id, name, surname, email2, new MedicalSalesRepActive(null));
+  protected DefaultMedicalSalesRep(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email) throws BusinessException {
+    super(id, name, surname, email, new MedicalSalesRepActive(false));
     
     this.validationUtils = (new UtilsFactory()).getValidationUtils();
 
-    this.id = MedicalSalesRepId.random();
+    this.id = id != null ? id : MedicalSalesRepId.random();
     this.firstName    = name.toString();
     this.lastName = surname.toString();
-    this.email   = email2;
+    this.email   = email;
     this.active = new MedicalSalesRepActive(false);
     this.validate();
   }
@@ -48,6 +48,8 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
     if(this.validationUtils.isNullOrEmpty(this.firstName)) throw new RequiredFieldException("firstName");
     if(this.validationUtils.isNullOrEmpty(this.lastName)) throw new RequiredFieldException("lastName");
     if(this.validationUtils.isNullOrEmpty(this.email.toString())) throw new RequiredFieldException("email");
+    if(this.validationUtils.isNull(this.active)) throw new RequiredFieldException("active");
+
     //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
     //this.address.validate();
   }
@@ -74,7 +76,7 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   }
 
   @Override
-  public MedicalSalesRepActive isActive() {
+  public MedicalSalesRepActive active() {
     return this.active;
   }
   
