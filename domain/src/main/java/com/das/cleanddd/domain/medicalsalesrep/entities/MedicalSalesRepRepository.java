@@ -9,7 +9,7 @@ public interface MedicalSalesRepRepository {
 
     void save(MedicalSalesRep medicalSalesRepresentative);
 
-    Optional<MedicalSalesRep> search(MedicalSalesRepId id);
+    Optional<MedicalSalesRep> findById(MedicalSalesRepId id);
 
     List<MedicalSalesRep> matching(Criteria criteria);
 

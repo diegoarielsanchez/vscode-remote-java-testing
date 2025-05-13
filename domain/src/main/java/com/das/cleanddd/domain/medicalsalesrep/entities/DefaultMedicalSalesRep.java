@@ -71,7 +71,7 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   }
 
   @Override
-  public MedicalSalesRepEmail email() {
+  public MedicalSalesRepEmail getEmail() {
     return this.email;
   }
 

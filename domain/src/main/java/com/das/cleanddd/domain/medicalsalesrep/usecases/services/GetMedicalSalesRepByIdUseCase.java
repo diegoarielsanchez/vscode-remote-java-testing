@@ -33,7 +33,7 @@ public class GetMedicalSalesRepByIdUseCase implements UseCase<MedicalSalesRepIDD
             throw new DomainException("Medical Sales Representative Id is required.");
           }
         MedicalSalesRepId medicalSalesRepId = new MedicalSalesRepId(inputDTO.medicalSalesRepId());
-        Optional<MedicalSalesRep> medicalSalesRep = repository.search(medicalSalesRepId);
+        Optional<MedicalSalesRep> medicalSalesRep = repository.findById(medicalSalesRepId);
         if(!medicalSalesRep.isPresent()) {
             throw new DomainException("Medical Sales Representative not found.");
         }

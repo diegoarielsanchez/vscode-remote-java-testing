@@ -38,7 +38,7 @@ public class MedicalSalesRep extends PersonJavaBean {
         } ;
     }
 
-    public MedicalSalesRepEmail email() {
+    public MedicalSalesRepEmail getEmail() {
         return this.email;
     }
 

@@ -8,19 +8,19 @@ import org.springframework.stereotype.Service;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
-import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
+import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.UpdateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
 import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
-//@RequiredArgsConstructor
 @Service
-public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> {
+public final class UpdateMedicalSalesRepUseCase implements UseCase<UpdateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> {
 
     @Autowired
     private final MedicalSalesRepRepository repository; 
@@ -28,8 +28,8 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
     private final MedicalSalesRepFactory factory;
     @Autowired
     private final MedicalSalesRepMapper mapper;
-    
-    public CreateMedicalSalesRepUseCase(MedicalSalesRepRepository repository
+
+    public UpdateMedicalSalesRepUseCase(MedicalSalesRepRepository repository
         , MedicalSalesRepFactory factory
         , MedicalSalesRepMapper mapper
         ) {
@@ -37,11 +37,9 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         this.factory = factory;
         this.mapper = mapper;   
     }
-
     @Override
-    public MedicalSalesRepOutputDTO execute(CreateMedicalSalesRepInputDTO inputDTO)
+    public MedicalSalesRepOutputDTO execute(UpdateMedicalSalesRepInputDTO inputDTO)
             throws DomainException {
-
         // Validate input
         if (inputDTO == null) {
             throw new DomainException("Input DTO cannot be null");
@@ -55,27 +53,42 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
         if (inputDTO.email() == null || inputDTO.email().isEmpty()) {
             throw new DomainException("Email cannot be null or empty");
         }
+
         MedicalSalesRep medicalSalesRep;
+        MedicalSalesRep medicalSalesRepActivateStatus;
         MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
         MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
         MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
-
+        //MedicalSalesRepActive medicalSalesRepActive = new MedicalSalesRepActive(inputDTO.active());
+        MedicalSalesRepId id = new MedicalSalesRepId(inputDTO.id());
         try {
             // Create a new MedicalSalesRep object using the factory
-            medicalSalesRep = factory.createMedicalSalesRep(medicalSalesRepName, medicalSalesRepSurname, medicalSalesRepEmail);
+            medicalSalesRep = factory.recreateExistingMedicalSalesRepresentative(id, medicalSalesRepName, medicalSalesRepSurname, medicalSalesRepEmail,null);
         } catch (BusinessException  e) {
             // TODO: handle exception
             throw new BusinessValidationException(e.getMessage());
         }
-        // Validate Unique Email
-        Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(medicalSalesRepEmail);
-        if(medicalSalesRepWithEmail.isPresent()) {
-        throw new DomainException("There is already a Medical Sales Representative with this email.");
+        // fetch existing MedicalSalesRep from the repository
+        Optional<MedicalSalesRep> existingMedicalSalesRep = repository.findById(id);
+        if (!existingMedicalSalesRep.isPresent()) {
+            throw new DomainException("Medical Sales Representative not found.");
         }
-        // Create
-        repository.save(medicalSalesRep);
+        // Validate Unique Email
+        if (!existingMedicalSalesRep.get().getEmail().equals(medicalSalesRepEmail)) {
+            Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(medicalSalesRepEmail);
+            if (medicalSalesRepWithEmail.isPresent()) {
+                throw new DomainException("There is already a Medical Sales Representative with this email.");
+            }
+        }
+        // keep the existing MedicalSalesRep active status
+        if (Boolean.TRUE.equals(existingMedicalSalesRep.get().isActive())) {
+            medicalSalesRepActivateStatus = medicalSalesRep.setActivate();
+        } else {
+            medicalSalesRepActivateStatus = medicalSalesRep.setDeactivate();
+        }
+        // Update the existing MedicalSalesRep with the new values
+        repository.save(medicalSalesRepActivateStatus);
         // Convert response to output and return
-        return mapper.outputFromEntity(medicalSalesRep);
+        return mapper.outputFromEntity(medicalSalesRepActivateStatus);
     }
-
 }

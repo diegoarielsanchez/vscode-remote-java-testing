@@ -13,22 +13,11 @@ public class MedicalSalesRepFactory {
       return new MedicalSalesRep (MedicalSalesRepId.random(), name, surname, email, new MedicalSalesRepActive(false));
     }
   
-    public MedicalSalesRep recreateExistingMedicalSalesRepresentative(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email, MedicalSalesRepActive isActive) throws BusinessException {
+    public MedicalSalesRep recreateExistingMedicalSalesRepresentative(MedicalSalesRepId id, MedicalSalesRepName name, MedicalSalesRepName surname, MedicalSalesRepEmail email, MedicalSalesRepActive active) throws BusinessException {
       if (id == null) {
         throw new RequiredFieldException("id");
       }
-  
       //MedicalSalesRep existingMedicalSalesRepresentative = new DefaultMedicalSalesRep(id, name, surname, email);
-      MedicalSalesRep existingMedicalSalesRepresentative = new MedicalSalesRep(id, name, surname, email, isActive);
-  
-      return keepActiveValueForExistingMedicalSalesRepresentative(existingMedicalSalesRepresentative, isActive);
+      return new MedicalSalesRep(id, name, surname, email, active); // keepActiveValueForExistingMedicalSalesRepresentative(existingMedicalSalesRepresentative, active);
     }
-  
-    MedicalSalesRep keepActiveValueForExistingMedicalSalesRepresentative(MedicalSalesRep existingMedicalSalesRepresentative, MedicalSalesRepActive activeValue) {
-       if (activeValue != null) {
-           return existingMedicalSalesRepresentative.setActivate();
-       }
-      return existingMedicalSalesRepresentative;
-    }
-
   }

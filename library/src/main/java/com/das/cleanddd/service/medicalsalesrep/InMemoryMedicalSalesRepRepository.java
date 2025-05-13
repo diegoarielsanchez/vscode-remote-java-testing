@@ -44,7 +44,7 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 	}
 
 	@Override
-	public Optional<MedicalSalesRep> search(MedicalSalesRepId identifier) {
+	public Optional<MedicalSalesRep> findById(MedicalSalesRepId identifier) {
 		// Implement the method logic here
 		return Optional.ofNullable(medicalSalesReps.get(identifier.value()));
 	}
