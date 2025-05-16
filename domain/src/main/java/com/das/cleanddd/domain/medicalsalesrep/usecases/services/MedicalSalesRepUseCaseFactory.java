@@ -1,10 +1,13 @@
 package com.das.cleanddd.domain.medicalsalesrep.usecases.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
+import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedcialSalesRepNamesInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepIDDto;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
@@ -24,7 +27,8 @@ public class MedicalSalesRepUseCaseFactory {
     private final ActivateMedicalSalesRepUseCase activateMedicalSalesRepUseCase;
     private final DeactivateMedicalSalesRepUseCase deactivateMedicalSalesRepUseCase;
     private final GetMedicalSalesRepByIdUseCase getMedicalSalesRepByIdUseCase;
-    //private final DeactivateMedicalSalesRepUseCase deactivateMedicalSalesRepUseCase;
+    private final FindMedicalSalesRepByNameUseCase findMedicalSalesRepByNameUseCase;
+    
 
     public MedicalSalesRepUseCaseFactory(MedicalSalesRepRepository medicalSalesRepRepository) {
 
@@ -34,6 +38,7 @@ public class MedicalSalesRepUseCaseFactory {
         this.activateMedicalSalesRepUseCase = new ActivateMedicalSalesRepUseCase(this.medicalSalesRepRepository);
         this.deactivateMedicalSalesRepUseCase = new DeactivateMedicalSalesRepUseCase(this.medicalSalesRepRepository);
         this.getMedicalSalesRepByIdUseCase = new GetMedicalSalesRepByIdUseCase(this.medicalSalesRepRepository, this.medicalSalesRepMapper);
+        this.findMedicalSalesRepByNameUseCase = new FindMedicalSalesRepByNameUseCase(this.medicalSalesRepRepository, this.medicalSalesRepMapper);
 
     }
 
@@ -51,5 +56,8 @@ public class MedicalSalesRepUseCaseFactory {
     }
     public UseCase<MedicalSalesRepIDDto, MedicalSalesRepOutputDTO> getGetMedicalSalesRepByIdUseCase() {
         return getMedicalSalesRepByIdUseCase;
+    }
+    public UseCase<MedcialSalesRepNamesInputDTO, List<MedicalSalesRepOutputDTO>> findMedicalSalesRepByNameUseCase() {
+        return findMedicalSalesRepByNameUseCase;
     }
 }

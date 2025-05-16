@@ -1,5 +1,7 @@
 package com.das.cleanddd.domain.medicalsalesrep.usecases.dtos;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
@@ -10,10 +12,16 @@ public class MedicalSalesRepMapper {
     public MedicalSalesRepOutputDTO outputFromEntity(MedicalSalesRep medicalSalesRep) {
       return new MedicalSalesRepOutputDTO(
         medicalSalesRep.id().value(),
-        medicalSalesRep.name().value(),
-        medicalSalesRep.surname().value(),
+        medicalSalesRep.getName().value(),
+        medicalSalesRep.getSurname().value(),
         medicalSalesRep.getEmail().value(),
-        medicalSalesRep.active().value()
+        medicalSalesRep.getActive().value()
       );
+    }
+    
+    public List<MedicalSalesRepOutputDTO> outputFromEntityList(List<MedicalSalesRep> medicalSalesReps) {
+        return medicalSalesReps.stream()
+            .map(this::outputFromEntity)
+            .toList();
     }
   }

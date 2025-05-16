@@ -11,6 +11,8 @@ public interface MedicalSalesRepRepository {
 
     Optional<MedicalSalesRep> findById(MedicalSalesRepId id);
 
+    List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname);
+
     List<MedicalSalesRep> matching(Criteria criteria);
 
     List<MedicalSalesRep> searchAll();

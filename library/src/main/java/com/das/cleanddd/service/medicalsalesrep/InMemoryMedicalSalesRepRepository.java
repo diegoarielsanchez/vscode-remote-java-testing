@@ -1,34 +1,31 @@
 package com.das.cleanddd.service.medicalsalesrep;
 
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
-import com.das.cleanddd.domain.shared.criteria.Criteria;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.shared.criteria.Criteria;
 
 @Service
 public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepRepository {
 	
-	 private HashMap<String, MedicalSalesRep> medicalSalesReps = new HashMap<>();
+	 private final HashMap<String, MedicalSalesRep> medicalSalesReps = new HashMap<>();
 
 	@Override
 	public List<MedicalSalesRep> searchAll() {
-		// Implement the method logic here
-/* 		String uuid = this.generator.generate();
-		return Arrays.asList(
-            new MedicalSalesRep(generator.generate(), "name", "surname", "email@mail.com"),
-            new MedicalSalesRep(generator.generate(), "Other name", "Other surname", "another@mail.com")
-			);
-		
- */	
-		return null;
 
+		// TODO Auto-generated method stub
+		return medicalSalesReps.entrySet().stream()
+				.map(entry -> entry.getValue())
+				.toList();
 	}
 
 	@Override
@@ -41,6 +38,15 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 	public List<MedicalSalesRep> matching(Criteria criteria) {
 		// Implement the method logic here
 		return null;
+	}
+
+	@Override
+	public List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname) {
+		// Implement the method logic here
+		return medicalSalesReps.entrySet().stream()
+				.map(entry -> entry.getValue())
+				.filter(medicalSalesRep -> medicalSalesRep.getName().equals(name) && medicalSalesRep.getSurname().equals(surname))
+				.toList();
 	}
 
 	@Override

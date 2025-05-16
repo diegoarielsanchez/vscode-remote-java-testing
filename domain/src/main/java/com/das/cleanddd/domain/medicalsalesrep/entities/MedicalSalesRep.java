@@ -28,12 +28,12 @@ public class MedicalSalesRep extends PersonJavaBean {
         return this.id;
     }
 
-    public MedicalSalesRepName name() {
+    public MedicalSalesRepName getName() {
         return new MedicalSalesRepName(firstName) {
         } ;
     }
 
-    public MedicalSalesRepName surname() {
+    public MedicalSalesRepName getSurname() {
         return new MedicalSalesRepName(lastName) {
         } ;
     }
@@ -42,7 +42,7 @@ public class MedicalSalesRep extends PersonJavaBean {
         return this.email;
     }
 
-    public MedicalSalesRepActive active() {
+    public MedicalSalesRepActive getActive() {
         return this.active;
     }
     public Boolean isActive() {

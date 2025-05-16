@@ -76,7 +76,7 @@ public final class DefaultMedicalSalesRep extends MedicalSalesRep {
   }
 
   @Override
-  public MedicalSalesRepActive active() {
+  public MedicalSalesRepActive getActive() {
     return this.active;
   }
   
