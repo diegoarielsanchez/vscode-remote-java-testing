@@ -29,15 +29,25 @@ public class FindMedicalSalesRepByNameUseCase implements UseCase<MedcialSalesRep
     @Override
     public List<MedicalSalesRepOutputDTO> execute(MedcialSalesRepNamesInputDTO inputDTO) throws DomainException {
     // Validate Input
-    if(inputDTO.name()==null || inputDTO.name().trim().isBlank() || inputDTO.name().trim().length()<3) {
-      throw new DomainException("Medical Sales Representative Name is required (At least 3 char).");
+    if(inputDTO==null) {
+      inputDTO = new MedcialSalesRepNamesInputDTO("", "", 1, 10);
     }
-    if(inputDTO.surname()==null || inputDTO.surname().trim().isBlank() || inputDTO.surname().trim().length()<3) {
-      throw new DomainException("Medical Sales Representative Surname is required (At least 3 char).");
+    if(inputDTO.page()<=0) {
+      inputDTO = new MedcialSalesRepNamesInputDTO(inputDTO.name(), inputDTO.surname(), 1, inputDTO.pageSize());
     }
+    if(inputDTO.pageSize()<=0) {
+      inputDTO = new MedcialSalesRepNamesInputDTO(inputDTO.name(), inputDTO.surname(), inputDTO.page(), 10);
+    }
+    if(inputDTO.name()==null ) {
+      inputDTO = new MedcialSalesRepNamesInputDTO("", inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
+    }
+    if(inputDTO.surname()==null) {
+      inputDTO = new MedcialSalesRepNamesInputDTO(inputDTO.name(), "", inputDTO.page(), inputDTO.pageSize());
+    } 
     MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
     MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
-    List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(medicalSalesRepName, medicalSalesRepSurname);
+    List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(medicalSalesRepName, medicalSalesRepSurname, inputDTO.page(), inputDTO.pageSize());
+    //List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(inputDTO.name(), inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
     if(listMedicalSalesReps.isEmpty()) {
       throw new DomainException("Medical Sales Representative not found.");
     }    

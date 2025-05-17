@@ -11,7 +11,8 @@ public interface MedicalSalesRepRepository {
 
     Optional<MedicalSalesRep> findById(MedicalSalesRepId id);
 
-    List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname);
+    List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname, int page, int pageSize);
+    //List<MedicalSalesRep> findByName(String name, String surname, int page, int pageSize);
 
     List<MedicalSalesRep> matching(Criteria criteria);
 

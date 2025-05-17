@@ -41,12 +41,15 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 	}
 
 	@Override
-	public List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname) {
+	public List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname, int page,
+			int pageSize) {
 		// Implement the method logic here
 		return medicalSalesReps.entrySet().stream()
 				.map(entry -> entry.getValue())
-				.filter(medicalSalesRep -> medicalSalesRep.getName().equals(name) && medicalSalesRep.getSurname().equals(surname))
-				.toList();
+				.filter(medicalSalesRep -> medicalSalesRep.getName().equals(name) || medicalSalesRep.getSurname().equals(surname))
+				.skip(((long) (page - 1)) * pageSize)
+				.limit(pageSize)
+				.collect(Collectors.toList());
 	}
 
 	@Override
