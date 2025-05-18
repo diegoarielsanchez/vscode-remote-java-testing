@@ -61,7 +61,11 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 	@Override
 	public Optional<MedicalSalesRep> findByEmail(MedicalSalesRepEmail email) {
 		// TODO Auto-generated method stub
-		return Optional.ofNullable(medicalSalesReps.get(email.value()));
+		return medicalSalesReps.entrySet().stream()
+				.map(entry -> entry.getValue())
+				.filter(medicalSalesRep -> medicalSalesRep.getEmail().equals(email))
+				.findFirst();
+		//return Optional.ofNullable(medicalSalesReps.get(email.value()));
 		//throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
 	}
 }
