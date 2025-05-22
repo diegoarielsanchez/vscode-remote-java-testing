@@ -15,7 +15,6 @@ import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapp
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
-import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 //@RequiredArgsConstructor
@@ -56,21 +55,22 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
             throw new DomainException("Email cannot be null or empty");
         }
         MedicalSalesRep medicalSalesRep;
-        MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
-        MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
-        MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
 
         try {
+            MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
+            MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
+            MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
+        // Validate Unique Email
+            Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(medicalSalesRepEmail);
+            if(medicalSalesRepWithEmail.isPresent()) {
+            throw new DomainException("There is already a Medical Sales Representative with this email.");
+            }
             // Create a new MedicalSalesRep object using the factory
             medicalSalesRep = factory.createMedicalSalesRep(medicalSalesRepName, medicalSalesRepSurname, medicalSalesRepEmail);
-        } catch (BusinessException  e) {
+        } catch (BusinessException | IllegalArgumentException  e) {
             // TODO: handle exception
-            throw new BusinessValidationException(e.getMessage());
-        }
-        // Validate Unique Email
-        Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(medicalSalesRepEmail);
-        if(medicalSalesRepWithEmail.isPresent()) {
-        throw new DomainException("There is already a Medical Sales Representative with this email.");
+            throw new DomainException(e.getMessage());
+            //throw new BusinessValidationException(e.getMessage());
         }
         // Create
         repository.save(medicalSalesRep);

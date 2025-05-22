@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +24,8 @@ import com.das.cleanddd.domain.medicalsalesrep.usecases.services.MedicalSalesRep
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
+
+//import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
@@ -53,23 +54,23 @@ public class MedicalSalesRepController {
     
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public MedicalSalesRepOutputDTO createMedicalSalesRep(@RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws DomainException{
+    public ResponseEntity<Object> createMedicalSalesRep(@RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws ResponseStatusException{
         try {
-            return createMedicalSalesRepUseCase.execute(inputDTO);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(createMedicalSalesRepUseCase.execute(inputDTO));
         } catch (DomainException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        //return createMedicalSalesRepUseCase.execute(inputDTO);
     }
+
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public MedicalSalesRepOutputDTO updateMedicalSalesRep(@RequestBody UpdateMedicalSalesRepInputDTO inputDTO) throws DomainException{
+    public ResponseEntity<Object> updateMedicalSalesRep(@RequestBody UpdateMedicalSalesRepInputDTO inputDTO) throws DomainException{
         try {
-            return updateMedicalSalesRepUseCase.execute(inputDTO);
+            return ResponseEntity.ok(updateMedicalSalesRepUseCase.execute(inputDTO));
         } catch (DomainException | IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        //return updateMedicalSalesRepUseCase.execute(inputDTO);
     }
     @PostMapping("/activate")
     @ResponseStatus(HttpStatus.OK)
@@ -95,11 +96,13 @@ public class MedicalSalesRepController {
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public MedicalSalesRepOutputDTO getMedicalSalesRepByID(@RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException{
+    public ResponseEntity<Object> getMedicalSalesRepByID(@RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
         try {
-            return getGetMedicalSalesRepByIdUseCase.execute(inputDTO);
+            //return ResponseEntity.ok(getGetMedicalSalesRepByIdUseCase.execute(inputDTO));
+            return ResponseEntity.ok(getGetMedicalSalesRepByIdUseCase.execute(inputDTO));
         } catch (DomainException | IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         //return getGetMedicalSalesRepByIdUseCase.execute(inputDTO);
     }
@@ -107,8 +110,8 @@ public class MedicalSalesRepController {
     @PostMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     //@ApiResponse(responseCode = "200", description = "List of Medical Sales Representatives", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MedicalSalesRepOutputDTO.class)))
-    public List<MedicalSalesRepOutputDTO> findMedicalSalesRepByName(
-        @RequestBody MedcialSalesRepNamesInputDTO inputDTO
+    public ResponseEntity<Object> findMedicalSalesRepByName(
+        @RequestBody MedcialSalesRepNamesInputDTO inputDTO 
         // , 
         // //@Parameter(description = "Page number", example = 1)
         // @RequestParam(defaultValue = "1") int page
@@ -118,11 +121,13 @@ public class MedicalSalesRepController {
         // ,
         // //@Parameter(description = "Sort by field", example = "name")
         // //@RequestParam(defaultValue = "surname") String sortBy
-        ) throws DomainException{
+        ) throws ResponseStatusException {
         try {
-            return findMedicalSalesRepByNameUseCase.execute(inputDTO);
+            //return ResponseEntity.ok(findMedicalSalesRepByNameUseCase.execute(inputDTO));
+            return ResponseEntity.ok(findMedicalSalesRepByNameUseCase.execute(inputDTO));
         } catch (DomainException | IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }    
         //return findMedicalSalesRepByNameUseCase.execute(inputDTO);
     }
