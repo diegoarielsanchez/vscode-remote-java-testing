@@ -23,7 +23,6 @@ public class ActivateMedicalSalesRepUseCase implements UseCaseOnlyInput<MedicalS
         this.repository = repository;
     }
 
-    @SuppressWarnings("unlikely-arg-type")
     @Override
     public void execute(MedicalSalesRepIDDto inputDTO) throws DomainException {
         

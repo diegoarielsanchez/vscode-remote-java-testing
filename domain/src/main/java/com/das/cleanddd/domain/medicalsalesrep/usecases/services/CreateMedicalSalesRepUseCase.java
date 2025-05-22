@@ -72,9 +72,8 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
             // Convert response to output and return
             return mapper.outputFromEntity(medicalSalesRep);
         } catch (BusinessException | IllegalArgumentException  e) {
-            // TODO: handle exception
             throw new DomainException(e.getMessage());
-            //throw new BusinessValidationException(e.getMessage());
+
         }
     }
 

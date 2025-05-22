@@ -19,7 +19,6 @@ public class DeactivateMedicalSalesRepUseCase implements UseCaseOnlyInput<Medica
         this.repository = repository;
     }
 
-    @SuppressWarnings("unlikely-arg-type")
     @Override
     public void execute(MedicalSalesRepIDDto inputDTO) throws DomainException {
         

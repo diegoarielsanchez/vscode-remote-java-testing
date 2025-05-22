@@ -84,7 +84,6 @@ public final class UpdateMedicalSalesRepUseCase implements UseCase<UpdateMedical
         // Convert response to output and return
         return mapper.outputFromEntity(medicalSalesRepActivateStatus);
         } catch (BusinessException | IllegalArgumentException  e) {
-            // TODO: handle exception
             throw new DomainException(e.getMessage());
         }
     }
