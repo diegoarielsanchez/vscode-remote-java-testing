@@ -60,22 +60,22 @@ public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedical
             MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
             MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
             MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
-        // Validate Unique Email
+            // Validate Unique Email
             Optional<MedicalSalesRep> medicalSalesRepWithEmail = repository.findByEmail(medicalSalesRepEmail);
             if(medicalSalesRepWithEmail.isPresent()) {
             throw new DomainException("There is already a Medical Sales Representative with this email.");
             }
             // Create a new MedicalSalesRep object using the factory
             medicalSalesRep = factory.createMedicalSalesRep(medicalSalesRepName, medicalSalesRepSurname, medicalSalesRepEmail);
+            // Create
+            repository.save(medicalSalesRep);
+            // Convert response to output and return
+            return mapper.outputFromEntity(medicalSalesRep);
         } catch (BusinessException | IllegalArgumentException  e) {
             // TODO: handle exception
             throw new DomainException(e.getMessage());
             //throw new BusinessValidationException(e.getMessage());
         }
-        // Create
-        repository.save(medicalSalesRep);
-        // Convert response to output and return
-        return mapper.outputFromEntity(medicalSalesRep);
     }
 
 }

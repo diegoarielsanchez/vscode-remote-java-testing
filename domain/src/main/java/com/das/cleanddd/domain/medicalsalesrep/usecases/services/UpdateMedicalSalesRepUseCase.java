@@ -16,7 +16,6 @@ import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutp
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.UpdateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
-import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 @Service
@@ -53,21 +52,15 @@ public final class UpdateMedicalSalesRepUseCase implements UseCase<UpdateMedical
         if (inputDTO.email() == null || inputDTO.email().isEmpty()) {
             throw new DomainException("Email cannot be null or empty");
         }
-
         MedicalSalesRep medicalSalesRep;
         MedicalSalesRep medicalSalesRepActivateStatus;
-        MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
-        MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
-        MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
-        //MedicalSalesRepActive medicalSalesRepActive = new MedicalSalesRepActive(inputDTO.active());
-        MedicalSalesRepId id = new MedicalSalesRepId(inputDTO.id());
         try {
+            MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
+            MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
+            MedicalSalesRepEmail medicalSalesRepEmail = new MedicalSalesRepEmail(inputDTO.email());
+            MedicalSalesRepId id = new MedicalSalesRepId(inputDTO.id());
             // Create a new MedicalSalesRep object using the factory
             medicalSalesRep = factory.recreateExistingMedicalSalesRepresentative(id, medicalSalesRepName, medicalSalesRepSurname, medicalSalesRepEmail,null);
-        } catch (BusinessException  e) {
-            // TODO: handle exception
-            throw new BusinessValidationException(e.getMessage());
-        }
         // fetch existing MedicalSalesRep from the repository
         Optional<MedicalSalesRep> existingMedicalSalesRep = repository.findById(id);
         if (!existingMedicalSalesRep.isPresent()) {
@@ -90,5 +83,9 @@ public final class UpdateMedicalSalesRepUseCase implements UseCase<UpdateMedical
         repository.save(medicalSalesRepActivateStatus);
         // Convert response to output and return
         return mapper.outputFromEntity(medicalSalesRepActivateStatus);
+        } catch (BusinessException | IllegalArgumentException  e) {
+            // TODO: handle exception
+            throw new DomainException(e.getMessage());
+        }
     }
 }
