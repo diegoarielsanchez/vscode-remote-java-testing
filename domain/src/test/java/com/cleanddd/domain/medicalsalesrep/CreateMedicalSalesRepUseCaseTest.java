@@ -42,11 +42,15 @@ class CreateMedicalSalesRepUseCaseTest {
     private final CreateMedicalSalesRepUseCase createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(medicalSalesRepRepositoryMock,medicalSalesRepFactoryMock,medicalSalesRepMapperMock);
 
     private final MedicalSalesRep medicalSalesRepMock = mock(MedicalSalesRep.class, Mockito.RETURNS_DEEP_STUBS);
-     //private final UUID validId = UUID.fromString("e3119506-030a-4877-a219-389ef21118a4");
+
+    //private final UUID validId = UUID.fromString("e3119506-030a-4877-a219-389ef21118a4");
     private final MedicalSalesRepId validId = MedicalSalesRepIdMother.random();
+    //private final String validName = "Foo Bar";
     private final MedicalSalesRepName validName = MedicalSalesRepNameMother.random();
     private final MedicalSalesRepName validSurname = MedicalSalesRepNameMother.random();
-    private final MedicalSalesRepEmail validEmail = MedicalSalesRepEmailMother.random();
+    //private final String validEmail = "foo@bar.com";
+    private final MedicalSalesRepEmail validEmail = new MedicalSalesRepEmail("foo@bar.com");
+    //private final MedicalSalesRepEmail validEmail = MedicalSalesRepEmailMother.random();
     private final MedicalSalesRepActive validActive = MedicalSalesRepActiveMother.create(false);
     //private final CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validId.toString(), validName.toString(), validSurname.toString(), validEmail.toString());
     private final CreateMedicalSalesRepInputDTO validInputDTO = new CreateMedicalSalesRepInputDTO(validName.toString(), validSurname.toString(), validEmail.toString());

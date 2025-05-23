@@ -14,7 +14,7 @@ import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
-public class MedicalSalesRepControllerTest {
+class MedicalSalesRepControllerTest {
 
     private MedicalSalesRepController medicalSalesRepController;
     private final MedicalSalesRepUseCaseFactory medicalSalesRepUseCaseFactoryMock = mock(MedicalSalesRepUseCaseFactory.class);
