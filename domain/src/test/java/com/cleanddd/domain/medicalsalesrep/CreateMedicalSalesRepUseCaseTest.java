@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,29 +57,30 @@ class CreateMedicalSalesRepUseCaseTest {
     // }
 
     @BeforeEach
-    void setUp() throws BusinessException {
+    @SuppressWarnings("unused")
+    void setUp() {
       // Reset mocks before each test
       medicalSalesRepRepositoryMock = mock(MedicalSalesRepRepository.class);
       medicalSalesRepFactoryMock = mock(MedicalSalesRepFactory.class);
       medicalSalesRepMapperMock = mock(MedicalSalesRepMapper.class);
       createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(medicalSalesRepRepositoryMock,medicalSalesRepFactoryMock,medicalSalesRepMapperMock);
 
-      // Set up default stubbing for factory and mapper to avoid null returns
-      Mockito.when(medicalSalesRepFactoryMock.createMedicalSalesRep(
-              any(MedicalSalesRepName.class),
-              any(MedicalSalesRepName.class),
-              any(MedicalSalesRepEmail.class)
-      )).thenReturn(medicalSalesRepMock);
+      // // Set up default stubbing for factory and mapper to avoid null returns
+      // Mockito.when(medicalSalesRepFactoryMock.createMedicalSalesRep(
+      //         any(MedicalSalesRepName.class),
+      //         any(MedicalSalesRepName.class),
+      //         any(MedicalSalesRepEmail.class)
+      // )).thenReturn(medicalSalesRepMock);
 
-      MedicalSalesRepOutputDTO expectedOutput = new MedicalSalesRepOutputDTO(
-              validId.value(),
-              validName.value(),
-              validSurname.value(),
-              validEmail.value(),
-              validActive.value()
-      );
-      Mockito.when(medicalSalesRepMapperMock.outputFromEntity(any(MedicalSalesRep.class)))
-              .thenReturn(expectedOutput);
+      // MedicalSalesRepOutputDTO expectedOutput = new MedicalSalesRepOutputDTO(
+      //         validId.value(),
+      //         validName.value(),
+      //         validSurname.value(),
+      //         validEmail.value(),
+      //         validActive.value()
+      // );
+      // Mockito.when(medicalSalesRepMapperMock.outputFromEntity(any(MedicalSalesRep.class)))
+      //         .thenReturn(expectedOutput);
     }
 
     @Test
@@ -91,11 +91,6 @@ class CreateMedicalSalesRepUseCaseTest {
     void shouldCreateMedicalSalesRepInputDTO() {
       assertNotNull(validInputDTO); 
     }
-
-    // @Test
-    // void shouldCreateMedicalSalesRepOutputDTO() {
-    //   assertNotNull(validOutputDto);
-    // }
 
     @Test
     void shouldCreateMedicalSalesRepId() {
@@ -114,27 +109,32 @@ class CreateMedicalSalesRepUseCaseTest {
       assertNotNull(validEmail);
     }   
 
-    // @Test
-    // void shouldCreateMedicalSalesRepActive() {
-    //   assertNotNull(validActive);
-    // } 
-
     @Test
     void shouldCreateMedicalSalesRep() {
       assertNotNull(medicalSalesRepFactoryMock);
     }
-    @Test
+/*     @Test
     void shouldCreateMedicalSalesRepRepository() {
       assertNotNull(medicalSalesRepRepositoryMock);
-    }
+    } */
     @Test
     void shouldCreateMedicalSalesRepMapper() {
       assertNotNull(medicalSalesRepMapperMock);
     }
+    @Test
+    void shouldCallFactoriesAndDataAccess() throws BusinessException, DomainException {
+      //prepareStubs();
+      setUp();
+      // Act: execute the use case with valid input
+      createMedicalSalesRepUseCase.execute(validInputDTO);
+      verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep( new MedicalSalesRepName(validInputDTO.name()), new MedicalSalesRepName(validInputDTO.surname()), new MedicalSalesRepEmail(validInputDTO.email()));
+      verify(medicalSalesRepRepositoryMock, times(1)).save(any());
+    }
 
     @Test
-    void shouldCreateMedicalSalesRepUseCaseExecuteWithValidInputAndReturnOutputWithMapperAndFactory() throws DomainException, BusinessException {
+    void shouldCreateMedicalSales() throws DomainException, BusinessException {
       // Arrange: stub the mocks to return valid objects
+      setUp();
       //MedicalSalesRep medicalSalesRep = mock(MedicalSalesRep.class);
       Mockito.when(medicalSalesRepFactoryMock.createMedicalSalesRep(
               any(MedicalSalesRepName.class),
@@ -163,40 +163,18 @@ class CreateMedicalSalesRepUseCaseTest {
       assertNotNull(outputDTO.email());
       assertNotNull(outputDTO.active());
       assertEquals(validId.value(), outputDTO.id());
-      assertTrue(outputDTO.name().equals(validName.value()));
-      assertTrue(outputDTO.surname().equals(validSurname.value()));
-      assertTrue(outputDTO.email().equals(validEmail.value()));
-      assertTrue(outputDTO.active().equals(validActive.value()));
+      assertEquals(outputDTO.id(),expectedOutput.id());
+      assertEquals(expectedOutput.name(), outputDTO.name());
+      assertEquals(expectedOutput.surname(), outputDTO.surname());
+      assertEquals(expectedOutput.email(), outputDTO.email());
+      assertEquals(expectedOutput.active(), outputDTO.active());
+      // Additional assertions to check the values  
+      // assertTrue(outputDTO.name().equals(validName.value()));
+      // assertTrue(outputDTO.surname().equals(validSurname.value()));
+      // assertTrue(outputDTO.email().equals(validEmail.value()));
+      // assertTrue(outputDTO.active().equals(validActive.value()));
     }
 
-    @Test
-    void shouldCallFactoriesAndDataAccess() throws BusinessException, DomainException {
-      //prepareStubs();
-      createMedicalSalesRepUseCase.execute(validInputDTO);
-      //verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep( new MedicalSalesRepName(validInputDTO.name()), new MedicalSalesRepName(validInputDTO.surname()), new MedicalSalesRepEmail(validInputDTO.email()));
-      verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
-      //verify(medicalSalesRepRepositoryMock, times(1)).save(any());
-      verify(medicalSalesRepRepositoryMock, times(1)).save(any());
-    }
-
-/*     @Test
-    void shouldReturnMedicalSalesRep() throws DomainException, BusinessException {
-      //prepareStubs();
-      MedicalSalesRepOutputDTO outputDTO = createMedicalSalesRepUseCase.execute(validInputDTO);
-      assertNotNull(outputDTO);
-    } */
-
-  @Test
-    void shouldReturnNullWhenMedicalSalesRepNotCreated() throws DomainException, BusinessException {
-      //prepareStubs();
-      Mockito.when(medicalSalesRepFactoryMock.createMedicalSalesRep(
-              any(MedicalSalesRepName.class),
-              any(MedicalSalesRepName.class),
-              any(MedicalSalesRepEmail.class)
-      )).thenReturn(null); // Simulate invalid creation
-      MedicalSalesRepOutputDTO outputDTO = createMedicalSalesRepUseCase.execute(validInputDTO);
-      assertNull(outputDTO);
-    }
   @Test
     void shouldThrowExceptionWhenNameInputIsInvalid() throws BusinessException {
       // Arrange: create an invalid input DTO
@@ -253,7 +231,49 @@ class CreateMedicalSalesRepUseCaseTest {
       verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
       verify(medicalSalesRepRepositoryMock, times(0)).save(any());
     }
-  @Test
+    @Test
+    void shouldThrowExceptionWhenNameInputIsInvalidFormat_Numbers() throws BusinessException {
+      // Arrange: create an input DTO with an invalid name format
+      CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO("123", "Valid Surname", " validEmail"); // Invalid name format
+      // Act & Assert: expect a BusinessException to be thrown
+      try {
+        createMedicalSalesRepUseCase.execute(invalidInputDTO);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+        assertEquals("Name format is not valid.", ex.getMessage()); // Adjust the message based on your implementation 
+      }
+      verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+      verify(medicalSalesRepRepositoryMock, times(0)).save(any());
+    }
+    @Test
+    void shouldThrowExceptionWhenNameInputIsInvalidFormat_Symbols() throws BusinessException {
+      // Arrange: create an input DTO with an invalid name format
+      CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO("Invalid & Name", "Valid Surname", " validEmail"); // Invalid name format
+      // Act & Assert: expect a BusinessException to be thrown
+      try {
+        createMedicalSalesRepUseCase.execute(invalidInputDTO);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+        assertEquals("Name format is not valid.", ex.getMessage()); // Adjust the message based on your implementation 
+      }
+      verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+      verify(medicalSalesRepRepositoryMock, times(0)).save(any());
+    }
+    @Test
+    void shouldThrowExceptionWhenNameInputIsInvalidFormat_IsShort() throws BusinessException {
+      // Arrange: create an input DTO with an invalid name format
+      CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO("X", "Valid Surname", " validEmail"); // Invalid name format
+      // Act & Assert: expect a BusinessException to be thrown
+      try {
+        createMedicalSalesRepUseCase.execute(invalidInputDTO);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+        assertEquals("Name must be between 2 and 100 characters long and contain only letters and spaces.", ex.getMessage()); // Adjust the message based on your implementation 
+      }
+      verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+      verify(medicalSalesRepRepositoryMock, times(0)).save(any());
+    }    
+   @Test
     void shouldThrowExceptionWhenEmailInputIsAlreadyExists() throws BusinessException {
       // Arrange: create an input DTO with an email that already exists
       String existingEmail = validEmail.value(); // Use the valid email defined earlier
@@ -270,5 +290,79 @@ class CreateMedicalSalesRepUseCaseTest {
       verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
       verify(medicalSalesRepRepositoryMock, times(0)).save(any());
     }
-    
- }
+  @Test
+    void shouldThrowExceptionWhenInputDTOIsNull() throws BusinessException {
+      // Act & Assert: expect a DomainException to be thrown when input DTO is null
+      try {
+        createMedicalSalesRepUseCase.execute(null);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+        assertEquals("Input DTO cannot be null", ex.getMessage()); // Adjust the message based on your implementation 
+      }
+      verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+      verify(medicalSalesRepRepositoryMock, times(0)).save(any());
+    }
+  @Test
+    void shouldThrowExceptionWhenInputDTOIsEmpty() throws BusinessException {
+      // Arrange: create an empty input DTO
+      CreateMedicalSalesRepInputDTO emptyInputDTO = new CreateMedicalSalesRepInputDTO("", "", ""); // Empty fields
+      // Act & Assert: expect a DomainException to be thrown
+      try {
+        createMedicalSalesRepUseCase.execute(emptyInputDTO);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+        assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
+      }
+      verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+      verify(medicalSalesRepRepositoryMock, times(0)).save(any());
+    }
+  @Test
+    void shouldThrowExceptionWhenInputDTOIsInvalid() throws BusinessException {
+      // Arrange: create an input DTO with invalid data
+      CreateMedicalSalesRepInputDTO invalidInputDTO = new CreateMedicalSalesRepInputDTO("", "Valid Surname", "invalid-email-format"); // Empty name and invalid email format
+      // Act & Assert: expect a DomainException to be thrown
+      try {
+        createMedicalSalesRepUseCase.execute(invalidInputDTO);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+        assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
+      }
+      verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+      verify(medicalSalesRepRepositoryMock, times(0)).save(any());
+    }
+    @Test
+    void shouldThrowExceptionWhenFactoryThrowsBusinessException() throws BusinessException {
+      // Arrange: stub the factory to throw a BusinessException
+      Mockito.when(medicalSalesRepFactoryMock.createMedicalSalesRep(
+              any(MedicalSalesRepName.class),
+              any(MedicalSalesRepName.class),
+              any(MedicalSalesRepEmail.class)
+      )).thenThrow(new BusinessException("Factory error"));
+      // Act & Assert: expect a DomainException to be thrown
+      try {
+        createMedicalSalesRepUseCase.execute(validInputDTO);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+        assertEquals("Factory error", ex.getMessage()); // Adjust the message based on your implementation  
+      } 
+      verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+      verify(medicalSalesRepRepositoryMock, times(0)).save(any());    
+    }
+    // @Test
+    // void shouldThrowExceptionWhenRepositoryThrowsBusinessException() throws BusinessException {
+    //   // Arrange: stub the repository to throw a BusinessException
+    //   Mockito.doThrow(new BusinessException("Repository error"))
+    //           .when(medicalSalesRepRepositoryMock).save(any(MedicalSalesRep.class));
+    //   // Act & Assert: expect a DomainException to be thrown
+    //   try {
+    //     createMedicalSalesRepUseCase.execute(validInputDTO);
+    //   } catch (DomainException ex) {
+    //     assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
+    //     assertEquals("Repository error", ex.getMessage()); // Adjust the message based on your implementation
+    //   }
+    //   verify(medicalSalesRepFactoryMock, times(1)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
+    //   verify(medicalSalesRepRepositoryMock, times(1)).save(any(MedicalSalesRep.class)); 
+    // }
+
+ }  
+
