@@ -57,7 +57,6 @@ class CreateMedicalSalesRepUseCaseTest {
     // }
 
     @BeforeEach
-    @SuppressWarnings("unused")
     void setUp() {
       // Reset mocks before each test
       medicalSalesRepRepositoryMock = mock(MedicalSalesRepRepository.class);
@@ -240,7 +239,7 @@ class CreateMedicalSalesRepUseCaseTest {
         createMedicalSalesRepUseCase.execute(invalidInputDTO);
       } catch (DomainException ex) {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
-        assertEquals("Name format is not valid.", ex.getMessage()); // Adjust the message based on your implementation 
+        assertEquals("Name must be between 2 and 100 characters long and contain only letters and spaces.", ex.getMessage()); // Adjust the message based on your implementation 
       }
       verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
       verify(medicalSalesRepRepositoryMock, times(0)).save(any());
@@ -254,7 +253,7 @@ class CreateMedicalSalesRepUseCaseTest {
         createMedicalSalesRepUseCase.execute(invalidInputDTO);
       } catch (DomainException ex) {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
-        assertEquals("Name format is not valid.", ex.getMessage()); // Adjust the message based on your implementation 
+        assertEquals("Name must be between 2 and 100 characters long and contain only letters and spaces.", ex.getMessage()); // Adjust the message based on your implementation 
       }
       verify(medicalSalesRepFactoryMock, times(0)).createMedicalSalesRep(any(MedicalSalesRepName.class), any(MedicalSalesRepName.class), any(MedicalSalesRepEmail.class));
       verify(medicalSalesRepRepositoryMock, times(0)).save(any());
