@@ -10,6 +10,10 @@
 	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot Domain-Driven-Design</description>
 
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
