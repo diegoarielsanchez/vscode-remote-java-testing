@@ -22,7 +22,7 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 	@Override
 	public List<MedicalSalesRep> searchAll() {
 
-		// TODO Auto-generated method stub
+		// Implement the method logic here
 		return medicalSalesReps.entrySet().stream()
 				.map(entry -> entry.getValue())
 				.toList();
@@ -60,7 +60,7 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 
 	@Override
 	public Optional<MedicalSalesRep> findByEmail(MedicalSalesRepEmail email) {
-		// TODO Auto-generated method stub
+		// Implement the method logic here
 		return medicalSalesReps.entrySet().stream()
 				.map(entry -> entry.getValue())
 				.filter(medicalSalesRep -> medicalSalesRep.getEmail().equals(email))

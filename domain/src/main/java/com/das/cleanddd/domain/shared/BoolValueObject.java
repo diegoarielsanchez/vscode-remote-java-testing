@@ -9,10 +9,6 @@ public abstract class BoolValueObject {
         this.value = value;
     }
 
-    public BoolValueObject(String string) {
-        //TODO Auto-generated constructor stub
-    }
-
     public Boolean value() {
         return value;
     }
