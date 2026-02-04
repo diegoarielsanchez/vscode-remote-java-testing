@@ -7,5 +7,6 @@
         "medicalsalesrep",
         "springframework"
     ],
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "maven.view": "hierarchical"
 }
