@@ -19,6 +19,9 @@
         <module>application</module>
         <module>domain</module>
         <module>library</module>
+        <module>InfraMySQL</module>
+        <module>InfraSQLServer</module>
+        <module>InfraMongoDB</module>
     </modules>
     <properties>
         <!-- The main class to start by executing "java -jar" -->
