@@ -1,6 +1,7 @@
 package com.das.inframySQL.service.medicalsalesrep;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,9 @@ public final class MySQLMedicalSalesRepRepository implements MedicalSalesRepRepo
     @Override
     public void save(MedicalSalesRep medicalSalesRep) {
         MedicalSalesRepEntity entity = toEntity(medicalSalesRep);
-        jpaRepository.save(entity);
+        if (entity != null) {
+            jpaRepository.save(entity);
+        }
     }
 
     @Override
@@ -52,7 +55,7 @@ public final class MySQLMedicalSalesRepRepository implements MedicalSalesRepRepo
 
     @Override
     public Optional<MedicalSalesRep> findById(MedicalSalesRepId identifier) {
-        return jpaRepository.findById(identifier.value())
+        return jpaRepository.findById(Objects.requireNonNull(identifier.value()))
                 .map(this::toDomain);
     }
 

@@ -1,6 +1,7 @@
 package com.das.inframongodb.service.medicalsalesrep;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,9 @@ public final class MongoDBMedicalSalesRepRepository implements MedicalSalesRepRe
     @Override
     public void save(MedicalSalesRep medicalSalesRep) {
         MedicalSalesRepEntity entity = toEntity(medicalSalesRep);
+        if (entity == null) {
+            throw new IllegalArgumentException("Failed to convert MedicalSalesRep to entity");
+        }
         mongoRepository.save(entity);
     }
 
@@ -52,7 +56,7 @@ public final class MongoDBMedicalSalesRepRepository implements MedicalSalesRepRe
 
     @Override
     public Optional<MedicalSalesRep> findById(MedicalSalesRepId identifier) {
-        return mongoRepository.findById(identifier.value())
+        return mongoRepository.findById(Objects.requireNonNull(identifier.value()))
                 .map(this::toDomain);
     }
 

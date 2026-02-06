@@ -1,4 +1,4 @@
-package com.das.cleanddd.service;
+package com.das.inframySQL.service;
 
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

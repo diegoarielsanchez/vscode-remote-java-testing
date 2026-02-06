@@ -8,7 +8,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,6 +37,7 @@ public class SecurityConfig {
                 // Public endpoints
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers("/hello").permitAll()
+                .requestMatchers("/health-check").permitAll()
                 // API endpoints - require authentication
                 .requestMatchers("/api/**").authenticated()
                 // All other requests
@@ -51,8 +51,8 @@ public class SecurityConfig {
                     .maxAgeInSeconds(31536000)
                     .requestMatcher(anyRequest -> true)) // includeSubdomains not available in Spring Security 6.x
                 .frameOptions(frameOptions -> frameOptions.deny())
-                .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-                // permissionsPolicy not available in Spring Security 6.x
+                .permissionsPolicyHeader(permissions -> permissions
+                    .policy("referrer=strict-origin-when-cross-origin"))
             );
 
         return http.build();

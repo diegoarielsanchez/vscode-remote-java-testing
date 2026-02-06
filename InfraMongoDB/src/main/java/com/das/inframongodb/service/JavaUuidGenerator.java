@@ -1,4 +1,4 @@
-package com.das.cleanddd.service;
+package com.das.inframongodb.service;
 
 import java.util.UUID;
 

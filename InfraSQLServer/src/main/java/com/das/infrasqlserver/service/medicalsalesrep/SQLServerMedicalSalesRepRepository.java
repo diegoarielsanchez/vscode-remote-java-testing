@@ -31,7 +31,9 @@ public final class SQLServerMedicalSalesRepRepository implements MedicalSalesRep
     @Override
     public void save(MedicalSalesRep medicalSalesRep) {
         MedicalSalesRepEntity entity = toEntity(medicalSalesRep);
-        jpaRepository.save(entity);
+        if (entity != null) {
+            jpaRepository.save(entity);
+        }
     }
 
     @Override
@@ -52,7 +54,11 @@ public final class SQLServerMedicalSalesRepRepository implements MedicalSalesRep
 
     @Override
     public Optional<MedicalSalesRep> findById(MedicalSalesRepId identifier) {
-        return jpaRepository.findById(identifier.value())
+        String id = identifier.value();
+        if (id == null) {
+            return Optional.empty();
+        }
+        return jpaRepository.findById(id)
                 .map(this::toDomain);
     }
 
