@@ -70,7 +70,147 @@ Some things to try:
    - Click OK
    - Press <kbd>F1</kbd> and select the **Dev Containers: Rebuild Container** or **Codespaces: Rebuild Container** command so the modifications are picked up.
 
-  
+## OWASP Security Implementation
+
+This project implements OWASP Top 10 security best practices for Spring Boot applications. The implementation covers the following security areas:
+
+### 🔒 **A01:2021 - Broken Access Control**
+- **Spring Security Configuration**: Implemented comprehensive security config with proper authorization
+- **Role-based Access**: Configured user roles and permissions
+- **Session Management**: Stateless sessions with proper timeout and cookie security
+
+### 🔑 **A02:2021 - Cryptographic Failures**
+- **Password Encryption**: BCrypt password encoder with strength 12
+- **Secure Headers**: HSTS, CSP, X-Frame-Options, and other security headers
+- **HTTPS Enforcement**: Secure cookie configuration
+
+### 🛡️ **A03:2021 - Injection**
+- **Input Validation**: Jakarta Validation with `@Valid` annotations on all endpoints
+- **SQL Injection Prevention**: Parameterized queries in JPA repositories
+- **XSS Prevention**: Proper output encoding and Content Security Policy
+
+### 🚫 **A04:2021 - Insecure Design**
+- **Domain-Driven Design**: Clean architecture separating business logic from infrastructure
+- **Input Sanitization**: Comprehensive validation at domain level
+- **Error Handling**: Secure exception handling that doesn't leak sensitive information
+
+### 🔧 **A05:2021 - Security Misconfiguration**
+- **Security Headers**: Comprehensive security headers configuration
+- **Actuator Security**: Limited exposure of sensitive endpoints
+- **Environment Configuration**: Secure property management
+
+### 📦 **A06:2021 - Vulnerable Components**
+- **OWASP Dependency Check**: Automated vulnerability scanning in CI/CD
+- **Regular Updates**: Latest stable versions of Spring Boot and dependencies
+- **Dependency Auditing**: Maven plugin for continuous vulnerability monitoring
+
+### 🔐 **A07:2021 - Identification & Authentication Failures**
+- **Spring Security**: Proper authentication mechanisms
+- **Password Policies**: Strong password requirements
+- **Session Security**: Secure session management
+
+### 📊 **A08:2021 - Software Integrity Failures**
+- **Input Validation**: Comprehensive validation of all inputs
+- **Data Integrity**: Domain validation ensuring data consistency
+- **Audit Logging**: Security event logging
+
+### 📋 **A09:2021 - Security Logging & Monitoring**
+- **Actuator Endpoints**: Health checks and metrics monitoring
+- **Error Logging**: Secure error handling and logging
+- **Rate Limiting**: Protection against abuse with configurable limits
+
+### 🌐 **A10:2021 - Server-Side Request Forgery (SSRF)**
+- **CORS Configuration**: Strict CORS policies
+- **Input Validation**: URL validation to prevent SSRF attacks
+- **Network Security**: Proper firewall and network segmentation
+
+### 🛠️ **Security Features Implemented**
+
+#### **Rate Limiting**
+```java
+// Configured with Bucket4j for distributed rate limiting
+// Allows 100 requests per minute with burst capacity
+```
+
+#### **Input Validation**
+```java
+@PostMapping("/create")
+public ResponseEntity<Object> createMedicalSalesRep(@Valid @RequestBody CreateMedicalSalesRepInputDTO inputDTO)
+```
+
+#### **Security Headers**
+```properties
+# Security headers configured in SecurityConfig
+- Strict-Transport-Security
+- X-Frame-Options: DENY
+- X-Content-Type-Options
+- Referrer-Policy
+- Permissions-Policy
+```
+
+#### **Dependency Vulnerability Scanning**
+```xml
+<!-- OWASP Dependency Check Plugin -->
+<plugin>
+    <groupId>org.owasp</groupId>
+    <artifactId>dependency-check-maven</artifactId>
+    <configuration>
+        <failBuildOnCVSS>7</failBuildOnCVSS>
+    </configuration>
+</plugin>
+```
+
+### 🚀 **Running Security Checks**
+
+1. **Dependency Vulnerability Scan**:
+   ```bash
+   mvn org.owasp:dependency-check-maven:check
+   ```
+
+2. **Run Application with Security**:
+   ```bash
+   mvn spring-boot:run
+   ```
+
+3. **Test Rate Limiting**:
+   ```bash
+   # Make multiple requests to test rate limiting
+   curl -X GET http://localhost:8085/api/v1/medicalsalesrep/list
+   ```
+
+### 📋 **Security Testing Checklist**
+
+- [ ] Authentication works correctly
+- [ ] Authorization prevents unauthorized access
+- [ ] Input validation blocks malicious inputs
+- [ ] HTTPS is enforced in production
+- [ ] Security headers are present
+- [ ] Rate limiting prevents abuse
+- [ ] Error messages don't leak sensitive information
+- [ ] Dependencies are free of known vulnerabilities
+- [ ] Session management is secure
+- [ ] CORS policies are restrictive
+
+### 🔍 **Monitoring & Alerting**
+
+The application exposes security-relevant metrics via Spring Boot Actuator:
+- Health checks: `/actuator/health`
+- Metrics: `/actuator/metrics`
+- Info: `/actuator/info`
+
+Configure monitoring tools to alert on:
+- High error rates
+- Rate limit violations
+- Authentication failures
+- Unusual traffic patterns
+
+### 📚 **Additional Security Resources**
+
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [Spring Security Documentation](https://spring.io/projects/spring-security)
+- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)
+- [Spring Boot Security Best Practices](https://spring.io/guides/topicals/spring-security-architecture/)
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a

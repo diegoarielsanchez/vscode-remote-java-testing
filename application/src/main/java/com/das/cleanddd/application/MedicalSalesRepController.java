@@ -26,6 +26,7 @@ import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 //import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
@@ -54,7 +55,7 @@ public class MedicalSalesRepController {
     
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createMedicalSalesRep(@RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws ResponseStatusException{
+    public ResponseEntity<Object> createMedicalSalesRep(@Valid @RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws ResponseStatusException{
         try {
             return  ResponseEntity.status(HttpStatus.CREATED).body(createMedicalSalesRepUseCase.execute(inputDTO));
         } catch (DomainException e) {
@@ -64,7 +65,7 @@ public class MedicalSalesRepController {
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> updateMedicalSalesRep(@RequestBody UpdateMedicalSalesRepInputDTO inputDTO) throws DomainException{
+    public ResponseEntity<Object> updateMedicalSalesRep(@Valid @RequestBody UpdateMedicalSalesRepInputDTO inputDTO) throws DomainException{
         try {
             return ResponseEntity.ok(updateMedicalSalesRepUseCase.execute(inputDTO));
         } catch (DomainException | IllegalArgumentException e) {
@@ -75,7 +76,7 @@ public class MedicalSalesRepController {
     @PostMapping("/activate")
     @ResponseStatus(HttpStatus.OK)
     //public ResponseEntity<EmptyBodyModel> activate(@RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException {    
-    public void activateMedicalSalesRep(@RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
+    public void activateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
         try {
             activateMedicalSalesRepUseCase.execute(inputDTO);
         } catch (DomainException | IllegalArgumentException e) {
@@ -85,7 +86,7 @@ public class MedicalSalesRepController {
     }
     @PostMapping("/deactivate")
     @ResponseStatus(HttpStatus.OK)
-    public void deactivateMedicalSalesRep(@RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException{
+    public void deactivateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException{
         try {
             deactivateMedicalSalesRepUseCase.execute(inputDTO);
         } catch (DomainException | IllegalArgumentException e) {
@@ -96,7 +97,7 @@ public class MedicalSalesRepController {
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> getMedicalSalesRepByID(@RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
+    public ResponseEntity<Object> getMedicalSalesRepByID(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
         try {
             //return ResponseEntity.ok(getGetMedicalSalesRepByIdUseCase.execute(inputDTO));
             return ResponseEntity.ok(getGetMedicalSalesRepByIdUseCase.execute(inputDTO));
@@ -111,7 +112,7 @@ public class MedicalSalesRepController {
     @ResponseStatus(HttpStatus.OK)
     //@ApiResponse(responseCode = "200", description = "List of Medical Sales Representatives", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MedicalSalesRepOutputDTO.class)))
     public ResponseEntity<Object> findMedicalSalesRepByName(
-        @RequestBody MedicalSalesRepNamesInputDTO inputDTO 
+        @Valid @RequestBody MedicalSalesRepNamesInputDTO inputDTO 
         // , 
         // //@Parameter(description = "Page number", example = 1)
         // @RequestParam(defaultValue = "1") int page
