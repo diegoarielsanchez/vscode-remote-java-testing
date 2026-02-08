@@ -4,6 +4,8 @@
         "cleanddd",
         "greetwithrecord",
         "javafaker",
+        "jjwt",
+        "jsonwebtoken",
         "medicalsalesrep",
         "springframework"
     ],
