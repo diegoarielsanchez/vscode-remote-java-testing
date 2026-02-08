@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -112,25 +113,17 @@ public class MedicalSalesRepController {
     @ResponseStatus(HttpStatus.OK)
     //@ApiResponse(responseCode = "200", description = "List of Medical Sales Representatives", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MedicalSalesRepOutputDTO.class)))
     public ResponseEntity<Object> findMedicalSalesRepByName(
-        @Valid @RequestBody MedicalSalesRepNamesInputDTO inputDTO 
-        // , 
-        // //@Parameter(description = "Page number", example = 1)
-        // @RequestParam(defaultValue = "1") int page
-        // ,
-        // //@Parameter(description = "Page size", example = "10")
-        // @RequestParam(defaultValue = "10") int pageSize
-        // ,
-        // //@Parameter(description = "Sort by field", example = "name")
-        // //@RequestParam(defaultValue = "surname") String sortBy
+        @RequestParam(required = false, defaultValue = "") String firstName,
+        @RequestParam(required = false, defaultValue = "") String lastName,
+        @RequestParam(required = false, defaultValue = "1") int page,
+        @RequestParam(required = false, defaultValue = "10") int pageSize
         ) throws ResponseStatusException {
         try {
-            //return ResponseEntity.ok(findMedicalSalesRepByNameUseCase.execute(inputDTO));
+            MedicalSalesRepNamesInputDTO inputDTO = new MedicalSalesRepNamesInputDTO(firstName, lastName, page, pageSize);
             return ResponseEntity.ok(findMedicalSalesRepByNameUseCase.execute(inputDTO));
         } catch (DomainException | IllegalArgumentException e) {
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }    
-        //return findMedicalSalesRepByNameUseCase.execute(inputDTO);
     }
     
 }
