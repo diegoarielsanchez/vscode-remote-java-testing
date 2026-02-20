@@ -41,8 +41,7 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 	}
 
 	@Override
-	public List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname, int page,
-			int pageSize) {
+	public List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname, int page, int pageSize) {
 		// Implement the method logic here
 		return medicalSalesReps.entrySet().stream()
 				.map(entry -> entry.getValue())

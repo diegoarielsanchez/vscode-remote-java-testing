@@ -28,31 +28,42 @@ public class FindMedicalSalesRepByNameUseCase implements UseCase<MedicalSalesRep
 
     @Override
     public List<MedicalSalesRepOutputDTO> execute(MedicalSalesRepNamesInputDTO inputDTO) throws DomainException {
-    // Validate Input
-    if(inputDTO==null) {
-      inputDTO = new MedicalSalesRepNamesInputDTO("", "", 1, 10);
-    }
-    if(inputDTO.page()<=0) {
-      inputDTO = new MedicalSalesRepNamesInputDTO(inputDTO.name(), inputDTO.surname(), 1, inputDTO.pageSize());
-    }
-    if(inputDTO.pageSize()<=0) {
-      inputDTO = new MedicalSalesRepNamesInputDTO(inputDTO.name(), inputDTO.surname(), inputDTO.page(), 10);
-    }
-    if(inputDTO.name()==null ) {
-      inputDTO = new MedicalSalesRepNamesInputDTO("", inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
-    }
-    if(inputDTO.surname()==null) {
-      inputDTO = new MedicalSalesRepNamesInputDTO(inputDTO.name(), "", inputDTO.page(), inputDTO.pageSize());
-    } 
-    MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
-    MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
-    List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(medicalSalesRepName, medicalSalesRepSurname, inputDTO.page(), inputDTO.pageSize());
-    //List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(inputDTO.name(), inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
-    if(listMedicalSalesReps.isEmpty()) {
-      throw new DomainException("Medical Sales Representative not found.");
-    }    
-    // Convert response to output and return
-    //return listMedicalSalesReps; //mapper.outputFromEntityList(listMedicalSalesReps);
-    return mapper.outputFromEntityList(listMedicalSalesReps);
+
+      MedicalSalesRepName medicalSalesRepName = null;
+      MedicalSalesRepName medicalSalesRepSurname = null;
+      // Validate Input
+      if(inputDTO==null) {
+        inputDTO = new MedicalSalesRepNamesInputDTO("", "", 1, 10);
+      }
+      if(inputDTO.page()<=0) {
+        inputDTO = new MedicalSalesRepNamesInputDTO(inputDTO.name(), inputDTO.surname(), 1, inputDTO.pageSize());
+      }
+      if(inputDTO.pageSize()<=0) {
+        inputDTO = new MedicalSalesRepNamesInputDTO(inputDTO.name(), inputDTO.surname(), inputDTO.page(), 10);
+      }
+      if(inputDTO.name()==null ) {
+        inputDTO = new MedicalSalesRepNamesInputDTO("", inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
+      } else {
+         if (!inputDTO.name().isEmpty()) {
+          medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
+        }
+      }
+      if(inputDTO.surname()==null) {
+        inputDTO = new MedicalSalesRepNamesInputDTO(inputDTO.name(), "", inputDTO.page(), inputDTO.pageSize());
+      } else {
+        if (!inputDTO.surname().isEmpty()) {
+          medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
+        }
+      }
+      //MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
+      //MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
+      List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(medicalSalesRepName, medicalSalesRepSurname, inputDTO.page(), inputDTO.pageSize());
+      //List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(inputDTO.name(), inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
+      if(listMedicalSalesReps.isEmpty()) {
+        throw new DomainException("Medical Sales Representative not found.");
+      }    
+      // Convert response to output and return
+      //return listMedicalSalesReps; //mapper.outputFromEntityList(listMedicalSalesReps);
+      return mapper.outputFromEntityList(listMedicalSalesReps);
   }
 }
