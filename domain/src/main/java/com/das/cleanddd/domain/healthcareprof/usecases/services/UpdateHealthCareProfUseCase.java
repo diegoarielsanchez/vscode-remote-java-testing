@@ -68,8 +68,8 @@ public final class UpdateHealthCareProfUseCase implements UseCase<UpdateHealthCa
         }
         // Validate Unique Email
         if (!existingHealthCareProf.get().getEmail().equals(email)) {
-            Optional<HealthCareProf> medicalSalesRepWithEmail = repository.findByEmail(email);
-            if (medicalSalesRepWithEmail.isPresent()) {
+            Optional<HealthCareProf> HealdCareProfRepWithEmail = repository.findByEmail(email);
+            if (HealdCareProfRepWithEmail.isPresent()) {
                 throw new DomainException("There is already a Medical Sales Representative with this email.");
             }
         }

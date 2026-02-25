@@ -19,7 +19,7 @@ public final class HealthCareProfCreator {
     public void create(HealthCareProfId id, HealthCareProfName name, HealthCareProfName surname, HealthCareProfEmail email,HealthCareProfActive active) {
 
         HealthCareProf entityActive = HealthCareProf.create(id, name, surname, email, active);
-        //eventBus.publish(medicalSalesRepresentative.pullDomainEvents());
+        //eventBus.publish(HealdCareProfRepresentative.pullDomainEvents());
         repository.save(entityActive);
     }
 }

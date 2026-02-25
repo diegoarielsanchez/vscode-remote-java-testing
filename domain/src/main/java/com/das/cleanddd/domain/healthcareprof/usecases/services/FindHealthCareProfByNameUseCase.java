@@ -55,8 +55,8 @@ public class FindHealthCareProfByNameUseCase implements UseCase<HealthCareProfNa
           surname = new HealthCareProfName(inputDTO.surname());
         }
       }
-      //HealthCareProfName medicalSalesRepName = new HealthCareProfName(inputDTO.name());
-      //HealthCareProfName medicalSalesRepSurname = new HealthCareProfName(inputDTO.surname());
+      //HealthCareProfName HealdCareProfRepName = new HealthCareProfName(inputDTO.name());
+      //HealthCareProfName HealdCareProfRepSurname = new HealthCareProfName(inputDTO.surname());
       List<HealthCareProf> listHealthCareProfs = repository.findByName(name, surname , inputDTO.page(), inputDTO.pageSize());
       //List<HealthCareProf> listHealthCareProfs = repository.findByName(inputDTO.name(), inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
       if(listHealthCareProfs.isEmpty()) {

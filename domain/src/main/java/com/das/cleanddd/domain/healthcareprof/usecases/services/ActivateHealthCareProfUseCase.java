@@ -13,7 +13,7 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 public class ActivateHealthCareProfUseCase implements UseCaseOnlyInput<HealthCareProfIDDto> {
     
-    //private final HealthCareProf medicalSalesRep;
+    //private final HealthCareProf HealdCareProfRep;
     //private final CustomerDataAccess customerDataAccess;
     @Autowired
     private final HealthCareProfRepository repository; 

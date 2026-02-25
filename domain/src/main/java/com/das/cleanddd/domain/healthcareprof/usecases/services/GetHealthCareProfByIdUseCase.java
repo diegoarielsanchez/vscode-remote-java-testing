@@ -37,7 +37,7 @@ public class GetHealthCareProfByIdUseCase implements UseCase<HealthCareProfIDDto
         if(!entity.isPresent()) {
             throw new DomainException("Medical Sales Representative not found.");
         }
-        //return mapper.outputFromEntity(medicalSalesRep);
+        //return mapper.outputFromEntity(HealdCareProfRep);
         return mapper.outputFromEntity(entity.get());
     }
 }
