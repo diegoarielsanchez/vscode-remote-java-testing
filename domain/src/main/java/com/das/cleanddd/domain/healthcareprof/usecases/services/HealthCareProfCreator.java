@@ -18,8 +18,8 @@ public final class HealthCareProfCreator {
     }
     public void create(HealthCareProfId id, HealthCareProfName name, HealthCareProfName surname, HealthCareProfEmail email,HealthCareProfActive active) {
 
-        HealthCareProf entityActive = HealthCareProf.create(id, name, surname, email, active);
-        //eventBus.publish(HealdCareProfRepresentative.pullDomainEvents());
+        HealthCareProf entityActive = HealthCareProf.create(id, name, surname, email, active, null);
+        //eventBus.publish(HealthCareProfRepresentative.pullDomainEvents());
         repository.save(entityActive);
     }
 }

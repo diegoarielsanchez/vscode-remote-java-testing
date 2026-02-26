@@ -60,7 +60,7 @@ public final class UpdateHealthCareProfUseCase implements UseCase<UpdateHealthCa
             HealthCareProfEmail email = new HealthCareProfEmail(inputDTO.email());
             HealthCareProfId id = new HealthCareProfId(inputDTO.id());
             // Create a new HealthCareProf object using the factory
-            entity = factory.recreateExistingHealthCareProf(id, name, surname, email,null);
+            entity = factory.recreateExistingHealthCareProf(id, name, surname, email,null, null);
         // fetch existing HealthCareProf from the repository
         Optional<HealthCareProf> existingHealthCareProf = repository.findById(id);
         if (!existingHealthCareProf.isPresent()) {
@@ -68,8 +68,8 @@ public final class UpdateHealthCareProfUseCase implements UseCase<UpdateHealthCa
         }
         // Validate Unique Email
         if (!existingHealthCareProf.get().getEmail().equals(email)) {
-            Optional<HealthCareProf> HealdCareProfRepWithEmail = repository.findByEmail(email);
-            if (HealdCareProfRepWithEmail.isPresent()) {
+            Optional<HealthCareProf> HealthCareProfRepWithEmail = repository.findByEmail(email);
+            if (HealthCareProfRepWithEmail.isPresent()) {
                 throw new DomainException("There is already a Medical Sales Representative with this email.");
             }
         }

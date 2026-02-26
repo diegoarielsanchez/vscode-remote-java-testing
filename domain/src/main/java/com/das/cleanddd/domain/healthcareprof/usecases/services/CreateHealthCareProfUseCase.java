@@ -66,7 +66,7 @@ public final class CreateHealthCareProfUseCase implements UseCase<CreateHealthCa
             throw new DomainException("There is already a Medical Sales Representative with this email.");
             }
             // Create a new HealthCareProf object using the factory
-            entity = factory.createHealthCareProf(name, surname, email);
+            entity = factory.createHealthCareProf(name, surname, email, null);
             // Create
             repository.save(entity);
             // Convert response to output and return

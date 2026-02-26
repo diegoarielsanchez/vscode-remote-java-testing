@@ -8,7 +8,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
 
 public final class HealthCareProfMother {
     public static HealthCareProf create(HealthCareProfId id, HealthCareProfName name, HealthCareProfName surname, HealthCareProfEmail email, HealthCareProfActive isActive) {
-        return new HealthCareProf(id, name, surname, email, isActive);
+        return new HealthCareProf(id, name, surname, email, isActive, null);
     }
     public static HealthCareProf random() {
         return create(HealthCareProfId.random(),HealthCareProfNameMother.random(),HealthCareProfNameMother.random(), HealthCareProfEmailMother.random(), HealthCareProfActiveMother.random());

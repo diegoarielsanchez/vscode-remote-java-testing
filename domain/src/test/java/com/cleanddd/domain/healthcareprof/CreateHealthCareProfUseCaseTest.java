@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+
 import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -126,7 +128,7 @@ class CreateHealthCareProfUseCaseTest {
       setUp();
       // Act: execute the use case with valid input
       createHealthCareProfUseCase.execute(validInputDTO);
-      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf( new HealthCareProfName(validInputDTO.name()), new HealthCareProfName(validInputDTO.surname()), new HealthCareProfEmail(validInputDTO.email()));
+      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf( new HealthCareProfName(validInputDTO.name()), new HealthCareProfName(validInputDTO.surname()), new HealthCareProfEmail(validInputDTO.email()), null);
       verify(healthCareProfRepositoryMock, times(1)).save(any());
     }
 
@@ -135,11 +137,12 @@ class CreateHealthCareProfUseCaseTest {
       // Arrange: stub the mocks to return valid objects
       setUp();
       //HealthCareProf healthCareProf = mock(HealthCareProf.class);
-      Mockito.when(healthCareProfFactoryMock.createHealthCareProf(
+            Mockito.when(healthCareProfFactoryMock.createHealthCareProf(
               any(HealthCareProfName.class),
               any(HealthCareProfName.class),
-              any(HealthCareProfEmail.class)
-      )).thenReturn(healthCareProfMock);
+              any(HealthCareProfEmail.class),
+              isNull()
+            )).thenReturn(healthCareProfMock);
 
       HealthCareProfOutputDTO expectedOutput = new HealthCareProfOutputDTO(
               validId.value(),
@@ -185,7 +188,7 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());  
     }
   @Test
@@ -199,7 +202,7 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Surname cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());  
     }    
   @Test
@@ -213,7 +216,7 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Email cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
@@ -227,7 +230,12 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Email format is not valid.", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(
+          any(HealthCareProfName.class),
+          any(HealthCareProfName.class),
+          any(HealthCareProfEmail.class),
+          isNull()
+      );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
@@ -241,7 +249,12 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name must be between 2 and 100 characters long and contain only letters and spaces.", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(
+          any(HealthCareProfName.class),
+          any(HealthCareProfName.class),
+          any(HealthCareProfEmail.class),
+          isNull()
+      );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
@@ -255,7 +268,12 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name must be between 2 and 100 characters long and contain only letters and spaces.", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(
+          any(HealthCareProfName.class),
+          any(HealthCareProfName.class),
+          any(HealthCareProfEmail.class),
+          isNull()
+      );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
@@ -269,7 +287,12 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name must be between 2 and 100 characters long and contain only letters and spaces.", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(
+          any(HealthCareProfName.class),
+          any(HealthCareProfName.class),
+          any(HealthCareProfEmail.class),
+          isNull()
+      );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }    
    @Test
@@ -286,11 +309,11 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("There is already a Medical Sales Representative with this email.", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
-    void shouldThrowExceptionWhenInputDTOIsNull() throws BusinessException {
+    void shouldThrowExceptionWhenInputDtoIsNull() throws BusinessException {
       // Act & Assert: expect a DomainException to be thrown when input DTO is null
       try {
         createHealthCareProfUseCase.execute(null);
@@ -298,11 +321,11 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Input DTO cannot be null", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
-    void shouldThrowExceptionWhenInputDTOIsEmpty() throws BusinessException {
+    void shouldThrowExceptionWhenInputDtoIsEmpty() throws BusinessException {
       // Arrange: create an empty input DTO
       CreateHealthCareProfInputDTO emptyInputDTO = new CreateHealthCareProfInputDTO("", "", ""); // Empty fields
       // Act & Assert: expect a DomainException to be thrown
@@ -312,11 +335,11 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
-    void shouldThrowExceptionWhenInputDTOIsInvalid() throws BusinessException {
+    void shouldThrowExceptionWhenInputDtoIsInvalid() throws BusinessException {
       // Arrange: create an input DTO with invalid data
       CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("", "Valid Surname", "invalid-email-format"); // Empty name and invalid email format
       // Act & Assert: expect a DomainException to be thrown
@@ -326,17 +349,18 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
     void shouldThrowExceptionWhenFactoryThrowsBusinessException() throws BusinessException {
       // Arrange: stub the factory to throw a BusinessException
-      Mockito.when(healthCareProfFactoryMock.createHealthCareProf(
+            Mockito.when(healthCareProfFactoryMock.createHealthCareProf(
               any(HealthCareProfName.class),
               any(HealthCareProfName.class),
-              any(HealthCareProfEmail.class)
-      )).thenThrow(new BusinessException("Factory error"));
+              any(HealthCareProfEmail.class),
+              isNull()
+            )).thenThrow(new BusinessException("Factory error"));
       // Act & Assert: expect a DomainException to be thrown
       try {
         createHealthCareProfUseCase.execute(validInputDTO);
@@ -344,7 +368,7 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Factory error", ex.getMessage()); // Adjust the message based on your implementation  
       } 
-      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class));
+      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
       verify(healthCareProfRepositoryMock, times(0)).save(any());    
     }
     // @Test
@@ -363,5 +387,5 @@ class CreateHealthCareProfUseCaseTest {
     //   verify(healthCareProfRepositoryMock, times(1)).save(any(HealthCareProf.class)); 
     // }
 
- }  
+ }
 

@@ -1,5 +1,7 @@
 package com.das.cleanddd.domain.healthcareprof.entities;
 
+import java.util.List;
+
 import com.das.cleanddd.domain.shared.UtilsFactory;
 import com.das.cleanddd.domain.shared.ValidationUtils;
 import com.das.cleanddd.domain.shared.exceptions.BusinessException;
@@ -28,8 +30,8 @@ public final class DefaultHealthCareProf extends HealthCareProf {
 
   private final transient ValidationUtils validationUtils;
 
-  protected DefaultHealthCareProf(HealthCareProfId id, HealthCareProfName name, HealthCareProfName surname, HealthCareProfEmail email) throws BusinessException {
-    super(id, name, surname, email, new HealthCareProfActive(false));
+  protected DefaultHealthCareProf(HealthCareProfId id, HealthCareProfName name, HealthCareProfName surname, HealthCareProfEmail email, List<Specialty> specialties) throws BusinessException {
+    super(id, name, surname, email, new HealthCareProfActive(false), specialties);
     
     this.validationUtils = (new UtilsFactory()).getValidationUtils();
 
@@ -38,6 +40,7 @@ public final class DefaultHealthCareProf extends HealthCareProf {
     this.lastName = surname.toString();
     this.email   = email;
     this.active = new HealthCareProfActive(false);
+    this.specialties = null;
     this.validate();
   }
 
@@ -49,6 +52,7 @@ public final class DefaultHealthCareProf extends HealthCareProf {
     if(this.validationUtils.isNullOrEmpty(this.lastName)) throw new RequiredFieldException("lastName");
     if(this.validationUtils.isNullOrEmpty(this.email.toString())) throw new RequiredFieldException("email");
     if(this.validationUtils.isNull(this.active)) throw new RequiredFieldException("active");
+    if(this.specialties == null || this.specialties.isEmpty()) throw new RequiredFieldException("specialties");
 
     //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
     //this.address.validate();
@@ -80,6 +84,15 @@ public final class DefaultHealthCareProf extends HealthCareProf {
     return this.active;
   }
   
+  @Override
+  public Boolean isActive() {
+    return this.active != null && this.active.value() ? Boolean.TRUE : Boolean.FALSE;
+  } 
+
+  @Override
+  public List<Specialty> getSpecialties() {
+    return this.specialties;
+  }
   
   //@Override
 /*   public HealthCareProf changeName(String newName) throws BusinessException {
@@ -99,7 +112,7 @@ public final class DefaultHealthCareProf extends HealthCareProf {
   /*
   @Override
   public HealthCareProf changeAddress(Address newAddr) throws BusinessException {
-    DefaultHealthCareProfve c = this.address.equals(newAddr) ? this : this.withAddress(newAddr); 
+    DefaultHealthCareProf c = this.address.equals(newAddr) ? this : this.withAddress(newAddr); 
     c.validate();
     return c;
   }
