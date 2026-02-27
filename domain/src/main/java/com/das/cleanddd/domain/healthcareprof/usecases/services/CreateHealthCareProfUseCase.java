@@ -1,5 +1,6 @@
 package com.das.cleanddd.domain.healthcareprof.usecases.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfFactory;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.CreateHealthCareProfInputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
@@ -54,19 +56,25 @@ public final class CreateHealthCareProfUseCase implements UseCase<CreateHealthCa
         if (inputDTO.email() == null || inputDTO.email().isEmpty()) {
             throw new DomainException("Email cannot be null or empty");
         }
+        if (inputDTO.specialties() == null || inputDTO.specialties().isEmpty()) {
+            throw new DomainException("Specialties cannot be null or empty");
+        }
         HealthCareProf entity;
 
         try {
             HealthCareProfName name = new HealthCareProfName(inputDTO.name());
             HealthCareProfName surname = new HealthCareProfName(inputDTO.surname());
             HealthCareProfEmail email = new HealthCareProfEmail(inputDTO.email());
+            List<Specialty> specialties = inputDTO.specialties().stream()
+                .map(Specialty::new)
+                .toList();
             // Validate Unique Email
             Optional<HealthCareProf> entityWithEmail = repository.findByEmail(email);
             if(entityWithEmail.isPresent()) {
             throw new DomainException("There is already a Medical Sales Representative with this email.");
             }
             // Create a new HealthCareProf object using the factory
-            entity = factory.createHealthCareProf(name, surname, email, null);
+            entity = factory.createHealthCareProf(name, surname, email, specialties);
             // Create
             repository.save(entity);
             // Convert response to output and return

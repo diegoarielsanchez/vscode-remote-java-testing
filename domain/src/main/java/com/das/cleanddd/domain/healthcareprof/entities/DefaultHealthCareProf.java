@@ -40,7 +40,6 @@ public final class DefaultHealthCareProf extends HealthCareProf {
     this.lastName = surname.toString();
     this.email   = email;
     this.active = new HealthCareProfActive(false);
-    this.specialties = null;
     this.validate();
   }
 
@@ -52,7 +51,7 @@ public final class DefaultHealthCareProf extends HealthCareProf {
     if(this.validationUtils.isNullOrEmpty(this.lastName)) throw new RequiredFieldException("lastName");
     if(this.validationUtils.isNullOrEmpty(this.email.toString())) throw new RequiredFieldException("email");
     if(this.validationUtils.isNull(this.active)) throw new RequiredFieldException("active");
-    if(this.specialties == null || this.specialties.isEmpty()) throw new RequiredFieldException("specialties");
+    if(this.getSpecialties() == null || this.getSpecialties().isEmpty()) throw new RequiredFieldException("specialties");
 
     //if(this.validationUtils.isNull(this.address)) throw new RequiredFieldException("address");
     //this.address.validate();
@@ -91,7 +90,7 @@ public final class DefaultHealthCareProf extends HealthCareProf {
 
   @Override
   public List<Specialty> getSpecialties() {
-    return this.specialties;
+    return super.getSpecialties();
   }
   
   //@Override

@@ -1,5 +1,6 @@
 package com.das.cleanddd.domain.healthcareprof.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.das.cleanddd.domain.shared.PersonJavaBean;
@@ -15,7 +16,7 @@ public class HealthCareProf extends PersonJavaBean {
     private final transient HealthCareProfEmail    email;
     private final transient HealthCareProfActive active;
     private final transient ValidationUtils validationUtils;
-    protected List<Specialty> specialties;
+    private final List<Specialty> specialties;
 
     public HealthCareProf(HealthCareProfId id
             , HealthCareProfName name
@@ -30,7 +31,7 @@ public class HealthCareProf extends PersonJavaBean {
         this.lastName = surname.toString();
         this.email   = email == null ? new HealthCareProfEmail("") : email;
         this.active =  active == null ? new HealthCareProfActive(false) : active;
-        this.specialties = specialties;
+        this.specialties = specialties == null ? null : List.copyOf(specialties);
         this.validationUtils = (new UtilsFactory()).getValidationUtils();
     }
 
@@ -82,7 +83,53 @@ public class HealthCareProf extends PersonJavaBean {
     }
 
     public HealthCareProf changeSpecialties(List<Specialty> newSpecialties) throws BusinessException {
-        return new HealthCareProf(this.id, new HealthCareProfName(this.firstName), new HealthCareProfName(this.lastName), this.email, this.active, newSpecialties);
+        if (newSpecialties == null || newSpecialties.isEmpty()) {
+            throw new RequiredFieldException("specialties");
+        }
+
+        List<Specialty> normalizedSpecialties = List.copyOf(newSpecialties);
+        if (this.specialties != null && this.specialties.equals(normalizedSpecialties)) {
+            return this;
+        }
+
+        return new HealthCareProf(this.id, new HealthCareProfName(this.firstName), new HealthCareProfName(this.lastName), this.email, this.active, normalizedSpecialties);
+    }
+
+    public HealthCareProf addSpecialty(Specialty specialty) throws BusinessException {
+        if (specialty == null) {
+            throw new RequiredFieldException("specialty");
+        }
+
+        List<Specialty> updatedSpecialties = this.specialties == null
+                ? new ArrayList<>()
+                : new ArrayList<>(this.specialties);
+
+        if (updatedSpecialties.contains(specialty)) {
+            return this;
+        }
+
+        updatedSpecialties.add(specialty);
+        return new HealthCareProf(this.id, new HealthCareProfName(this.firstName), new HealthCareProfName(this.lastName), this.email, this.active, updatedSpecialties);
+    }
+
+    public HealthCareProf removeSpecialty(Specialty specialty) throws BusinessException {
+        if (specialty == null) {
+            throw new RequiredFieldException("specialty");
+        }
+        if (this.specialties == null || this.specialties.isEmpty()) {
+            throw new RequiredFieldException("specialties");
+        }
+
+        List<Specialty> updatedSpecialties = new ArrayList<>(this.specialties);
+        boolean removed = updatedSpecialties.remove(specialty);
+        if (!removed) {
+            return this;
+        }
+        if (updatedSpecialties.isEmpty()) {
+            throw new RequiredFieldException("specialties");
+        }
+
+        return new HealthCareProf(this.id, new HealthCareProfName(this.firstName), new HealthCareProfName(this.lastName), this.email, this.active, updatedSpecialties);
     }
 
     public List<Specialty> getSpecialties() {

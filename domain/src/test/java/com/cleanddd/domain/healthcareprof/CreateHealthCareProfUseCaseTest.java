@@ -1,5 +1,6 @@
 package com.cleanddd.domain.healthcareprof;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 
 import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
@@ -47,8 +49,9 @@ class CreateHealthCareProfUseCaseTest {
     private final HealthCareProfEmail validEmail = new HealthCareProfEmail("foo@bar.com");
     //private final HealthCareProfEmail validEmail = HealthCareProfEmailMother.random();
     private final HealthCareProfActive validActive = HealthCareProfActiveMother.create(false);
+    private static final List<String> VALID_SPECIALTIES = List.of("Cardiology");
     //private final CreateHealthCareProfInputDTO validInputDTO = new CreateHealthCareProfInputDTO(validId.toString(), validName.toString(), validSurname.toString(), validEmail.toString());
-    private final CreateHealthCareProfInputDTO validInputDTO = new CreateHealthCareProfInputDTO(validName.toString(), validSurname.toString(), validEmail.toString());
+    private final CreateHealthCareProfInputDTO validInputDTO = new CreateHealthCareProfInputDTO(validName.toString(), validSurname.toString(), validEmail.toString(), VALID_SPECIALTIES);
     //private final HealthCareProfOutputDTO validOutputDto = new HealthCareProfOutputDTO(validId.value(), validName.value(), validSurname.value(), validEmail.value(), validActive.value());
 
     // void prepareStubs() throws BusinessException {
@@ -128,7 +131,7 @@ class CreateHealthCareProfUseCaseTest {
       setUp();
       // Act: execute the use case with valid input
       createHealthCareProfUseCase.execute(validInputDTO);
-      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf( new HealthCareProfName(validInputDTO.name()), new HealthCareProfName(validInputDTO.surname()), new HealthCareProfEmail(validInputDTO.email()), null);
+      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf(eq(new HealthCareProfName(validInputDTO.name())), eq(new HealthCareProfName(validInputDTO.surname())), eq(new HealthCareProfEmail(validInputDTO.email())), anyList());
       verify(healthCareProfRepositoryMock, times(1)).save(any());
     }
 
@@ -141,7 +144,7 @@ class CreateHealthCareProfUseCaseTest {
               any(HealthCareProfName.class),
               any(HealthCareProfName.class),
               any(HealthCareProfEmail.class),
-              isNull()
+              anyList()
             )).thenReturn(healthCareProfMock);
 
       HealthCareProfOutputDTO expectedOutput = new HealthCareProfOutputDTO(
@@ -180,7 +183,7 @@ class CreateHealthCareProfUseCaseTest {
   @Test
     void shouldThrowExceptionWhenNameInputIsInvalid() throws BusinessException {
       // Arrange: create an invalid input DTO
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("", "", ""); // Empty fields
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("", "", "", VALID_SPECIALTIES); // Empty fields
       // Act & Assert: expect a BusinessException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -188,13 +191,13 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());  
     }
   @Test
     void shouldThrowExceptionWhenSurNameInputIsInvalid() throws BusinessException {
       // Arrange: create an invalid input DTO
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Valid Name", "","Valid email"); // Empty fields
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Valid Name", "","Valid email", VALID_SPECIALTIES); // Empty fields
       // Act & Assert: expect a BusinessException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -202,13 +205,13 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Surname cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());  
     }    
   @Test
     void shouldThrowExceptionWhenEmailInputIsInvalid() throws BusinessException {
       // Arrange: create an invalid input DTO
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Valid Name", "Valid Surname", ""); // Empty email
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Valid Name", "Valid Surname", "", VALID_SPECIALTIES); // Empty email
       // Act & Assert: expect a BusinessException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -216,13 +219,13 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Email cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
     void shouldThrowExceptionWhenEmailInputIsInvalidFormat() throws BusinessException {
       // Arrange: create an invalid input DTO with an invalid email format
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Valid Name", "Valid Surname", "invalid-email-format"); // Invalid email format
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Valid Name", "Valid Surname", "invalid-email-format", VALID_SPECIALTIES); // Invalid email format
       // Act & Assert: expect a BusinessException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -234,14 +237,14 @@ class CreateHealthCareProfUseCaseTest {
           any(HealthCareProfName.class),
           any(HealthCareProfName.class),
           any(HealthCareProfEmail.class),
-          isNull()
+          anyList()
       );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
     void shouldThrowExceptionWhenNameInputIsInvalidFormat_Numbers() throws BusinessException {
       // Arrange: create an input DTO with an invalid name format
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("123", "Valid Surname", " validEmail"); // Invalid name format
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("123", "Valid Surname", " validEmail", VALID_SPECIALTIES); // Invalid name format
       // Act & Assert: expect a BusinessException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -253,14 +256,14 @@ class CreateHealthCareProfUseCaseTest {
           any(HealthCareProfName.class),
           any(HealthCareProfName.class),
           any(HealthCareProfEmail.class),
-          isNull()
+          anyList()
       );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
     void shouldThrowExceptionWhenNameInputIsInvalidFormat_Symbols() throws BusinessException {
       // Arrange: create an input DTO with an invalid name format
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Invalid & Name", "Valid Surname", " validEmail"); // Invalid name format
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("Invalid & Name", "Valid Surname", " validEmail", VALID_SPECIALTIES); // Invalid name format
       // Act & Assert: expect a BusinessException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -272,14 +275,14 @@ class CreateHealthCareProfUseCaseTest {
           any(HealthCareProfName.class),
           any(HealthCareProfName.class),
           any(HealthCareProfEmail.class),
-          isNull()
+          anyList()
       );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
     void shouldThrowExceptionWhenNameInputIsInvalidFormat_IsShort() throws BusinessException {
       // Arrange: create an input DTO with an invalid name format
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("X", "Valid Surname", " validEmail"); // Invalid name format
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("X", "Valid Surname", " validEmail", VALID_SPECIALTIES); // Invalid name format
       // Act & Assert: expect a BusinessException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -291,7 +294,7 @@ class CreateHealthCareProfUseCaseTest {
           any(HealthCareProfName.class),
           any(HealthCareProfName.class),
           any(HealthCareProfEmail.class),
-          isNull()
+          anyList()
       );
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }    
@@ -299,7 +302,7 @@ class CreateHealthCareProfUseCaseTest {
     void shouldThrowExceptionWhenEmailInputIsAlreadyExists() throws BusinessException {
       // Arrange: create an input DTO with an email that already exists
       String existingEmail = validEmail.value(); // Use the valid email defined earlier
-      CreateHealthCareProfInputDTO inputDTO = new CreateHealthCareProfInputDTO("Valid Name", "Valid Surname", existingEmail); // Existing email  
+      CreateHealthCareProfInputDTO inputDTO = new CreateHealthCareProfInputDTO("Valid Name", "Valid Surname", existingEmail, VALID_SPECIALTIES); // Existing email  
       Mockito.when(healthCareProfRepositoryMock.findByEmail(any(HealthCareProfEmail.class)))
               .thenReturn(Optional.of(healthCareProfMock)); // Simulate existing email
       // Act & Assert: expect a BusinessException to be thrown
@@ -309,7 +312,7 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("There is already a Medical Sales Representative with this email.", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
@@ -321,13 +324,13 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Input DTO cannot be null", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
     void shouldThrowExceptionWhenInputDtoIsEmpty() throws BusinessException {
       // Arrange: create an empty input DTO
-      CreateHealthCareProfInputDTO emptyInputDTO = new CreateHealthCareProfInputDTO("", "", ""); // Empty fields
+      CreateHealthCareProfInputDTO emptyInputDTO = new CreateHealthCareProfInputDTO("", "", "", VALID_SPECIALTIES); // Empty fields
       // Act & Assert: expect a DomainException to be thrown
       try {
         createHealthCareProfUseCase.execute(emptyInputDTO);
@@ -335,13 +338,13 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
   @Test
     void shouldThrowExceptionWhenInputDtoIsInvalid() throws BusinessException {
       // Arrange: create an input DTO with invalid data
-      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("", "Valid Surname", "invalid-email-format"); // Empty name and invalid email format
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO("", "Valid Surname", "invalid-email-format", VALID_SPECIALTIES); // Empty name and invalid email format
       // Act & Assert: expect a DomainException to be thrown
       try {
         createHealthCareProfUseCase.execute(invalidInputDTO);
@@ -349,7 +352,7 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Name cannot be null or empty", ex.getMessage()); // Adjust the message based on your implementation 
       }
-      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }
     @Test
@@ -359,7 +362,7 @@ class CreateHealthCareProfUseCaseTest {
               any(HealthCareProfName.class),
               any(HealthCareProfName.class),
               any(HealthCareProfEmail.class),
-              isNull()
+              anyList()
             )).thenThrow(new BusinessException("Factory error"));
       // Act & Assert: expect a DomainException to be thrown
       try {
@@ -368,7 +371,7 @@ class CreateHealthCareProfUseCaseTest {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
         assertEquals("Factory error", ex.getMessage()); // Adjust the message based on your implementation  
       } 
-      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), isNull());
+      verify(healthCareProfFactoryMock, times(1)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());    
     }
     // @Test
