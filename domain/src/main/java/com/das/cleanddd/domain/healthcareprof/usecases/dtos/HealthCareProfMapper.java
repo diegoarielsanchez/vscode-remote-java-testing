@@ -15,7 +15,10 @@ public class HealthCareProfMapper {
         entity.getName().value(),
         entity.getSurname().value(),
         entity.getEmail().value(),
-        entity.getActive().value()
+        entity.getActive().value(),
+        entity.getSpecialties() == null
+            ? null
+            : entity.getSpecialties().stream().map(specialty -> specialty.value()).toList()
       );
     }
     

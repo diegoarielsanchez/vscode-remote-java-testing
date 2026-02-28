@@ -152,7 +152,8 @@ class CreateHealthCareProfUseCaseTest {
               validName.value(),
               validSurname.value(),
               validEmail.value(),
-              validActive.value()
+              validActive.value(),
+              VALID_SPECIALTIES
       );
       Mockito.when(healthCareProfMapperMock.outputFromEntity(any(HealthCareProf.class)))
               .thenReturn(expectedOutput);
