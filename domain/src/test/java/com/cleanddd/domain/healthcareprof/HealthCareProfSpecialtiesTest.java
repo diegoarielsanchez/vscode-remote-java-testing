@@ -21,6 +21,15 @@ import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 class HealthCareProfSpecialtiesTest {
 
     @Test
+    void shouldThrowWhenCreatingWithMoreThanSevenSpecialties() {
+        List<Specialty> specialties = createSpecialties(8);
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> createHealthCareProf(specialties));
+
+        assertEquals(HealthCareProf.ERROR_MESSAGE_MAX_SPECIALTIES, ex.getMessage());
+    }
+
+    @Test
     void shouldDefensivelyCopySpecialtiesInConstructor() {
         List<Specialty> inputSpecialties = new ArrayList<>();
         inputSpecialties.add(new Specialty("Cardiology"));
@@ -42,6 +51,16 @@ class HealthCareProfSpecialtiesTest {
         assertEquals(2, updated.getSpecialties().size());
         assertTrue(updated.getSpecialties().contains(new Specialty("Cardiology")));
         assertTrue(updated.getSpecialties().contains(new Specialty("Pediatrics")));
+    }
+
+    @Test
+    void shouldThrowWhenAddingEighthSpecialty() {
+        HealthCareProf healthCareProf = createHealthCareProf(createSpecialties(7));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> healthCareProf.addSpecialty(new Specialty("Specialty H")));
+
+        assertEquals(HealthCareProf.ERROR_MESSAGE_MAX_SPECIALTIES, ex.getMessage());
     }
 
     @Test
@@ -121,6 +140,36 @@ class HealthCareProfSpecialtiesTest {
         assertEquals(2, updated.getSpecialties().size());
         assertTrue(updated.getSpecialties().contains(new Specialty("Neurology")));
         assertTrue(updated.getSpecialties().contains(new Specialty("Dermatology")));
+    }
+
+    @Test
+    void shouldThrowWhenChangingSpecialtiesToMoreThanSeven() {
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> healthCareProf.changeSpecialties(createSpecialties(8)));
+
+        assertEquals(HealthCareProf.ERROR_MESSAGE_MAX_SPECIALTIES, ex.getMessage());
+    }
+
+    private List<Specialty> createSpecialties(int size) {
+        List<Specialty> specialties = new ArrayList<>();
+        for (int i = 1; i <= size; i++) {
+            specialties.add(new Specialty("Specialty " + toAlphabeticSuffix(i)));
+        }
+        return specialties;
+    }
+
+    private String toAlphabeticSuffix(int index) {
+        int zeroBased = index - 1;
+        StringBuilder suffix = new StringBuilder();
+
+        do {
+            suffix.insert(0, (char) ('A' + (zeroBased % 26)));
+            zeroBased = (zeroBased / 26) - 1;
+        } while (zeroBased >= 0);
+
+        return suffix.toString();
     }
 
     private HealthCareProf createHealthCareProf(List<Specialty> specialties) {

@@ -12,6 +12,9 @@ import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 
 public class HealthCareProf extends PersonJavaBean {
 
+    public static final int MAX_SPECIALTIES = 7;
+    public static final String ERROR_MESSAGE_MAX_SPECIALTIES = "Specialties cannot have more than 7 items";
+
     private final HealthCareProfId id;
     private final transient HealthCareProfEmail    email;
     private final transient HealthCareProfActive active;
@@ -33,6 +36,13 @@ public class HealthCareProf extends PersonJavaBean {
         this.active =  active == null ? new HealthCareProfActive(false) : active;
         this.specialties = specialties == null ? null : List.copyOf(specialties);
         this.validationUtils = (new UtilsFactory()).getValidationUtils();
+        this.ensureSpecialtiesMaxSize(this.specialties);
+    }
+
+    private void ensureSpecialtiesMaxSize(List<Specialty> specialties) {
+        if (specialties != null && specialties.size() > MAX_SPECIALTIES) {
+            throw new IllegalArgumentException(ERROR_MESSAGE_MAX_SPECIALTIES);
+        }
     }
 
     public HealthCareProfId id() {
