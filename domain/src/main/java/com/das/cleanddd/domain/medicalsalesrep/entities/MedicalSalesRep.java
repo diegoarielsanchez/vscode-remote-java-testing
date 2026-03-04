@@ -18,7 +18,7 @@ public class MedicalSalesRep extends PersonJavaBean {
             this.id      = id == null ? MedicalSalesRepId.random() : id;
             this.firstName    = name.toString();
             this.lastName = surname.toString();
-            this.email   = email == null ? new MedicalSalesRepEmail("") : email;
+            this.email   = email == null ? new MedicalSalesRepEmail(null) : email;
             this.active =  active == null ? new MedicalSalesRepActive(false) : active;
         this.validationUtils = (new UtilsFactory()).getValidationUtils();
     }

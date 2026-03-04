@@ -32,7 +32,7 @@ public class HealthCareProf extends PersonJavaBean {
         this.id      = id == null ? HealthCareProfId.random() : id;
         this.firstName    = name.toString();
         this.lastName = surname.toString();
-        this.email   = email == null ? new HealthCareProfEmail("") : email;
+        this.email   = email == null ? new HealthCareProfEmail(null) : email;
         this.active =  active == null ? new HealthCareProfActive(false) : active;
         this.specialties = specialties == null ? null : List.copyOf(specialties);
         this.validationUtils = (new UtilsFactory()).getValidationUtils();

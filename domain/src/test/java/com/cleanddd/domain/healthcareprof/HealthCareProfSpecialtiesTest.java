@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,6 +21,21 @@ import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
 import com.das.cleanddd.domain.shared.exceptions.RequiredFieldException;
 
 class HealthCareProfSpecialtiesTest {
+
+    @Test
+    void shouldAllowNullEmailWhenEmailObjectIsNullInConstructor() {
+        HealthCareProf healthCareProf = new HealthCareProf(
+                HealthCareProfId.random(),
+                new HealthCareProfName("Diego"),
+                new HealthCareProfName("Sanchez"),
+                null,
+                new HealthCareProfActive(false),
+                List.of(new Specialty("Cardiology"))
+        );
+
+        assertNotNull(healthCareProf.getEmail());
+        assertNull(healthCareProf.getEmail().value());
+    }
 
     @Test
     void shouldThrowWhenCreatingWithMoreThanSevenSpecialties() {
