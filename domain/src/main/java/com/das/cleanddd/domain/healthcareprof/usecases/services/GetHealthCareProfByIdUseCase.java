@@ -30,12 +30,12 @@ public class GetHealthCareProfByIdUseCase implements UseCase<HealthCareProfIDDto
     public HealthCareProfOutputDTO execute(HealthCareProfIDDto inputDTO) throws DomainException {
         
         if(inputDTO.id()==null) {
-            throw new DomainException("Medical Sales Representative Id is required.");
+            throw new DomainException("Health Care Professional Id is required.");
           }
         HealthCareProfId id = new HealthCareProfId(inputDTO.id());
         Optional<HealthCareProf> entity = repository.findById(id   );
         if(!entity.isPresent()) {
-            throw new DomainException("Medical Sales Representative not found.");
+            throw new DomainException("Health Care Professional not found.");
         }
         //return mapper.outputFromEntity(HealthCareProfRep);
         return mapper.outputFromEntity(entity.get());

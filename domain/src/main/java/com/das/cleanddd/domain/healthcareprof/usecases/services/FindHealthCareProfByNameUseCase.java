@@ -60,7 +60,7 @@ public class FindHealthCareProfByNameUseCase implements UseCase<HealthCareProfNa
       List<HealthCareProf> listHealthCareProfs = repository.findByName(name, surname , inputDTO.page(), inputDTO.pageSize());
       //List<HealthCareProf> listHealthCareProfs = repository.findByName(inputDTO.name(), inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
       if(listHealthCareProfs.isEmpty()) {
-        throw new DomainException("Medical Sales Representative not found.");
+        throw new DomainException("Health Care Professional not found.");
       }    
       // Convert response to output and return
       //return listHealthCareProfs; //mapper.outputFromEntityList(listHealthCareProfs);

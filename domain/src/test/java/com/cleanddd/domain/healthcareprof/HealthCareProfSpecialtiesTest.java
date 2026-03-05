@@ -1,8 +1,5 @@
 package com.cleanddd.domain.healthcareprof;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -10,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
@@ -30,7 +31,7 @@ class HealthCareProfSpecialtiesTest {
                 new HealthCareProfName("Sanchez"),
                 null,
                 new HealthCareProfActive(false),
-                List.of(new Specialty("Cardiology"))
+                List.of(s("Cardiology"))
         );
 
         assertNotNull(healthCareProf.getEmail());
@@ -49,25 +50,25 @@ class HealthCareProfSpecialtiesTest {
     @Test
     void shouldDefensivelyCopySpecialtiesInConstructor() {
         List<Specialty> inputSpecialties = new ArrayList<>();
-        inputSpecialties.add(new Specialty("Cardiology"));
+        inputSpecialties.add(s("Cardiology"));
 
         HealthCareProf healthCareProf = createHealthCareProf(inputSpecialties);
-        inputSpecialties.add(new Specialty("Dermatology"));
+        inputSpecialties.add(s("Dermatology"));
 
         assertEquals(1, healthCareProf.getSpecialties().size());
-        assertEquals("Cardiology", healthCareProf.getSpecialties().get(0).value());
+        assertEquals("Cardiology", healthCareProf.getSpecialties().get(0).name());
     }
 
     @Test
     void shouldAddSpecialtyWhenNotPresent() throws Exception {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology")));
 
-        HealthCareProf updated = healthCareProf.addSpecialty(new Specialty("Pediatrics"));
+        HealthCareProf updated = healthCareProf.addSpecialty(s("Pediatrics"));
 
         assertNotSame(healthCareProf, updated);
         assertEquals(2, updated.getSpecialties().size());
-        assertTrue(updated.getSpecialties().contains(new Specialty("Cardiology")));
-        assertTrue(updated.getSpecialties().contains(new Specialty("Pediatrics")));
+        assertTrue(updated.getSpecialties().contains(s("Cardiology")));
+        assertTrue(updated.getSpecialties().contains(s("Pediatrics")));
     }
 
     @Test
@@ -75,93 +76,93 @@ class HealthCareProfSpecialtiesTest {
         HealthCareProf healthCareProf = createHealthCareProf(createSpecialties(7));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> healthCareProf.addSpecialty(new Specialty("Specialty H")));
+            () -> healthCareProf.addSpecialty(s("Specialty H")));
 
         assertEquals(HealthCareProf.ERROR_MESSAGE_MAX_SPECIALTIES, ex.getMessage());
     }
 
     @Test
     void shouldReturnSameInstanceWhenAddingDuplicateSpecialty() throws Exception {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology")));
 
-        HealthCareProf updated = healthCareProf.addSpecialty(new Specialty("Cardiology"));
+        HealthCareProf updated = healthCareProf.addSpecialty(s("Cardiology"));
 
         assertSame(healthCareProf, updated);
     }
 
     @Test
     void shouldThrowWhenAddingNullSpecialty() {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology")));
 
         assertThrows(RequiredFieldException.class, () -> healthCareProf.addSpecialty(null));
     }
 
     @Test
     void shouldRemoveExistingSpecialty() throws Exception {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology"), new Specialty("Pediatrics")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology"), s("Pediatrics")));
 
-        HealthCareProf updated = healthCareProf.removeSpecialty(new Specialty("Pediatrics"));
+        HealthCareProf updated = healthCareProf.removeSpecialty(s("Pediatrics"));
 
         assertNotSame(healthCareProf, updated);
         assertEquals(1, updated.getSpecialties().size());
-        assertEquals("Cardiology", updated.getSpecialties().get(0).value());
+        assertEquals("Cardiology", updated.getSpecialties().get(0).name());
     }
 
     @Test
     void shouldReturnSameInstanceWhenRemovingNonExistingSpecialty() throws Exception {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology"), new Specialty("Pediatrics")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology"), s("Pediatrics")));
 
-        HealthCareProf updated = healthCareProf.removeSpecialty(new Specialty("Neurology"));
+        HealthCareProf updated = healthCareProf.removeSpecialty(s("Neurology"));
 
         assertSame(healthCareProf, updated);
     }
 
     @Test
     void shouldThrowWhenRemovingLastSpecialty() {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology")));
 
-        assertThrows(RequiredFieldException.class, () -> healthCareProf.removeSpecialty(new Specialty("Cardiology")));
+        assertThrows(RequiredFieldException.class, () -> healthCareProf.removeSpecialty(s("Cardiology")));
     }
 
     @Test
     void shouldReturnSameInstanceWhenChangingToSameSpecialties() throws Exception {
-        List<Specialty> specialties = List.of(new Specialty("Cardiology"), new Specialty("Pediatrics"));
+        List<Specialty> specialties = List.of(s("Cardiology"), s("Pediatrics"));
         HealthCareProf healthCareProf = createHealthCareProf(specialties);
 
-        HealthCareProf updated = healthCareProf.changeSpecialties(List.of(new Specialty("Cardiology"), new Specialty("Pediatrics")));
+        HealthCareProf updated = healthCareProf.changeSpecialties(List.of(s("Cardiology"), s("Pediatrics")));
 
         assertSame(healthCareProf, updated);
     }
 
     @Test
     void shouldThrowWhenChangingSpecialtiesToNull() {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology")));
 
         assertThrows(RequiredFieldException.class, () -> healthCareProf.changeSpecialties(null));
     }
 
     @Test
     void shouldThrowWhenChangingSpecialtiesToEmpty() {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology")));
 
         assertThrows(RequiredFieldException.class, () -> healthCareProf.changeSpecialties(List.of()));
     }
 
     @Test
     void shouldReturnNewInstanceWhenChangingSpecialtiesToDifferentValues() throws Exception {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology"), new Specialty("Pediatrics")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology"), s("Pediatrics")));
 
-        HealthCareProf updated = healthCareProf.changeSpecialties(List.of(new Specialty("Neurology"), new Specialty("Dermatology")));
+        HealthCareProf updated = healthCareProf.changeSpecialties(List.of(s("Neurology"), s("Dermatology")));
 
         assertNotSame(healthCareProf, updated);
         assertEquals(2, updated.getSpecialties().size());
-        assertTrue(updated.getSpecialties().contains(new Specialty("Neurology")));
-        assertTrue(updated.getSpecialties().contains(new Specialty("Dermatology")));
+        assertTrue(updated.getSpecialties().contains(s("Neurology")));
+        assertTrue(updated.getSpecialties().contains(s("Dermatology")));
     }
 
     @Test
     void shouldThrowWhenChangingSpecialtiesToMoreThanSeven() {
-        HealthCareProf healthCareProf = createHealthCareProf(List.of(new Specialty("Cardiology")));
+        HealthCareProf healthCareProf = createHealthCareProf(List.of(s("Cardiology")));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> healthCareProf.changeSpecialties(createSpecialties(8)));
@@ -172,9 +173,13 @@ class HealthCareProfSpecialtiesTest {
     private List<Specialty> createSpecialties(int size) {
         List<Specialty> specialties = new ArrayList<>();
         for (int i = 1; i <= size; i++) {
-            specialties.add(new Specialty("Specialty " + toAlphabeticSuffix(i)));
+            specialties.add(s("Specialty " + toAlphabeticSuffix(i)));
         }
         return specialties;
+    }
+
+    private Specialty s(String name) {
+        return new Specialty(name, name);
     }
 
     private String toAlphabeticSuffix(int index) {

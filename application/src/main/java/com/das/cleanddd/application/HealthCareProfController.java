@@ -21,6 +21,8 @@ import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfIDDto;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfNamesInputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.UpdateHealthCareProfInputDTO;
+import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
+import com.das.cleanddd.domain.healthcareprof.entities.SpecialtyCatalog;
 import com.das.cleanddd.domain.healthcareprof.usecases.services.HealthCareProfUseCaseFactory;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
@@ -132,6 +134,13 @@ public class HealthCareProfController {
         } catch (DomainException | IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }    
+    }
+
+    @GetMapping("/specialties")
+    @Operation(summary = "List predefined specialties")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<Specialty>> listSpecialties() {
+        return ResponseEntity.ok(SpecialtyCatalog.all());
     }
     
 }

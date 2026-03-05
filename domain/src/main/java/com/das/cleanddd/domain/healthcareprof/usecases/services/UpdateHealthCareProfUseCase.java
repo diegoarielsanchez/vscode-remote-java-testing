@@ -1,5 +1,6 @@
 package com.das.cleanddd.domain.healthcareprof.usecases.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfFactory;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
+import com.das.cleanddd.domain.healthcareprof.entities.SpecialtyCatalog;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.UpdateHealthCareProfInputDTO;
@@ -52,6 +55,9 @@ public final class UpdateHealthCareProfUseCase implements UseCase<UpdateHealthCa
         if (inputDTO.email() == null || inputDTO.email().isEmpty()) {
             throw new DomainException("Email cannot be null or empty");
         }
+        if (inputDTO.specialties() == null || inputDTO.specialties().isEmpty()) {
+            throw new DomainException("Specialties cannot be null or empty");
+        }
         HealthCareProf entity;
         HealthCareProf entityActivateStatus;
         try {
@@ -59,18 +65,27 @@ public final class UpdateHealthCareProfUseCase implements UseCase<UpdateHealthCa
             HealthCareProfName surname = new HealthCareProfName(inputDTO.surname());
             HealthCareProfEmail email = new HealthCareProfEmail(inputDTO.email());
             HealthCareProfId id = new HealthCareProfId(inputDTO.id());
+            List<Specialty> specialties = inputDTO.specialties().stream()
+                .map(code -> {
+                    try {
+                        return SpecialtyCatalog.fromCode(code);
+                    } catch (DomainException e) {
+                        throw new IllegalArgumentException(e.getMessage());
+                    }
+                })
+                .toList();
             // Create a new HealthCareProf object using the factory
-            entity = factory.recreateExistingHealthCareProf(id, name, surname, email,null, null);
+            entity = factory.recreateExistingHealthCareProf(id, name, surname, email, null, specialties);
         // fetch existing HealthCareProf from the repository
         Optional<HealthCareProf> existingHealthCareProf = repository.findById(id);
         if (!existingHealthCareProf.isPresent()) {
-            throw new DomainException("Medical Sales Representative not found.");
+            throw new DomainException("Health Care Professional not found.");
         }
         // Validate Unique Email
         if (!existingHealthCareProf.get().getEmail().equals(email)) {
             Optional<HealthCareProf> HealthCareProfRepWithEmail = repository.findByEmail(email);
             if (HealthCareProfRepWithEmail.isPresent()) {
-                throw new DomainException("There is already a Medical Sales Representative with this email.");
+                throw new DomainException("There is already a Health Care Professional with this email.");
             }
         }
         // keep the existing HealthCareProf active status

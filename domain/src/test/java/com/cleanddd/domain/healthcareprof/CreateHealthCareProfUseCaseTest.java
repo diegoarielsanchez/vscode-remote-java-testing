@@ -49,7 +49,7 @@ class CreateHealthCareProfUseCaseTest {
     private final HealthCareProfEmail validEmail = new HealthCareProfEmail("foo@bar.com");
     //private final HealthCareProfEmail validEmail = HealthCareProfEmailMother.random();
     private final HealthCareProfActive validActive = HealthCareProfActiveMother.create(false);
-    private static final List<String> VALID_SPECIALTIES = List.of("Cardiology");
+    private static final List<String> VALID_SPECIALTIES = List.of("CARD");
     //private final CreateHealthCareProfInputDTO validInputDTO = new CreateHealthCareProfInputDTO(validId.toString(), validName.toString(), validSurname.toString(), validEmail.toString());
     private final CreateHealthCareProfInputDTO validInputDTO = new CreateHealthCareProfInputDTO(validName.toString(), validSurname.toString(), validEmail.toString(), VALID_SPECIALTIES);
     //private final HealthCareProfOutputDTO validOutputDto = new HealthCareProfOutputDTO(validId.value(), validName.value(), validSurname.value(), validEmail.value(), validActive.value());
@@ -300,6 +300,26 @@ class CreateHealthCareProfUseCaseTest {
       verify(healthCareProfRepositoryMock, times(0)).save(any());
     }    
    @Test
+    void shouldThrowExceptionWhenSpecialtyCodeIsInvalid() throws BusinessException {
+      CreateHealthCareProfInputDTO invalidInputDTO = new CreateHealthCareProfInputDTO(
+          "Valid Name",
+          "Valid Surname",
+          "valid@email.com",
+          List.of("INVALID")
+      );
+
+      try {
+        createHealthCareProfUseCase.execute(invalidInputDTO);
+      } catch (DomainException ex) {
+        assertTrue(ex instanceof DomainException);
+        assertEquals("Invalid specialty code: INVALID", ex.getMessage());
+      }
+
+      verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
+      verify(healthCareProfRepositoryMock, times(0)).save(any());
+    }
+
+   @Test
     void shouldThrowExceptionWhenEmailInputIsAlreadyExists() throws BusinessException {
       // Arrange: create an input DTO with an email that already exists
       String existingEmail = validEmail.value(); // Use the valid email defined earlier
@@ -311,7 +331,7 @@ class CreateHealthCareProfUseCaseTest {
         createHealthCareProfUseCase.execute(inputDTO);
       } catch (DomainException ex) {
         assertTrue(ex instanceof DomainException); // Ensure the exception is of type DomainException
-        assertEquals("There is already a Medical Sales Representative with this email.", ex.getMessage()); // Adjust the message based on your implementation 
+        assertEquals("There is already a Health Care Professional with this email.", ex.getMessage()); // Adjust the message based on your implementation 
       }
       verify(healthCareProfFactoryMock, times(0)).createHealthCareProf(any(HealthCareProfName.class), any(HealthCareProfName.class), any(HealthCareProfEmail.class), anyList());
       verify(healthCareProfRepositoryMock, times(0)).save(any());

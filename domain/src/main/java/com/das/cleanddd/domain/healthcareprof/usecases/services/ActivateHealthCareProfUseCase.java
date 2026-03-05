@@ -27,12 +27,12 @@ public class ActivateHealthCareProfUseCase implements UseCaseOnlyInput<HealthCar
     public void execute(HealthCareProfIDDto inputDTO) throws DomainException {
         
         if(inputDTO.id()==null) {
-            throw new DomainException("Medical Sales Representative Id is required.");
+            throw new DomainException("Health Care Professional Id is required.");
           }
         HealthCareProfId id = new HealthCareProfId(inputDTO.id());
         Optional<HealthCareProf> entity = repository.findById(id);
         if(!entity.isPresent()) {
-            throw new DomainException("Medical Sales Representative not found.");
+            throw new DomainException("Health Care Professional not found.");
         }
         if(Boolean.FALSE.equals(entity.get().isActive())) {
             repository.save(entity.get().setActivate());

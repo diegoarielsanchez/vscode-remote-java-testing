@@ -12,6 +12,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfFactory;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
+import com.das.cleanddd.domain.healthcareprof.entities.SpecialtyCatalog;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.CreateHealthCareProfInputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
@@ -66,12 +67,18 @@ public final class CreateHealthCareProfUseCase implements UseCase<CreateHealthCa
             HealthCareProfName surname = new HealthCareProfName(inputDTO.surname());
             HealthCareProfEmail email = new HealthCareProfEmail(inputDTO.email());
             List<Specialty> specialties = inputDTO.specialties().stream()
-                .map(Specialty::new)
+                .map(code -> {
+                    try {
+                        return SpecialtyCatalog.fromCode(code);
+                    } catch (DomainException e) {
+                        throw new IllegalArgumentException(e.getMessage());
+                    }
+                })
                 .toList();
             // Validate Unique Email
             Optional<HealthCareProf> entityWithEmail = repository.findByEmail(email);
             if(entityWithEmail.isPresent()) {
-            throw new DomainException("There is already a Medical Sales Representative with this email.");
+            throw new DomainException("There is already a Health Care Professional with this email.");
             }
             // Create a new HealthCareProf object using the factory
             entity = factory.createHealthCareProf(name, surname, email, specialties);
