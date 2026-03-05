@@ -47,6 +47,12 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers("/hello").permitAll()
                 .requestMatchers("/health-check").permitAll()
+                .requestMatchers(
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**"
+                ).permitAll()
                 // Allow unauthenticated access to auth endpoints
                 .requestMatchers("/auth/**").permitAll()
                 // API endpoints - require USER role

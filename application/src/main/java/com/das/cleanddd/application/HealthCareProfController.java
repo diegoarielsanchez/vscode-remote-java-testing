@@ -26,16 +26,18 @@ import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 //import javax.validation.Valid;
 import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/v1/healthcareprof")
-//@RequiredArgsConstructor
-//@Tag(name = "Medical Sales Rep", description = "Medical Sales Rep API")
-//@SecurityRequirement(name = "bearerAuth")
-//@Operation(summary = "Medical Sales Rep API", description = "API for managing Medical Sales Representatives")
+@Tag(name = "Health Care Professional", description = "API for managing Health Care Professionals")
+@SecurityRequirement(name = "bearerAuth")
 public class HealthCareProfController {
     @Autowired
     private final UseCase<CreateHealthCareProfInputDTO, HealthCareProfOutputDTO> createHealthCareProfUseCase;
@@ -55,6 +57,7 @@ public class HealthCareProfController {
     }
     
     @PostMapping("/create")
+    @Operation(summary = "Create health care professional")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> createHealthCareProf(@Valid @RequestBody CreateHealthCareProfInputDTO inputDTO) throws ResponseStatusException{
         try {
@@ -65,6 +68,7 @@ public class HealthCareProfController {
     }
 
     @PutMapping("/update")
+    @Operation(summary = "Update health care professional")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> updateHealthCareProf(@Valid @RequestBody UpdateHealthCareProfInputDTO inputDTO) throws DomainException{
         try {
@@ -75,6 +79,7 @@ public class HealthCareProfController {
         }
     }
     @PostMapping("/activate")
+    @Operation(summary = "Activate health care professional")
     @ResponseStatus(HttpStatus.OK)
     //public ResponseEntity<EmptyBodyModel> activate(@RequestBody HealthCareProfIDDto inputDTO) throws ResponseStatusException {    
     public void activateHealthCareProf(@Valid @RequestBody HealthCareProfIDDto inputDTO) throws ResponseStatusException{
@@ -86,6 +91,7 @@ public class HealthCareProfController {
         //activateHealthCareProfUseCase.execute(inputDTO);
     }
     @PostMapping("/deactivate")
+    @Operation(summary = "Deactivate health care professional")
     @ResponseStatus(HttpStatus.OK)
     public void deactivateHealthCareProf(@Valid @RequestBody HealthCareProfIDDto inputDTO) throws DomainException{
         try {
@@ -97,6 +103,7 @@ public class HealthCareProfController {
     }
 
     @GetMapping("/get")
+    @Operation(summary = "Get health care professional by ID")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> getHealthCareProfByID(@Valid @RequestBody HealthCareProfIDDto inputDTO) throws ResponseStatusException{
         try {
@@ -110,6 +117,7 @@ public class HealthCareProfController {
     }
     //@GetMapping("/list")
     @PostMapping("/list")
+    @Operation(summary = "List health care professionals by name")
     @ResponseStatus(HttpStatus.OK)
     //@ApiResponse(responseCode = "200", description = "List of Medical Sales Representatives", content = @Content(mediaType = "application/json", schema = @Schema(implementation = HealthCareProfOutputDTO.class)))
     public ResponseEntity<Object> findHealthCareProfByName(

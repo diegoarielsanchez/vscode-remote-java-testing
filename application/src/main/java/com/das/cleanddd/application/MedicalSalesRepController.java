@@ -26,16 +26,18 @@ import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 //import javax.validation.Valid;
 import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
 @RequestMapping("api/v1/medicalsalesrep")
-//@RequiredArgsConstructor
-//@Tag(name = "Medical Sales Rep", description = "Medical Sales Rep API")
-//@SecurityRequirement(name = "bearerAuth")
-//@Operation(summary = "Medical Sales Rep API", description = "API for managing Medical Sales Representatives")
+@Tag(name = "Medical Sales Rep", description = "API for managing Medical Sales Representatives")
+@SecurityRequirement(name = "bearerAuth")
 public class MedicalSalesRepController {
     @Autowired
     private final UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> createMedicalSalesRepUseCase;
@@ -55,6 +57,7 @@ public class MedicalSalesRepController {
     }
     
     @PostMapping("/create")
+    @Operation(summary = "Create medical sales representative")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> createMedicalSalesRep(@Valid @RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws ResponseStatusException{
         try {
@@ -65,6 +68,7 @@ public class MedicalSalesRepController {
     }
 
     @PutMapping("/update")
+    @Operation(summary = "Update medical sales representative")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> updateMedicalSalesRep(@Valid @RequestBody UpdateMedicalSalesRepInputDTO inputDTO) throws DomainException{
         try {
@@ -75,6 +79,7 @@ public class MedicalSalesRepController {
         }
     }
     @PostMapping("/activate")
+    @Operation(summary = "Activate medical sales representative")
     @ResponseStatus(HttpStatus.OK)
     //public ResponseEntity<EmptyBodyModel> activate(@RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException {    
     public void activateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
@@ -86,6 +91,7 @@ public class MedicalSalesRepController {
         //activateMedicalSalesRepUseCase.execute(inputDTO);
     }
     @PostMapping("/deactivate")
+    @Operation(summary = "Deactivate medical sales representative")
     @ResponseStatus(HttpStatus.OK)
     public void deactivateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException{
         try {
@@ -97,6 +103,7 @@ public class MedicalSalesRepController {
     }
 
     @GetMapping("/get")
+    @Operation(summary = "Get medical sales representative by ID")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> getMedicalSalesRepByID(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
         try {
@@ -110,6 +117,7 @@ public class MedicalSalesRepController {
     }
     //@GetMapping("/list")
     @PostMapping("/list")
+    @Operation(summary = "List medical sales representatives by name")
     @ResponseStatus(HttpStatus.OK)
     //@ApiResponse(responseCode = "200", description = "List of Medical Sales Representatives", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MedicalSalesRepOutputDTO.class)))
     public ResponseEntity<Object> findMedicalSalesRepByName(
