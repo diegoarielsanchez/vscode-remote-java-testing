@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Clean DDD API",
                 version = "v1",
-                description = "REST API for managing Medical Sales Representatives and Health Care Professionals"
+                description = "REST API for managing visits from medical sales representatives to healthcare professionals, powered by artificial intelligence."
         ),
         security = @SecurityRequirement(name = "bearerAuth")
 )
