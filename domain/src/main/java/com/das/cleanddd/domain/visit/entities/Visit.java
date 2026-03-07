@@ -9,6 +9,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.shared.AggregateRoot;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.TextValueObject;
@@ -20,7 +21,7 @@ public final class Visit extends AggregateRoot {
     private LocalDate _visitDate;
     private HealthCareProf _healthCareProf;
     private TextValueObject _visitComments;
-    private Identifier _medicalSalesRepresentativeId;
+    private MedicalSalesRep _medicalSalesRep;
     private Identifier _visitSiteId;
     private final List<VisitItem> _visitItems = new ArrayList<>();
     //private final Set<ShoppingItem> shoppingItems = new LinkedHashSet<>();
@@ -31,7 +32,7 @@ public final class Visit extends AggregateRoot {
         , TextValueObject visitComments
         , Identifier visitSiteId
         , List<VisitItem> visitItems
-        ,  Identifier medicalSalesRepresentativeId) {
+        ,  MedicalSalesRep medicalSalesRep) {
 
         this._visitId       = visitId;
         this._visitDate = visitDate;
@@ -39,7 +40,7 @@ public final class Visit extends AggregateRoot {
         this._visitComments = visitComments;
         this._visitSiteId = visitSiteId;
         //this._visitItems = visitItems;
-        this._medicalSalesRepresentativeId = medicalSalesRepresentativeId;
+        this._medicalSalesRep = medicalSalesRep;
     }
 
     @SuppressWarnings("unused")
@@ -50,7 +51,7 @@ public final class Visit extends AggregateRoot {
         _visitComments = null;
         _visitSiteId = null;
         //_visitItems = null;
-        _medicalSalesRepresentativeId = null;
+        _medicalSalesRep = null;
     }
 
     public void addItem(VisitItem visitItem) {
@@ -81,8 +82,8 @@ public final class Visit extends AggregateRoot {
         return _visitDate;
     }
     
-    public Identifier medicalSalesRepresentativeId () {
-        return _medicalSalesRepresentativeId;
+    public MedicalSalesRep medicalSalesRep() {
+        return _medicalSalesRep;
     }
 
     @Override

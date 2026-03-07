@@ -16,6 +16,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
@@ -36,6 +37,9 @@ class UpdateHealthCareProfUseCaseTest {
     private HealthCareProfFactory factory;
     private HealthCareProfMapper mapper;
     private UpdateHealthCareProfUseCase useCase;
+
+    @Captor
+    private ArgumentCaptor<List<Specialty>> specialtiesCaptor;
 
     @BeforeEach
     void setUp() {
@@ -131,7 +135,6 @@ class UpdateHealthCareProfUseCaseTest {
         assertNotNull(output);
         assertEquals(expected.id(), output.id());
 
-        ArgumentCaptor<List<Specialty>> specialtiesCaptor = ArgumentCaptor.forClass(List.class);
         verify(factory).recreateExistingHealthCareProf(any(), any(), any(), any(), any(), specialtiesCaptor.capture());
 
         List<Specialty> mappedSpecialties = specialtiesCaptor.getValue();

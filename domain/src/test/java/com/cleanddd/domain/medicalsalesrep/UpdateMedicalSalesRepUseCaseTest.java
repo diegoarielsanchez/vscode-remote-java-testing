@@ -19,7 +19,6 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
