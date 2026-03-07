@@ -1,5 +1,6 @@
 package com.das.cleanddd.domain.healthcareprof.entities;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,15 +8,31 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 public final class SpecialtyCatalog {
 
-    private static final Map<String, String> PREDEFINED_SPECIALTIES = Map.of(
-        "CARD", "Cardiology",
-        "DERM", "Dermatology",
-        "NEUR", "Neurology",
-        "PED", "Pediatrics",
-        "ORTH", "Orthopedics",
-        "ONCO", "Oncology",
-        "PSYC", "Psychiatry"
-    );
+    private static final Map<String, String> PREDEFINED_SPECIALTIES = new LinkedHashMap<>() {{
+        put("CARD", "Cardiology");
+        put("DERM", "Dermatology");
+        put("NEUR", "Neurology");
+        put("PED", "Pediatrics");
+        put("ORTH", "Orthopedics");
+        put("ONCO", "Oncology");
+        put("PSYC", "Psychiatry");
+        put("ODON", "Odontology");
+        put("OPHT", "Ophthalmology");
+        put("ENT", "Ear, Nose and Throat");
+        put("GAST", "Gastroenterology");
+        put("ENDO", "Endocrinology");
+        put("RHEU", "Rheumatology");
+        put("UROL", "Urology");
+        put("GYNE", "Gynecology");
+        put("NEPH", "Nephology");
+        put("HEM", "Hematology");
+        put("IMM", "Immunology");
+        put("INF", "Infectious Diseases");
+        put("RAD", "Radiology");
+        put("ANES", "Anesthesiology");
+        put("PATH", "Pathology");
+        put("GEN", "General Practice");
+    }};
 
     private SpecialtyCatalog() {
     }

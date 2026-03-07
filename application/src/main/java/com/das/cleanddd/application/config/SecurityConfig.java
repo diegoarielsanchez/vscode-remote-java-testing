@@ -2,6 +2,8 @@ package com.das.cleanddd.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -68,8 +70,10 @@ public class SecurityConfig {
                     .maxAgeInSeconds(31536000)
                     .requestMatcher(anyRequest -> true)) // includeSubdomains not available in Spring Security 6.x
                 .frameOptions(frameOptions -> frameOptions.deny())
+                .referrerPolicy(referrerPolicy -> referrerPolicy.policy(org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; frame-ancestors 'none'; object-src 'none'"))
                 .permissionsPolicyHeader(permissions -> permissions
-                    .policy("referrer=strict-origin-when-cross-origin"))
+                    .policy("geolocation=(), microphone=(), camera=()"))
             );
 
         // Register JWT authentication filter before the username/password filter
@@ -98,12 +102,28 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+    @Profile("dev")
+    public UserDetailsService userDetailsServiceDev(PasswordEncoder passwordEncoder) {
         UserDetails user = User.withUsername("user")
                 .password(passwordEncoder.encode("password"))
                 .roles("USER")
                 .build();
         
+        return new InMemoryUserDetailsManager(user);
+    }
+
+    @Bean
+    @Profile("!dev")
+    public UserDetailsService userDetailsServiceNonDev(
+        @Value("${app.security.user.name}") String username,
+        @Value("${app.security.user.password-hash}") String passwordHash,
+        @Value("${app.security.user.roles:USER}") String[] roles
+    ) {
+        UserDetails user = User.withUsername(username)
+            .password(passwordHash)
+            .roles(roles)
+            .build();
+
         return new InMemoryUserDetailsManager(user);
     }
 

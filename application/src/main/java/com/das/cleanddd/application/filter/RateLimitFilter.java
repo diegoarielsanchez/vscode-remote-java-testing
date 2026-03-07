@@ -1,6 +1,7 @@
 package com.das.cleanddd.application.filter;
 
 import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.ConsumptionProbe;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,14 +11,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
 
-    private final Bucket bucket;
+    private final Bandwidth bandwidth;
+    private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-    public RateLimitFilter(Bucket bucket) {
-        this.bucket = bucket;
+    public RateLimitFilter(Bandwidth bandwidth) {
+        this.bandwidth = bandwidth;
     }
 
     @Override
@@ -32,6 +36,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
             return;
         }
 
+        String clientKey = resolveClientKey(request);
+        Bucket bucket = buckets.computeIfAbsent(clientKey, key -> Bucket.builder().addLimit(bandwidth).build());
         ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
 
         if (probe.isConsumed()) {
@@ -45,5 +51,18 @@ public class RateLimitFilter extends OncePerRequestFilter {
             response.getWriter().write("{\"error\":\"Too many requests\", \"retryAfterSeconds\":" +
                 (probe.getNanosToWaitForRefill() / 1_000_000_000) + "}");
         }
+    }
+
+    private String resolveClientKey(HttpServletRequest request) {
+        if (request.getUserPrincipal() != null) {
+            return "user:" + request.getUserPrincipal().getName();
+        }
+
+        String forwardedFor = request.getHeader("X-Forwarded-For");
+        if (forwardedFor != null && !forwardedFor.isBlank()) {
+            return "ip:" + forwardedFor.split(",")[0].trim();
+        }
+
+        return "ip:" + request.getRemoteAddr();
     }
 }

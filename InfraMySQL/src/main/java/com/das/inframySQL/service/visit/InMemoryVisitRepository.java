@@ -1,44 +1,48 @@
 package com.das.inframySQL.service.visit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.shared.Identifier;
-import com.das.cleanddd.domain.shared.UuidGenerator;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 import com.das.cleanddd.domain.visit.IVisitRepository;
 import com.das.cleanddd.domain.visit.entities.Visit;
-import com.das.cleanddd.domain.visit.entities.VisitId;
 
 @Service
 public final class InMemoryVisitRepository implements IVisitRepository {
-    private UuidGenerator generator;
+    private final Map<String, Visit> visits = new LinkedHashMap<>();
 
-    public InMemoryVisitRepository(UuidGenerator generator) {
-        this.generator = generator;
+    public InMemoryVisitRepository() {
     }
 
     @Override
-    public void save(Visit visit) {};
-
-    public Optional<Visit> search(Identifier id) {
-            return null;
-            
-    };
-
-    public List<Visit> matching(Criteria criteria) {
-            return new ArrayList<>();
-    };
+    public synchronized void save(Visit visit) {
+        if (visit == null || visit.visitId() == null) {
+            return;
+        }
+        visits.put(visit.visitId().value(), visit);
+    }
 
     @Override
-    public List<Visit> searchAll() {
-        return Arrays.asList(
-            new Visit(new VisitId(generator.generate()), null, null, null, null, null, null),
-            new Visit(new VisitId(generator.generate()), null, null, null, null, null, null)
-        );
+    public Optional<Visit> search(Identifier id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(visits.get(id.value()));
+    }
+
+    @Override
+    public List<Visit> matching(Criteria criteria) {
+        return new ArrayList<>(visits.values());
+    }
+
+    @Override
+    public synchronized List<Visit> searchAll() {
+        return new ArrayList<>(visits.values());
     }
 }
