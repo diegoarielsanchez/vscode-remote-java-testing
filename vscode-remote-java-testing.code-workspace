@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "name": "backend",
+      "path": "."
+    },
+    {
+      "name": "ui",
+      "path": "vscode-remot-java-testing-ui"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/target": true,
+      "**/.DS_Store": true
+    }
+  }
+}

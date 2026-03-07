@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --deep-sea: #0b435d;
+  --lagoon: #1497a3;
+  --sand: #f9f4ea;
+  --sunset: #f08a5d;
+}
+
+body {
+  @apply font-sans antialiased;
+  margin: 0;
+}
+
+.bg-app {
+  background:
+    radial-gradient(circle at 10% 10%, rgba(240, 138, 93, 0.3), transparent 35%),
+    radial-gradient(circle at 90% 0%, rgba(20, 151, 163, 0.28), transparent 36%),
+    linear-gradient(160deg, #fefcf8 0%, #eef8fb 100%);
+}
+
+.card {
+  @apply border border-white/70 bg-white/80 backdrop-blur-sm shadow-soft;
+}
+
+.input {
+  @apply w-full rounded-xl border border-teal-200 bg-white px-3 py-2.5 text-sm outline-none transition;
+}
+
+.input:focus {
+  @apply border-teal-500 ring-2 ring-teal-200;
+}
+
+.btn-primary {
+  @apply rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.btn-danger {
+  @apply rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.pill-on {
+  @apply rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-semibold tracking-wide text-emerald-700;
+}
+
+.pill-off {
+  @apply rounded-full bg-slate-200 px-2 py-1 text-[10px] font-semibold tracking-wide text-slate-700;
+}
+
+.record {
+  @apply rounded-2xl border border-slate-200 bg-white px-3 py-3;
+  animation: rise 450ms ease both;
+}
+
+.animate-enter {
+  animation: fade-slide 600ms ease both;
+}
+
+@keyframes fade-slide {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

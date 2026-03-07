@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Backend (Spring Boot)",
+      "type": "shell",
+      "command": "mvn",
+      "args": ["-pl", "application", "-am", "spring-boot:run"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Run UI (Vite)",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"],
+      "options": {
+        "cwd": "${workspaceFolder}/vscode-remot-java-testing-ui"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Backend + UI",
+      "dependsOn": ["Run Backend (Spring Boot)", "Run UI (Vite)"],
+      "dependsOrder": "parallel"
+    }
+  ]
+}
