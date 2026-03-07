@@ -11,8 +11,8 @@ import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.UuidGenerator;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 import com.das.cleanddd.domain.visit.IVisitRepository;
-import com.das.cleanddd.domain.visit.Visit;
-import com.das.cleanddd.domain.visit.VisitId;
+import com.das.cleanddd.domain.visit.entities.Visit;
+import com.das.cleanddd.domain.visit.entities.VisitId;
 
 @Service
 public final class InMemoryVisitRepository implements IVisitRepository {

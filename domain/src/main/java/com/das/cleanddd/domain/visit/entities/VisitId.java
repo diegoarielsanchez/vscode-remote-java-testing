@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.visit;
+package com.das.cleanddd.domain.visit.entities;
 
 import com.das.cleanddd.domain.shared.Identifier;
 

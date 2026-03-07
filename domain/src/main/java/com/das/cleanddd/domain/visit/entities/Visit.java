@@ -1,4 +1,4 @@
-package com.das.cleanddd.domain.visit;
+package com.das.cleanddd.domain.visit.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
+import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.shared.AggregateRoot;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.TextValueObject;
@@ -17,7 +18,7 @@ public final class Visit extends AggregateRoot {
 
     private VisitId _visitId;
     private LocalDate _visitDate;
-    private Identifier _prescriberId;
+    private HealthCareProf _healthCareProf;
     private TextValueObject _visitComments;
     private Identifier _medicalSalesRepresentativeId;
     private Identifier _visitSiteId;
@@ -26,7 +27,7 @@ public final class Visit extends AggregateRoot {
 
     public Visit(VisitId visitId
         , LocalDate visitDate
-        , Identifier prescriberId
+        , HealthCareProf healthCareProf
         , TextValueObject visitComments
         , Identifier visitSiteId
         , List<VisitItem> visitItems
@@ -34,7 +35,7 @@ public final class Visit extends AggregateRoot {
 
         this._visitId       = visitId;
         this._visitDate = visitDate;
-        this._prescriberId = prescriberId;
+        this._healthCareProf = healthCareProf;
         this._visitComments = visitComments;
         this._visitSiteId = visitSiteId;
         //this._visitItems = visitItems;
@@ -45,7 +46,7 @@ public final class Visit extends AggregateRoot {
     private Visit() {
         _visitId       = null;
         _visitDate = null;
-        _prescriberId = null;
+        _healthCareProf = null;
         _visitComments = null;
         _visitSiteId = null;
         //_visitItems = null;
@@ -64,8 +65,8 @@ public final class Visit extends AggregateRoot {
         return _visitId;
     }
 
-    public Identifier prescriberId() {
-        return _prescriberId;
+    public HealthCareProf healthCareProf() {
+        return _healthCareProf;
     }
 
     public Identifier visitSideId() {
