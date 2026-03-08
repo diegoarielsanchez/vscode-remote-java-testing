@@ -106,7 +106,7 @@ public class SecurityConfig {
     @Profile("dev")
     public UserDetailsService userDetailsServiceDev(PasswordEncoder passwordEncoder) {
         UserDetails user = User.withUsername("user")
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoder.encode("Apatehia65$"))
                 .roles("USER")
                 .build();
         

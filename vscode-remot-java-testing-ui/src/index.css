@@ -43,6 +43,10 @@ body {
   @apply rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-50;
 }
 
+.btn-secondary {
+  @apply rounded-xl border border-teal-300 bg-white px-4 py-2.5 text-sm font-semibold text-teal-800 transition hover:bg-teal-50 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
 .pill-on {
   @apply rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-semibold tracking-wide text-emerald-700;
 }
@@ -54,6 +58,50 @@ body {
 .record {
   @apply rounded-2xl border border-slate-200 bg-white px-3 py-3;
   animation: rise 450ms ease both;
+}
+
+.quick-action {
+  @apply rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3 text-left text-sm font-semibold text-teal-900 transition hover:bg-teal-100;
+}
+
+.hamburger-btn {
+  @apply flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-xl border border-teal-200 bg-white text-teal-900 shadow-sm transition hover:bg-teal-50;
+}
+
+.hamburger-line {
+  @apply block h-0.5 w-4 rounded bg-current;
+}
+
+.hamburger-panel {
+  @apply absolute right-0 top-12 z-30 flex w-64 flex-col gap-1 rounded-2xl border border-teal-100 bg-white p-2 shadow-soft;
+}
+
+.hamburger-link {
+  @apply rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-700 transition hover:bg-teal-50 hover:text-teal-900;
+}
+
+.menu-shell {
+  @apply fixed bottom-3 left-0 right-0 z-40 px-3;
+}
+
+.menu-grid {
+  @apply mx-auto grid w-full max-w-xl grid-cols-3 gap-2 rounded-2xl border border-white/80 bg-white/85 p-2 backdrop-blur-md shadow-soft;
+}
+
+.menu-item {
+  @apply rounded-xl px-2 py-2 text-xs font-semibold text-slate-600 transition;
+}
+
+.menu-item-active {
+  @apply bg-teal-700 text-white;
+}
+
+.chip-select {
+  @apply flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700;
+}
+
+.chip-select input {
+  accent-color: #0f766e;
 }
 
 .animate-enter {

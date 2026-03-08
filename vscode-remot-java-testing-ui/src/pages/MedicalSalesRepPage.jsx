@@ -1,0 +1,165 @@
+import { useState } from "react";
+import { salesRepApi } from "../api";
+
+const initialCreate = { name: "", surname: "", email: "" };
+const initialUpdate = { id: "", name: "", surname: "", email: "" };
+const initialFilters = { firstName: "", lastName: "", page: 1, pageSize: 10 };
+
+function MedicalSalesRepPage({ token, isAuthed }) {
+  const [filters, setFilters] = useState(initialFilters);
+  const [createForm, setCreateForm] = useState(initialCreate);
+  const [updateForm, setUpdateForm] = useState(initialUpdate);
+  const [actionId, setActionId] = useState("");
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("Use the forms below to consume MedicalSalesRepController.");
+
+  const setSuccess = (text) => setMessage(`OK: ${text}`);
+  const setError = (err) => setMessage(`Error: ${err.message || String(err)}`);
+
+  const onList = async () => {
+    if (!isAuthed) return;
+    setLoading(true);
+    try {
+      const data = await salesRepApi.list(token, filters);
+      setRows(Array.isArray(data) ? data : []);
+      setSuccess(`Loaded ${Array.isArray(data) ? data.length : 0} records`);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onCreate = async (event) => {
+    event.preventDefault();
+    if (!isAuthed) return;
+    setLoading(true);
+    try {
+      await salesRepApi.create(token, createForm);
+      setCreateForm(initialCreate);
+      setSuccess("Medical Sales Representative created");
+      await onList();
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  const onUpdate = async (event) => {
+    event.preventDefault();
+    if (!isAuthed) return;
+    setLoading(true);
+    try {
+      await salesRepApi.update(token, updateForm);
+      setSuccess("Medical Sales Representative updated");
+      await onList();
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  const onActivate = async () => {
+    if (!isAuthed || !actionId.trim()) return;
+    setLoading(true);
+    try {
+      await salesRepApi.activate(token, actionId.trim());
+      setSuccess(`Activated ID ${actionId.trim()}`);
+      await onList();
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  const onDeactivate = async () => {
+    if (!isAuthed || !actionId.trim()) return;
+    setLoading(true);
+    try {
+      await salesRepApi.deactivate(token, actionId.trim());
+      setSuccess(`Deactivated ID ${actionId.trim()}`);
+      await onList();
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <section className="space-y-4 animate-enter">
+      <div className="card rounded-3xl p-5">
+        <p className="text-xs uppercase tracking-[0.22em] text-teal-700">Medical Sales Representative</p>
+        <h2 className="mt-1 font-display text-2xl text-teal-950">MedicalSalesRepController</h2>
+        <p className="mt-2 text-sm text-slate-600">Manage create, update, list, activate and deactivate flows.</p>
+      </div>
+
+      <div className="card rounded-3xl p-5">
+        <h3 className="font-display text-lg text-teal-900">Search and list</h3>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <input className="input" placeholder="firstName" value={filters.firstName} onChange={(e) => setFilters((prev) => ({ ...prev, firstName: e.target.value }))} />
+          <input className="input" placeholder="lastName" value={filters.lastName} onChange={(e) => setFilters((prev) => ({ ...prev, lastName: e.target.value }))} />
+          <input className="input" type="number" min="1" placeholder="page" value={filters.page} onChange={(e) => setFilters((prev) => ({ ...prev, page: Number(e.target.value) || 1 }))} />
+          <input className="input" type="number" min="1" placeholder="pageSize" value={filters.pageSize} onChange={(e) => setFilters((prev) => ({ ...prev, pageSize: Number(e.target.value) || 10 }))} />
+        </div>
+        <button className="btn-primary mt-3 w-full" onClick={onList} disabled={!isAuthed || loading}>Load list</button>
+      </div>
+
+      <div className="card rounded-3xl p-5">
+        <h3 className="font-display text-lg text-teal-900">Create</h3>
+        <form className="mt-3 space-y-3" onSubmit={onCreate}>
+          <input className="input" placeholder="name" value={createForm.name} onChange={(e) => setCreateForm((prev) => ({ ...prev, name: e.target.value }))} />
+          <input className="input" placeholder="surname" value={createForm.surname} onChange={(e) => setCreateForm((prev) => ({ ...prev, surname: e.target.value }))} />
+          <input className="input" type="email" placeholder="email" value={createForm.email} onChange={(e) => setCreateForm((prev) => ({ ...prev, email: e.target.value }))} />
+          <button className="btn-primary w-full" disabled={!isAuthed || loading}>Create</button>
+        </form>
+      </div>
+
+      <div className="card rounded-3xl p-5">
+        <h3 className="font-display text-lg text-teal-900">Update</h3>
+        <form className="mt-3 space-y-3" onSubmit={onUpdate}>
+          <input className="input" placeholder="id" value={updateForm.id} onChange={(e) => setUpdateForm((prev) => ({ ...prev, id: e.target.value }))} />
+          <input className="input" placeholder="name" value={updateForm.name} onChange={(e) => setUpdateForm((prev) => ({ ...prev, name: e.target.value }))} />
+          <input className="input" placeholder="surname" value={updateForm.surname} onChange={(e) => setUpdateForm((prev) => ({ ...prev, surname: e.target.value }))} />
+          <input className="input" type="email" placeholder="email" value={updateForm.email} onChange={(e) => setUpdateForm((prev) => ({ ...prev, email: e.target.value }))} />
+          <button className="btn-primary w-full" disabled={!isAuthed || loading}>Update</button>
+        </form>
+      </div>
+
+      <div className="card rounded-3xl p-5">
+        <h3 className="font-display text-lg text-teal-900">Activate / Deactivate</h3>
+        <input className="input mt-3" placeholder="medicalSalesRepId" value={actionId} onChange={(e) => setActionId(e.target.value)} />
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          <button className="btn-primary" onClick={onActivate} disabled={!isAuthed || loading || !actionId.trim()}>Activate</button>
+          <button className="btn-danger" onClick={onDeactivate} disabled={!isAuthed || loading || !actionId.trim()}>Deactivate</button>
+        </div>
+      </div>
+
+      <div className="card rounded-3xl p-5">
+        <h3 className="font-display text-lg text-teal-900">Records</h3>
+        {rows.length === 0 ? (
+          <p className="mt-2 text-sm text-slate-500">No records loaded yet.</p>
+        ) : (
+          <ul className="mt-3 space-y-3">
+            {rows.map((rep, idx) => (
+              <li key={rep.id || idx} className="record" style={{ animationDelay: `${idx * 60}ms` }}>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-slate-800">{rep.name} {rep.surname}</p>
+                    <p className="text-xs text-slate-500">{rep.email}</p>
+                    <p className="mt-1 break-all text-[11px] text-slate-400">{rep.id}</p>
+                  </div>
+                  <span className={rep.active ? "pill-on" : "pill-off"}>{rep.active ? "ACTIVE" : "INACTIVE"}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <p className="rounded-2xl bg-white/70 px-4 py-3 text-sm shadow-soft">{message}</p>
+    </section>
+  );
+}
+
+export default MedicalSalesRepPage;

@@ -86,4 +86,47 @@ export const salesRepApi = {
     })
 };
 
+export const healthCareProfApi = {
+  list: (token, filters) =>
+    request("/api/v1/healthcareprof/list", {
+      method: "POST",
+      token,
+      query: {
+        firstName: filters.firstName,
+        lastName: filters.lastName,
+        page: filters.page,
+        pageSize: filters.pageSize
+      }
+    }),
+  create: (token, payload) =>
+    request("/api/v1/healthcareprof/create", {
+      method: "POST",
+      token,
+      body: payload
+    }),
+  update: (token, payload) =>
+    request("/api/v1/healthcareprof/update", {
+      method: "PUT",
+      token,
+      body: payload
+    }),
+  activate: (token, id) =>
+    request("/api/v1/healthcareprof/activate", {
+      method: "POST",
+      token,
+      body: { id }
+    }),
+  deactivate: (token, id) =>
+    request("/api/v1/healthcareprof/deactivate", {
+      method: "POST",
+      token,
+      body: { id }
+    }),
+  specialties: (token) =>
+    request("/api/v1/healthcareprof/specialties", {
+      method: "GET",
+      token
+    })
+};
+
 export { API_BASE };
