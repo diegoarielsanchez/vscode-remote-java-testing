@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyOutput;
@@ -52,44 +51,28 @@ public class VisitController {
     @PostMapping("/create")
     @Operation(summary = "Create visit")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createVisit(@Valid @RequestBody CreateVisitInputDTO inputDTO) throws ResponseStatusException {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(createVisitUseCase.execute(inputDTO));
-        } catch (DomainException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<Object> createVisit(@Valid @RequestBody CreateVisitInputDTO inputDTO) throws DomainException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(createVisitUseCase.execute(inputDTO));
     }
 
     @PutMapping("/update")
     @Operation(summary = "Update visit")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> updateVisit(@Valid @RequestBody UpdateVisitInputDTO inputDTO) throws ResponseStatusException {
-        try {
-            return ResponseEntity.ok(updateVisitUseCase.execute(inputDTO));
-        } catch (DomainException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<Object> updateVisit(@Valid @RequestBody UpdateVisitInputDTO inputDTO) throws DomainException {
+        return ResponseEntity.ok(updateVisitUseCase.execute(inputDTO));
     }
 
     @GetMapping("/get")
     @Operation(summary = "Get visit by ID")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> getVisitById(@Valid @RequestBody VisitIDDto inputDTO) throws ResponseStatusException {
-        try {
-            return ResponseEntity.ok(getVisitByIdUseCase.execute(inputDTO));
-        } catch (DomainException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<Object> getVisitById(@Valid @RequestBody VisitIDDto inputDTO) throws DomainException {
+        return ResponseEntity.ok(getVisitByIdUseCase.execute(inputDTO));
     }
 
     @PostMapping("/list")
     @Operation(summary = "List visits")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> listVisits() throws ResponseStatusException {
-        try {
-            return ResponseEntity.ok(listVisitsUseCase.execute());
-        } catch (DomainException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<Object> listVisits() throws DomainException {
+        return ResponseEntity.ok(listVisitsUseCase.execute());
     }
 }

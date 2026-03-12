@@ -1,9 +1,9 @@
 package com.das.cleanddd.domain.visit.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.LinkedHashSet;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
@@ -16,52 +16,43 @@ import com.das.cleanddd.domain.shared.TextValueObject;
 import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 
 @Service
-public final class Visit extends AggregateRoot {
+public final class VisitPlan extends AggregateRoot {
 
     private VisitId _visitId;
-    private LocalDate _visitDate;
+    private LocalDateTime _visitDateTime;
     private HealthCareProf _healthCareProf;
     private TextValueObject _visitComments;
     private MedicalSalesRep _medicalSalesRep;
     private Identifier _visitSiteId;
     private final List<VisitItem> _visitItems = new ArrayList<>();
-    //private final Set<ShoppingItem> shoppingItems = new LinkedHashSet<>();
 
-    public Visit(VisitId visitId
-        , LocalDate visitDate
+    public VisitPlan(VisitId visitId
+        , LocalDateTime visitDateTime
         , HealthCareProf healthCareProf
         , TextValueObject visitComments
         , Identifier visitSiteId
         , List<VisitItem> visitItems
-        ,  MedicalSalesRep medicalSalesRep) throws BusinessValidationException {
+        , MedicalSalesRep medicalSalesRep) throws BusinessValidationException {
 
-        if (visitDate == null || visitDate.isAfter(LocalDate.now())) {
-            throw new BusinessValidationException("Visit date cannot be later than today.");
-        }
-        if (medicalSalesRep == null || !Boolean.TRUE.equals(medicalSalesRep.isActive())) {
-            throw new BusinessValidationException("Medical Sales Representative must be active.");
-        }
-        if (healthCareProf == null || !Boolean.TRUE.equals(healthCareProf.isActive())) {
-            throw new BusinessValidationException("Health Care Professional must be active.");
+        if (visitDateTime == null || visitDateTime.toLocalDate().isBefore(LocalDate.now())) {
+            throw new BusinessValidationException("Visit date/time cannot be in the past.");
         }
 
-        this._visitId       = visitId;
-        this._visitDate = visitDate;
+        this._visitId = visitId;
+        this._visitDateTime = visitDateTime;
         this._healthCareProf = healthCareProf;
         this._visitComments = visitComments;
         this._visitSiteId = visitSiteId;
-        //this._visitItems = visitItems;
         this._medicalSalesRep = medicalSalesRep;
     }
 
     @SuppressWarnings("unused")
-    private Visit() {
-        _visitId       = null;
-        _visitDate = null;
+    private VisitPlan() {
+        _visitId = null;
+        _visitDateTime = null;
         _healthCareProf = null;
         _visitComments = null;
         _visitSiteId = null;
-        //_visitItems = null;
         _medicalSalesRep = null;
     }
 
@@ -89,10 +80,10 @@ public final class Visit extends AggregateRoot {
         return _visitComments;
     }
 
-    public LocalDate visitDate() {
-        return _visitDate;
+    public LocalDateTime visitTimeDate() {
+        return _visitDateTime;
     }
-    
+
     public MedicalSalesRep medicalSalesRep() {
         return _medicalSalesRep;
     }
@@ -105,14 +96,14 @@ public final class Visit extends AggregateRoot {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Visit visit = (Visit) o;
-        return _visitId.equals(visit._visitId) &&
-               _visitDate.equals(visit._visitDate);
+        VisitPlan visitPlan = (VisitPlan) o;
+        return _visitId.equals(visitPlan._visitId) &&
+               _visitDateTime.equals(visitPlan._visitDateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_visitId, _visitDate);
+        return Objects.hash(_visitId, _visitDateTime);
     }
 
 }

@@ -1,15 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { API_BASE, authApi } from "./api";
 import HealthCareProfessionalPage from "./pages/HealthCareProfessionalPage";
 import HomePage from "./pages/HomePage";
 import MedicalSalesRepPage from "./pages/MedicalSalesRepPage";
-
-const views = [
-  { path: "/", label: "Home" },
-  { path: "/healthcare-professional", label: "Health Care Professional" },
-  { path: "/medical-sales-representative", label: "Medical Sales Representative" }
-];
 
 function App() {
   const navigate = useNavigate();
@@ -18,7 +12,9 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [message, setMessage] = useState("Sign in to access Health Care Professional and Medical Sales Representative APIs.");
+  const menuRef = useRef(null);
 
   const isAuthed = useMemo(() => token.trim().length > 0, [token]);
 
@@ -29,6 +25,23 @@ function App() {
       "/medical-sales-representative": "Medical Sales Representative | Healthcare Mobile Console"
     };
     document.title = titleByPath[location.pathname] || "Healthcare Mobile Console";
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [menuOpen]);
+
+  useEffect(() => {
+    setMenuOpen(false);
   }, [location.pathname]);
 
   const setSuccess = (text) => setMessage(`OK: ${text}`);
@@ -57,8 +70,51 @@ function App() {
     <div className="min-h-screen bg-app px-4 py-6 text-slate-900">
       <main className="mx-auto w-full max-w-xl space-y-5 pb-24 animate-enter">
         <section className="card rounded-3xl p-5">
-          <p className="text-xs uppercase tracking-[0.22em] text-teal-700">vscode-remot-java-testing-ui</p>
-          <h1 className="font-display text-3xl leading-tight text-teal-950">Healthcare Mobile Console</h1>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[0.22em] text-teal-700">vscode-remot-java-testing-ui</p>
+              <h1 className="font-display text-3xl leading-tight text-teal-950">Healthcare Mobile Console</h1>
+            </div>
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                className="hamburger-btn"
+                aria-label="Toggle menu"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((prev) => !prev)}
+              >
+                <span className="hamburger-line" />
+                <span className="hamburger-line" />
+                <span className="hamburger-line" />
+              </button>
+
+              {menuOpen ? (
+                <div className="hamburger-panel">
+                  <button
+                    className={location.pathname === "/" ? "hamburger-link hamburger-link-active" : "hamburger-link"}
+                    aria-current={location.pathname === "/" ? "page" : undefined}
+                    onClick={() => navigate("/")}
+                  >
+                    Home
+                  </button>
+                  <button
+                    className={location.pathname === "/healthcare-professional" ? "hamburger-link hamburger-link-active" : "hamburger-link"}
+                    aria-current={location.pathname === "/healthcare-professional" ? "page" : undefined}
+                    onClick={() => navigate("/healthcare-professional")}
+                  >
+                    Health Care Professional
+                  </button>
+                  <button
+                    className={location.pathname === "/medical-sales-representative" ? "hamburger-link hamburger-link-active" : "hamburger-link"}
+                    aria-current={location.pathname === "/medical-sales-representative" ? "page" : undefined}
+                    onClick={() => navigate("/medical-sales-representative")}
+                  >
+                    Medical Sales Representative
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </div>
           <p className="mt-2 text-sm text-slate-600">
             Mobile-first React + Tailwind interface with menu navigation.
           </p>
@@ -100,7 +156,7 @@ function App() {
         </section>
 
         <Routes>
-          <Route path="/" element={<HomePage onNavigate={navigate} />} />
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/healthcare-professional"
             element={<HealthCareProfessionalPage token={token} isAuthed={isAuthed} />}
@@ -114,20 +170,6 @@ function App() {
 
         <p className="rounded-2xl bg-white/70 px-4 py-3 text-sm shadow-soft">{message}</p>
       </main>
-
-      <nav className="menu-shell">
-        <div className="menu-grid">
-          {views.map((view) => (
-            <button
-              key={view.path}
-              className={location.pathname === view.path ? "menu-item menu-item-active" : "menu-item"}
-              onClick={() => navigate(view.path)}
-            >
-              {view.label}
-            </button>
-          ))}
-        </div>
-      </nav>
     </div>
   );
 }

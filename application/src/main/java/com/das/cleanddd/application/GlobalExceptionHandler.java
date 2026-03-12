@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.das.cleanddd.domain.shared.exceptions.DomainException;
+
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
@@ -82,6 +84,20 @@ public class GlobalExceptionHandler {
         ErrorMainResponse errorResponse = new ErrorMainResponse(HttpStatus.TOO_MANY_REQUESTS.value(),
             "Rate limit exceeded. Please try again later.");
         return new ResponseEntity<>(errorResponse, HttpStatus.TOO_MANY_REQUESTS);
+    }
+
+    @ExceptionHandler(DomainException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorMainResponse> handleDomainException(DomainException ex) {
+        ErrorMainResponse errorResponse = new ErrorMainResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorMainResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        ErrorMainResponse errorResponse = new ErrorMainResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     // Generic exception handler for unhandled exceptions - OWASP: Don't leak sensitive information

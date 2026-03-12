@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepNamesInputDTO;
@@ -59,61 +58,35 @@ public class MedicalSalesRepController {
     @PostMapping("/create")
     @Operation(summary = "Create medical sales representative")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createMedicalSalesRep(@Valid @RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws ResponseStatusException{
-        try {
-            return  ResponseEntity.status(HttpStatus.CREATED).body(createMedicalSalesRepUseCase.execute(inputDTO));
-        } catch (DomainException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<Object> createMedicalSalesRep(@Valid @RequestBody CreateMedicalSalesRepInputDTO inputDTO) throws DomainException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(createMedicalSalesRepUseCase.execute(inputDTO));
     }
 
     @PutMapping("/update")
     @Operation(summary = "Update medical sales representative")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> updateMedicalSalesRep(@Valid @RequestBody UpdateMedicalSalesRepInputDTO inputDTO) throws DomainException{
-        try {
-            return ResponseEntity.ok(updateMedicalSalesRepUseCase.execute(inputDTO));
-        } catch (DomainException | IllegalArgumentException e) {
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<Object> updateMedicalSalesRep(@Valid @RequestBody UpdateMedicalSalesRepInputDTO inputDTO) throws DomainException {
+        return ResponseEntity.ok(updateMedicalSalesRepUseCase.execute(inputDTO));
     }
     @PostMapping("/activate")
     @Operation(summary = "Activate medical sales representative")
     @ResponseStatus(HttpStatus.OK)
     //public ResponseEntity<EmptyBodyModel> activate(@RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException {    
-    public void activateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
-        try {
-            activateMedicalSalesRepUseCase.execute(inputDTO);
-        } catch (DomainException | IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-        //activateMedicalSalesRepUseCase.execute(inputDTO);
+    public void activateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException {
+        activateMedicalSalesRepUseCase.execute(inputDTO);
     }
     @PostMapping("/deactivate")
     @Operation(summary = "Deactivate medical sales representative")
     @ResponseStatus(HttpStatus.OK)
-    public void deactivateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException{
-        try {
-            deactivateMedicalSalesRepUseCase.execute(inputDTO);
-        } catch (DomainException | IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-        //deactivateMedicalSalesRepUseCase.execute(inputDTO);
+    public void deactivateMedicalSalesRep(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException {
+        deactivateMedicalSalesRepUseCase.execute(inputDTO);
     }
 
     @GetMapping("/get")
     @Operation(summary = "Get medical sales representative by ID")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> getMedicalSalesRepByID(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws ResponseStatusException{
-        try {
-            //return ResponseEntity.ok(getGetMedicalSalesRepByIdUseCase.execute(inputDTO));
-            return ResponseEntity.ok(getGetMedicalSalesRepByIdUseCase.execute(inputDTO));
-        } catch (DomainException | IllegalArgumentException e) {
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-        //return getGetMedicalSalesRepByIdUseCase.execute(inputDTO);
+    public ResponseEntity<Object> getMedicalSalesRepByID(@Valid @RequestBody MedicalSalesRepIDDto inputDTO) throws DomainException {
+        return ResponseEntity.ok(getGetMedicalSalesRepByIdUseCase.execute(inputDTO));
     }
     //@GetMapping("/list")
     @PostMapping("/list")
@@ -125,13 +98,9 @@ public class MedicalSalesRepController {
         @RequestParam(required = false, defaultValue = "") String lastName,
         @RequestParam(required = false, defaultValue = "1") int page,
         @RequestParam(required = false, defaultValue = "10") int pageSize
-        ) throws ResponseStatusException {
-        try {
-            MedicalSalesRepNamesInputDTO inputDTO = new MedicalSalesRepNamesInputDTO(firstName, lastName, page, pageSize);
-            return ResponseEntity.ok(findMedicalSalesRepByNameUseCase.execute(inputDTO));
-        } catch (DomainException | IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }    
+        ) throws DomainException {
+        MedicalSalesRepNamesInputDTO inputDTO = new MedicalSalesRepNamesInputDTO(firstName, lastName, page, pageSize);
+        return ResponseEntity.ok(findMedicalSalesRepByNameUseCase.execute(inputDTO));
     }
     
 }

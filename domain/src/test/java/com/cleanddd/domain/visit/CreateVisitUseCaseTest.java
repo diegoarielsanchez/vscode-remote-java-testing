@@ -21,6 +21,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 import com.das.cleanddd.domain.visit.IVisitRepository;
 import com.das.cleanddd.domain.visit.entities.Visit;
@@ -62,6 +63,8 @@ class CreateVisitUseCaseTest {
 
         HealthCareProf healthCareProf = mock(HealthCareProf.class);
         MedicalSalesRep medicalSalesRep = mock(MedicalSalesRep.class);
+        when(healthCareProf.isActive()).thenReturn(true);
+        when(medicalSalesRep.isActive()).thenReturn(true);
 
         when(healthCareProfRepository.findById(any(HealthCareProfId.class))).thenReturn(Optional.of(healthCareProf));
         when(medicalSalesRepRepository.findById(any(MedicalSalesRepId.class))).thenReturn(Optional.of(medicalSalesRep));
@@ -122,6 +125,74 @@ class CreateVisitUseCaseTest {
 
         DomainException ex = assertThrows(DomainException.class, () -> useCase.execute(input));
         assertEquals("Medical Sales Representative not found", ex.getMessage());
+        verify(visitRepository, never()).save(any(Visit.class));
+    }
+
+    @Test
+    void shouldThrowWhenVisitDateIsInTheFuture() {
+        CreateVisitInputDTO input = new CreateVisitInputDTO(
+            LocalDate.now().plusDays(1),
+            UUID.randomUUID().toString(),
+            "notes",
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString()
+        );
+
+        HealthCareProf healthCareProf = mock(HealthCareProf.class);
+        MedicalSalesRep medicalSalesRep = mock(MedicalSalesRep.class);
+        when(healthCareProf.isActive()).thenReturn(true);
+        when(medicalSalesRep.isActive()).thenReturn(true);
+        when(healthCareProfRepository.findById(any(HealthCareProfId.class))).thenReturn(Optional.of(healthCareProf));
+        when(medicalSalesRepRepository.findById(any(MedicalSalesRepId.class))).thenReturn(Optional.of(medicalSalesRep));
+
+        BusinessValidationException ex = assertThrows(BusinessValidationException.class, () -> useCase.execute(input));
+        assertEquals("Visit date cannot be later than today.", ex.getMessage());
+        verify(visitRepository, never()).save(any(Visit.class));
+    }
+
+    @Test
+    void shouldThrowWhenMedicalSalesRepIsInactive() {
+        CreateVisitInputDTO input = new CreateVisitInputDTO(
+            LocalDate.now(),
+            UUID.randomUUID().toString(),
+            "notes",
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString()
+        );
+
+        HealthCareProf healthCareProf = mock(HealthCareProf.class);
+        MedicalSalesRep medicalSalesRep = mock(MedicalSalesRep.class);
+        when(healthCareProf.isActive()).thenReturn(true);
+        when(medicalSalesRep.isActive()).thenReturn(false);
+
+        when(healthCareProfRepository.findById(any(HealthCareProfId.class))).thenReturn(Optional.of(healthCareProf));
+        when(medicalSalesRepRepository.findById(any(MedicalSalesRepId.class))).thenReturn(Optional.of(medicalSalesRep));
+
+        BusinessValidationException ex = assertThrows(BusinessValidationException.class, () -> useCase.execute(input));
+        assertEquals("Medical Sales Representative must be active.", ex.getMessage());
+        verify(visitRepository, never()).save(any(Visit.class));
+    }
+
+    @Test
+    void shouldThrowWhenHealthCareProfIsInactive() {
+        CreateVisitInputDTO input = new CreateVisitInputDTO(
+            LocalDate.now(),
+            UUID.randomUUID().toString(),
+            "notes",
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString()
+        );
+
+        HealthCareProf healthCareProf = mock(HealthCareProf.class);
+        MedicalSalesRep medicalSalesRep = mock(MedicalSalesRep.class);
+        when(healthCareProf.isActive()).thenReturn(false);
+        when(medicalSalesRep.isActive()).thenReturn(true);
+
+        when(healthCareProfRepository.findById(any(HealthCareProfId.class))).thenReturn(Optional.of(healthCareProf));
+        when(medicalSalesRepRepository.findById(any(MedicalSalesRepId.class))).thenReturn(Optional.of(medicalSalesRep));
+
+        BusinessValidationException ex = assertThrows(BusinessValidationException.class, () -> useCase.execute(input));
+        assertEquals("Health Care Professional must be active.", ex.getMessage());
         verify(visitRepository, never()).save(any(Visit.class));
     }
 }

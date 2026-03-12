@@ -73,11 +73,15 @@ body {
 }
 
 .hamburger-panel {
-  @apply absolute right-0 top-12 z-30 flex w-64 flex-col gap-1 rounded-2xl border border-teal-100 bg-white p-2 shadow-soft;
+  @apply absolute right-0 top-12 z-50 flex w-72 max-w-[80vw] flex-col gap-1 rounded-2xl border border-teal-100 bg-white p-2 shadow-soft;
 }
 
 .hamburger-link {
   @apply rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-700 transition hover:bg-teal-50 hover:text-teal-900;
+}
+
+.hamburger-link-active {
+  @apply bg-teal-700 text-white hover:bg-teal-700 hover:text-white;
 }
 
 .menu-shell {
