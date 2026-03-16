@@ -33,7 +33,7 @@ public final class Visit extends AggregateRoot {
         , TextValueObject visitComments
         , Identifier visitSiteId
         , List<VisitItem> visitItems
-        ,  MedicalSalesRep medicalSalesRep) throws BusinessValidationException {
+        , MedicalSalesRep medicalSalesRep) throws BusinessValidationException {
 
         if (visitDate == null || visitDate.isAfter(LocalDate.now())) {
             throw new BusinessValidationException("Visit date cannot be later than today.");

@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.MockitoAnnotations;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
@@ -43,6 +44,7 @@ class UpdateHealthCareProfUseCaseTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         repository = mock(HealthCareProfRepository.class);
         factory = mock(HealthCareProfFactory.class);
         mapper = mock(HealthCareProfMapper.class);

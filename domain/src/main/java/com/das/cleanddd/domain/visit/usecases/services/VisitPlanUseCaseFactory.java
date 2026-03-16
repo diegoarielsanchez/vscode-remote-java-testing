@@ -9,6 +9,7 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepositor
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyOutput;
 import com.das.cleanddd.domain.visit.IVisitPlanRepository;
+import com.das.cleanddd.domain.visit.entities.VisitPlanFactory;
 import com.das.cleanddd.domain.visit.usecases.dtos.CreateVisitPlanInputDTO;
 import com.das.cleanddd.domain.visit.usecases.dtos.UpdateVisitPlanInputDTO;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitPlanIDDto;
@@ -29,10 +30,12 @@ public class VisitPlanUseCaseFactory {
         MedicalSalesRepRepository medicalSalesRepRepository
     ) {
         VisitPlanMapper mapper = new VisitPlanMapper();
+        VisitPlanFactory visitPlanFactory = new VisitPlanFactory();
         this.createVisitPlanUseCase = new CreateVisitPlanUseCase(
             visitPlanRepository,
             healthCareProfRepository,
             medicalSalesRepRepository,
+            visitPlanFactory,
             mapper
         );
         this.updateVisitPlanUseCase = new UpdateVisitPlanUseCase(

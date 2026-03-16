@@ -1,8 +1,6 @@
 package com.das.cleanddd.domain.visit.usecases.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +16,8 @@ import com.das.cleanddd.domain.shared.TextValueObject;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 import com.das.cleanddd.domain.visit.IVisitPlanRepository;
-import com.das.cleanddd.domain.visit.entities.VisitId;
 import com.das.cleanddd.domain.visit.entities.VisitPlan;
+import com.das.cleanddd.domain.visit.entities.VisitPlanFactory;
 import com.das.cleanddd.domain.visit.usecases.dtos.CreateVisitPlanInputDTO;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitPlanMapper;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitPlanOutputDTO;
@@ -34,17 +32,21 @@ public final class CreateVisitPlanUseCase implements UseCase<CreateVisitPlanInpu
     @Autowired
     private final MedicalSalesRepRepository medicalSalesRepRepository;
     @Autowired
+    private final VisitPlanFactory factory;
+    @Autowired
     private final VisitPlanMapper mapper;
 
     public CreateVisitPlanUseCase(
         IVisitPlanRepository visitPlanRepository,
         HealthCareProfRepository healthCareProfRepository,
         MedicalSalesRepRepository medicalSalesRepRepository,
+        VisitPlanFactory factory,
         VisitPlanMapper mapper
     ) {
         this.visitPlanRepository = visitPlanRepository;
         this.healthCareProfRepository = healthCareProfRepository;
         this.medicalSalesRepRepository = medicalSalesRepRepository;
+        this.factory = factory;
         this.mapper = mapper;
     }
 
@@ -85,13 +87,12 @@ public final class CreateVisitPlanUseCase implements UseCase<CreateVisitPlanInpu
                 ? null
                 : new TextValueObject(inputDTO.visitComments()) {};
 
-            VisitPlan visitPlan = new VisitPlan(
-                new VisitId(UUID.randomUUID().toString()),
+            // Create a new VisitPlan object using the factory
+            VisitPlan visitPlan = factory.createVisitPlan(
                 inputDTO.visitDateTime(),
                 healthCareProf.get(),
                 comments,
                 visitSiteId,
-                List.of(),
                 medicalSalesRep.get()
             );
 

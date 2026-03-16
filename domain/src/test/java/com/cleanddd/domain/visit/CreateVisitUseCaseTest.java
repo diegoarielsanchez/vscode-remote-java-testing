@@ -25,6 +25,7 @@ import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 import com.das.cleanddd.domain.visit.IVisitRepository;
 import com.das.cleanddd.domain.visit.entities.Visit;
+import com.das.cleanddd.domain.visit.entities.VisitFactory;
 import com.das.cleanddd.domain.visit.usecases.dtos.CreateVisitInputDTO;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitMapper;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitOutputDTO;
@@ -35,6 +36,7 @@ class CreateVisitUseCaseTest {
     private IVisitRepository visitRepository;
     private HealthCareProfRepository healthCareProfRepository;
     private MedicalSalesRepRepository medicalSalesRepRepository;
+    private VisitFactory visitFactory;
     private VisitMapper mapper;
     private CreateVisitUseCase useCase;
 
@@ -43,8 +45,9 @@ class CreateVisitUseCaseTest {
         visitRepository = mock(IVisitRepository.class);
         healthCareProfRepository = mock(HealthCareProfRepository.class);
         medicalSalesRepRepository = mock(MedicalSalesRepRepository.class);
+        visitFactory = new VisitFactory();
         mapper = mock(VisitMapper.class);
-        useCase = new CreateVisitUseCase(visitRepository, healthCareProfRepository, medicalSalesRepRepository, mapper);
+        useCase = new CreateVisitUseCase(visitRepository, healthCareProfRepository, medicalSalesRepRepository, visitFactory, mapper);
     }
 
     @Test
@@ -193,6 +196,28 @@ class CreateVisitUseCaseTest {
 
         BusinessValidationException ex = assertThrows(BusinessValidationException.class, () -> useCase.execute(input));
         assertEquals("Health Care Professional must be active.", ex.getMessage());
+        verify(visitRepository, never()).save(any(Visit.class));
+    }
+
+    @Test
+    void shouldThrowWhenDuplicateVisitExists() {
+        CreateVisitInputDTO input = new CreateVisitInputDTO(
+            LocalDate.now(),
+            UUID.randomUUID().toString(),
+            "notes",
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString()
+        );
+
+        HealthCareProf healthCareProf = mock(HealthCareProf.class);
+        MedicalSalesRep medicalSalesRep = mock(MedicalSalesRep.class);
+
+        when(healthCareProfRepository.findById(any(HealthCareProfId.class))).thenReturn(Optional.of(healthCareProf));
+        when(medicalSalesRepRepository.findById(any(MedicalSalesRepId.class))).thenReturn(Optional.of(medicalSalesRep));
+        when(visitRepository.existsByVisitKey(any(HealthCareProfId.class), any(MedicalSalesRepId.class), any(LocalDate.class))).thenReturn(true);
+
+        DomainException ex = assertThrows(DomainException.class, () -> useCase.execute(input));
+        assertEquals("A visit already exists for this Health Care Professional, Medical Sales Representative and date.", ex.getMessage());
         verify(visitRepository, never()).save(any(Visit.class));
     }
 }

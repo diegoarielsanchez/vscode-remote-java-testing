@@ -26,6 +26,7 @@ import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 import com.das.cleanddd.domain.visit.IVisitPlanRepository;
 import com.das.cleanddd.domain.visit.entities.VisitPlan;
+import com.das.cleanddd.domain.visit.entities.VisitPlanFactory;
 import com.das.cleanddd.domain.visit.usecases.dtos.CreateVisitPlanInputDTO;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitPlanMapper;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitPlanOutputDTO;
@@ -36,6 +37,7 @@ class CreateVisitPlanUseCaseTest {
     private IVisitPlanRepository visitPlanRepository;
     private HealthCareProfRepository healthCareProfRepository;
     private MedicalSalesRepRepository medicalSalesRepRepository;
+    private VisitPlanFactory visitPlanFactory;
     private VisitPlanMapper mapper;
     private CreateVisitPlanUseCase useCase;
 
@@ -44,8 +46,9 @@ class CreateVisitPlanUseCaseTest {
         visitPlanRepository = mock(IVisitPlanRepository.class);
         healthCareProfRepository = mock(HealthCareProfRepository.class);
         medicalSalesRepRepository = mock(MedicalSalesRepRepository.class);
+        visitPlanFactory = new VisitPlanFactory();
         mapper = mock(VisitPlanMapper.class);
-        useCase = new CreateVisitPlanUseCase(visitPlanRepository, healthCareProfRepository, medicalSalesRepRepository, mapper);
+        useCase = new CreateVisitPlanUseCase(visitPlanRepository, healthCareProfRepository, medicalSalesRepRepository, visitPlanFactory, mapper);
     }
 
     // ── Happy path ────────────────────────────────────────────────────────────

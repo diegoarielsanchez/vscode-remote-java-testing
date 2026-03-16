@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-   @ExceptionHandler(InvalidInputException.class)
+    @ExceptionHandler(InvalidInputException.class)
     public ResponseEntity<ErrorMainResponse> handleInvalidInputException(InvalidInputException ex) {
         ErrorMainResponse errorResponse = new ErrorMainResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

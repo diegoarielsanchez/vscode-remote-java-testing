@@ -1,8 +1,6 @@
 package com.das.cleanddd.domain.visit.usecases.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,7 @@ import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 import com.das.cleanddd.domain.visit.IVisitRepository;
 import com.das.cleanddd.domain.visit.entities.Visit;
-import com.das.cleanddd.domain.visit.entities.VisitId;
+import com.das.cleanddd.domain.visit.entities.VisitFactory;
 import com.das.cleanddd.domain.visit.usecases.dtos.CreateVisitInputDTO;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitMapper;
 import com.das.cleanddd.domain.visit.usecases.dtos.VisitOutputDTO;
@@ -34,17 +32,21 @@ public final class CreateVisitUseCase implements UseCase<CreateVisitInputDTO, Vi
     @Autowired
     private final MedicalSalesRepRepository medicalSalesRepRepository;
     @Autowired
+    private final VisitFactory factory;
+    @Autowired
     private final VisitMapper mapper;
 
     public CreateVisitUseCase(
         IVisitRepository visitRepository,
         HealthCareProfRepository healthCareProfRepository,
         MedicalSalesRepRepository medicalSalesRepRepository,
+        VisitFactory factory,
         VisitMapper mapper
     ) {
         this.visitRepository = visitRepository;
         this.healthCareProfRepository = healthCareProfRepository;
         this.medicalSalesRepRepository = medicalSalesRepRepository;
+        this.factory = factory;
         this.mapper = mapper;
     }
 
@@ -81,17 +83,20 @@ public final class CreateVisitUseCase implements UseCase<CreateVisitInputDTO, Vi
                 throw new DomainException("Medical Sales Representative not found");
             }
 
+            if (visitRepository.existsByVisitKey(healthCareProfId, medicalSalesRepId, inputDTO.visitDate())) {
+                throw new DomainException("A visit already exists for this Health Care Professional, Medical Sales Representative and date.");
+            }
+
             TextValueObject comments = inputDTO.visitComments() == null
                 ? null
                 : new TextValueObject(inputDTO.visitComments()) {};
 
-            Visit visit = new Visit(
-                new VisitId(UUID.randomUUID().toString()),
+            // Create a new Visit object using the factory
+            Visit visit = factory.createVisit(
                 inputDTO.visitDate(),
                 healthCareProf.get(),
                 comments,
                 visitSiteId,
-                List.of(),
                 medicalSalesRep.get()
             );
 

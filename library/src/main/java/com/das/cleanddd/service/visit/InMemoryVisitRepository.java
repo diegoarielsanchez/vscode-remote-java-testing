@@ -1,5 +1,6 @@
 package com.das.cleanddd.service.visit;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
+import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 import com.das.cleanddd.domain.visit.IVisitRepository;
@@ -44,5 +47,17 @@ public final class InMemoryVisitRepository implements IVisitRepository {
     @Override
     public synchronized List<Visit> searchAll() {
         return new ArrayList<>(visits.values());
+    }
+
+    @Override
+    public synchronized boolean existsByVisitKey(HealthCareProfId healthCareProfId, MedicalSalesRepId medicalSalesRepId, LocalDate visitDate) {
+        if (healthCareProfId == null || medicalSalesRepId == null || visitDate == null) {
+            return false;
+        }
+        return visits.values().stream().anyMatch(v ->
+            v.healthCareProf().getId().value().equals(healthCareProfId.value()) &&
+            v.medicalSalesRep().getId().value().equals(medicalSalesRepId.value()) &&
+            v.visitDate().equals(visitDate)
+        );
     }
 }
