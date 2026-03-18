@@ -84,6 +84,13 @@ public final class VisitPlan extends AggregateRoot {
         return _visitDateTime;
     }
 
+    public String visitDayPeriod() {
+        if (_visitDateTime == null) {
+            return null;
+        }
+        return _visitDateTime.getHour() < 12 ? "MORNING" : "AFTERNOON";
+    }
+
     public MedicalSalesRep medicalSalesRep() {
         return _medicalSalesRep;
     }

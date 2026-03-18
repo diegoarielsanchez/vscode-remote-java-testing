@@ -1,6 +1,6 @@
 package com.das.cleanddd.domain.visit;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +19,6 @@ public interface IVisitRepository {
 
     List<Visit> searchAll();
 
-    boolean existsByVisitKey(HealthCareProfId healthCareProfId, MedicalSalesRepId medicalSalesRepId, LocalDate visitDate);
+    boolean existsByVisitKey(HealthCareProfId healthCareProfId, MedicalSalesRepId medicalSalesRepId, LocalDateTime visitDate);
 
 }

@@ -1,6 +1,6 @@
 package com.das.cleanddd.domain.visit.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.LinkedHashSet;
@@ -19,7 +19,7 @@ import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 public final class Visit extends AggregateRoot {
 
     private VisitId _visitId;
-    private LocalDate _visitDate;
+    private LocalDateTime _visitDate;
     private HealthCareProf _healthCareProf;
     private TextValueObject _visitComments;
     private MedicalSalesRep _medicalSalesRep;
@@ -28,14 +28,14 @@ public final class Visit extends AggregateRoot {
     //private final Set<ShoppingItem> shoppingItems = new LinkedHashSet<>();
 
     public Visit(VisitId visitId
-        , LocalDate visitDate
+        , LocalDateTime visitDate
         , HealthCareProf healthCareProf
         , TextValueObject visitComments
         , Identifier visitSiteId
         , List<VisitItem> visitItems
         , MedicalSalesRep medicalSalesRep) throws BusinessValidationException {
 
-        if (visitDate == null || visitDate.isAfter(LocalDate.now())) {
+        if (visitDate == null || visitDate.isAfter(LocalDateTime.now())) {
             throw new BusinessValidationException("Visit date cannot be later than today.");
         }
         if (medicalSalesRep == null || !Boolean.TRUE.equals(medicalSalesRep.isActive())) {
@@ -89,10 +89,17 @@ public final class Visit extends AggregateRoot {
         return _visitComments;
     }
 
-    public LocalDate visitDate() {
+    public LocalDateTime visitDate() {
         return _visitDate;
     }
-    
+
+    public String visitDayPeriod() {
+        if (_visitDate == null) {
+            return null;
+        }
+        return _visitDate.getHour() < 12 ? "MORNING" : "AFTERNOON";
+    }
+
     public MedicalSalesRep medicalSalesRep() {
         return _medicalSalesRep;
     }

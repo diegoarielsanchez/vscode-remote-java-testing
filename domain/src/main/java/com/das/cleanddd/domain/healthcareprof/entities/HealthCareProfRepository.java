@@ -14,6 +14,8 @@ public interface HealthCareProfRepository {
     List<HealthCareProf> findByName(HealthCareProfName name, HealthCareProfName surname, int page, int pageSize);
     //List<HealthCareProf> findByName(String name, String surname, int page, int pageSize);
 
+    List<HealthCareProf> findBySpecialty(String specialtyCode, int page, int pageSize);
+
     List<HealthCareProf> matching(Criteria criteria);
 
     List<HealthCareProf> searchAll();

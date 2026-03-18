@@ -1,5 +1,6 @@
 package com.das.cleanddd.domain.visit.usecases.services;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +84,9 @@ public final class CreateVisitUseCase implements UseCase<CreateVisitInputDTO, Vi
                 throw new DomainException("Medical Sales Representative not found");
             }
 
-            if (visitRepository.existsByVisitKey(healthCareProfId, medicalSalesRepId, inputDTO.visitDate())) {
+            LocalDateTime visitDateTime = inputDTO.visitDate().atStartOfDay();
+
+            if (visitRepository.existsByVisitKey(healthCareProfId, medicalSalesRepId, visitDateTime)) {
                 throw new DomainException("A visit already exists for this Health Care Professional, Medical Sales Representative and date.");
             }
 
@@ -93,7 +96,7 @@ public final class CreateVisitUseCase implements UseCase<CreateVisitInputDTO, Vi
 
             // Create a new Visit object using the factory
             Visit visit = factory.createVisit(
-                inputDTO.visitDate(),
+                visitDateTime,
                 healthCareProf.get(),
                 comments,
                 visitSiteId,

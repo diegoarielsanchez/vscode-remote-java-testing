@@ -1,10 +1,10 @@
 package com.das.cleanddd.domain.visit.usecases.dtos;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record UpdateVisitInputDTO(
     String id,
-    LocalDate visitDate,
+    LocalDateTime visitDate,
     String healthCareProfId,
     String visitComments,
     String visitSiteId,

@@ -52,6 +52,17 @@ public final class InMemoryHealthCareProfRepository implements HealthCareProfRep
 	}
 
 	@Override
+	public List<HealthCareProf> findBySpecialty(String specialtyCode, int page, int pageSize) {
+		return healthCareProfs.values().stream()
+				.filter(healthCareProf -> healthCareProf.getSpecialties() != null &&
+						healthCareProf.getSpecialties().stream()
+								.anyMatch(s -> s.code().equalsIgnoreCase(specialtyCode)))
+				.skip(((long) (page - 1)) * pageSize)
+				.limit(pageSize)
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public Optional<HealthCareProf> findById(HealthCareProfId identifier) {
 		// Implement the method logic here
 		return Optional.ofNullable(healthCareProfs.get(identifier.value()));

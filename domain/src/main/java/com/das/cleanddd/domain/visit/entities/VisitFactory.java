@@ -1,6 +1,6 @@
 package com.das.cleanddd.domain.visit.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 public class VisitFactory {
 
     public Visit createVisit(
-        LocalDate visitDate,
+        LocalDateTime visitDate,
         HealthCareProf healthCareProf,
         TextValueObject visitComments,
         Identifier visitSiteId,

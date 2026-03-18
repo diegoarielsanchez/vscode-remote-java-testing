@@ -1,6 +1,6 @@
 package com.das.inframongodb.service.visit;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -50,7 +50,7 @@ public final class InMemoryVisitRepository implements IVisitRepository {
     }
 
     @Override
-    public synchronized boolean existsByVisitKey(HealthCareProfId healthCareProfId, MedicalSalesRepId medicalSalesRepId, LocalDate visitDate) {
+    public synchronized boolean existsByVisitKey(HealthCareProfId healthCareProfId, MedicalSalesRepId medicalSalesRepId, LocalDateTime visitDate) {
         if (healthCareProfId == null || medicalSalesRepId == null || visitDate == null) {
             return false;
         }

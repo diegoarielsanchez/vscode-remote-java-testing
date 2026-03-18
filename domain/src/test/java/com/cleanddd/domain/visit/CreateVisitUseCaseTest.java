@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -74,7 +75,7 @@ class CreateVisitUseCaseTest {
 
         VisitOutputDTO expected = new VisitOutputDTO(
             UUID.randomUUID().toString(),
-            input.visitDate(),
+            input.visitDate().atStartOfDay(),
             input.healthCareProfId(),
             input.visitComments(),
             input.visitSiteId(),
@@ -214,7 +215,7 @@ class CreateVisitUseCaseTest {
 
         when(healthCareProfRepository.findById(any(HealthCareProfId.class))).thenReturn(Optional.of(healthCareProf));
         when(medicalSalesRepRepository.findById(any(MedicalSalesRepId.class))).thenReturn(Optional.of(medicalSalesRep));
-        when(visitRepository.existsByVisitKey(any(HealthCareProfId.class), any(MedicalSalesRepId.class), any(LocalDate.class))).thenReturn(true);
+        when(visitRepository.existsByVisitKey(any(HealthCareProfId.class), any(MedicalSalesRepId.class), any(LocalDateTime.class))).thenReturn(true);
 
         DomainException ex = assertThrows(DomainException.class, () -> useCase.execute(input));
         assertEquals("A visit already exists for this Health Care Professional, Medical Sales Representative and date.", ex.getMessage());

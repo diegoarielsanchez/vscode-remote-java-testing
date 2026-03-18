@@ -11,6 +11,7 @@ import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfNamesI
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfIDDto;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
+import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfSpecialtyInputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.UpdateHealthCareProfInputDTO;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
@@ -28,6 +29,7 @@ public class HealthCareProfUseCaseFactory {
     private final DeactivateHealthCareProfUseCase deactivateHealthCareProfUseCase;
     private final GetHealthCareProfByIdUseCase getHealthCareProfByIdUseCase;
     private final FindHealthCareProfByNameUseCase findHealthCareProfByNameUseCase;
+    private final FindHealthCareProfBySpecialtyUseCase findHealthCareProfBySpecialtyUseCase;
     
 
     public HealthCareProfUseCaseFactory(HealthCareProfRepository entityRepository) {
@@ -39,6 +41,7 @@ public class HealthCareProfUseCaseFactory {
         this.deactivateHealthCareProfUseCase = new DeactivateHealthCareProfUseCase(this._repository);
         this.getHealthCareProfByIdUseCase = new GetHealthCareProfByIdUseCase(this._repository, this._mapper);
         this.findHealthCareProfByNameUseCase = new FindHealthCareProfByNameUseCase(this._repository, this._mapper);
+        this.findHealthCareProfBySpecialtyUseCase = new FindHealthCareProfBySpecialtyUseCase(this._repository, this._mapper);
 
     }
 
@@ -59,5 +62,9 @@ public class HealthCareProfUseCaseFactory {
     }
     public UseCase<HealthCareProfNamesInputDTO, List<HealthCareProfOutputDTO>> getFindHealthCareProfByNameUseCase() {
         return findHealthCareProfByNameUseCase;
+    }
+
+    public UseCase<HealthCareProfSpecialtyInputDTO, List<HealthCareProfOutputDTO>> getFindHealthCareProfBySpecialtyUseCase() {
+        return findHealthCareProfBySpecialtyUseCase;
     }
 }
