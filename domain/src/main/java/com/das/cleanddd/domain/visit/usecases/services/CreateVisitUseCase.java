@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.TextValueObject;
 import com.das.cleanddd.domain.shared.UseCase;
@@ -29,9 +29,9 @@ public final class CreateVisitUseCase implements UseCase<CreateVisitInputDTO, Vi
     @Autowired
     private final IVisitRepository visitRepository;
     @Autowired
-    private final HealthCareProfRepository healthCareProfRepository;
+    private final IHealthCareProfRepository healthCareProfRepository;
     @Autowired
-    private final MedicalSalesRepRepository medicalSalesRepRepository;
+    private final IMedicalSalesRepRepository medicalSalesRepRepository;
     @Autowired
     private final VisitFactory factory;
     @Autowired
@@ -39,8 +39,8 @@ public final class CreateVisitUseCase implements UseCase<CreateVisitInputDTO, Vi
 
     public CreateVisitUseCase(
         IVisitRepository visitRepository,
-        HealthCareProfRepository healthCareProfRepository,
-        MedicalSalesRepRepository medicalSalesRepRepository,
+        IHealthCareProfRepository healthCareProfRepository,
+        IMedicalSalesRepRepository medicalSalesRepRepository,
         VisitFactory factory,
         VisitMapper mapper
     ) {

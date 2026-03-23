@@ -5,14 +5,14 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepActive;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.bus.event.EventBus;
 
 public final class MedicalSalesRepCreator {
-    private final MedicalSalesRepRepository repository;
+    private final IMedicalSalesRepRepository repository;
     //private final EventBus eventBus;
 
-    public MedicalSalesRepCreator(MedicalSalesRepRepository repository, EventBus eventBus) {
+    public MedicalSalesRepCreator(IMedicalSalesRepRepository repository, EventBus eventBus) {
         this.repository = repository;
         //this.eventBus   = eventBus;
     }

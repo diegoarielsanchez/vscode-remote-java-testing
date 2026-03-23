@@ -18,10 +18,10 @@ import org.junit.jupiter.api.Test;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.exceptions.BusinessValidationException;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 import com.das.cleanddd.domain.visit.IVisitRepository;
@@ -35,8 +35,8 @@ import com.das.cleanddd.domain.visit.usecases.services.CreateVisitUseCase;
 class CreateVisitUseCaseTest {
 
     private IVisitRepository visitRepository;
-    private HealthCareProfRepository healthCareProfRepository;
-    private MedicalSalesRepRepository medicalSalesRepRepository;
+    private IHealthCareProfRepository healthCareProfRepository;
+    private IMedicalSalesRepRepository medicalSalesRepRepository;
     private VisitFactory visitFactory;
     private VisitMapper mapper;
     private CreateVisitUseCase useCase;
@@ -44,8 +44,8 @@ class CreateVisitUseCaseTest {
     @BeforeEach
     void setUp() {
         visitRepository = mock(IVisitRepository.class);
-        healthCareProfRepository = mock(HealthCareProfRepository.class);
-        medicalSalesRepRepository = mock(MedicalSalesRepRepository.class);
+        healthCareProfRepository = mock(IHealthCareProfRepository.class);
+        medicalSalesRepRepository = mock(IMedicalSalesRepRepository.class);
         visitFactory = new VisitFactory();
         mapper = mock(VisitMapper.class);
         useCase = new CreateVisitUseCase(visitRepository, healthCareProfRepository, medicalSalesRepRepository, visitFactory, mapper);

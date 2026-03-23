@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.TextValueObject;
 import com.das.cleanddd.domain.shared.UseCase;
@@ -29,16 +29,16 @@ public final class UpdateVisitPlanUseCase implements UseCase<UpdateVisitPlanInpu
     @Autowired
     private final IVisitPlanRepository visitPlanRepository;
     @Autowired
-    private final HealthCareProfRepository healthCareProfRepository;
+    private final IHealthCareProfRepository healthCareProfRepository;
     @Autowired
-    private final MedicalSalesRepRepository medicalSalesRepRepository;
+    private final IMedicalSalesRepRepository medicalSalesRepRepository;
     @Autowired
     private final VisitPlanMapper mapper;
 
     public UpdateVisitPlanUseCase(
         IVisitPlanRepository visitPlanRepository,
-        HealthCareProfRepository healthCareProfRepository,
-        MedicalSalesRepRepository medicalSalesRepRepository,
+        IHealthCareProfRepository healthCareProfRepository,
+        IMedicalSalesRepRepository medicalSalesRepRepository,
         VisitPlanMapper mapper
     ) {
         this.visitPlanRepository = visitPlanRepository;

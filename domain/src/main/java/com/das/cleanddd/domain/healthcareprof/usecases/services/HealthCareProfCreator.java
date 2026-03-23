@@ -5,14 +5,14 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfActive;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.shared.bus.event.EventBus;
 
 public final class HealthCareProfCreator {
-    private final HealthCareProfRepository repository;
+    private final IHealthCareProfRepository repository;
     //private final EventBus eventBus;
 
-    public HealthCareProfCreator(HealthCareProfRepository repository, EventBus eventBus) {
+    public HealthCareProfCreator(IHealthCareProfRepository repository, EventBus eventBus) {
         this.repository = repository;
         //this.eventBus   = eventBus;
     }

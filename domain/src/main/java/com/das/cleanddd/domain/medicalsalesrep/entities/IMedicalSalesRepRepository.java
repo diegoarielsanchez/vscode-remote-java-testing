@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
-public interface MedicalSalesRepRepository {
+public interface IMedicalSalesRepRepository {
 
     void save(MedicalSalesRep medicalSalesRepresentative);
 

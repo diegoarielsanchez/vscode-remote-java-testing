@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfSpecialtyInputDTO;
@@ -15,11 +15,11 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 public class FindHealthCareProfBySpecialtyUseCase implements UseCase<HealthCareProfSpecialtyInputDTO, List<HealthCareProfOutputDTO>> {
 
     @Autowired
-    private final HealthCareProfRepository repository;
+    private final IHealthCareProfRepository repository;
     @Autowired
     private final HealthCareProfMapper mapper;
 
-    public FindHealthCareProfBySpecialtyUseCase(HealthCareProfRepository repository,
+    public FindHealthCareProfBySpecialtyUseCase(IHealthCareProfRepository repository,
             HealthCareProfMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;

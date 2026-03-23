@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfIDDto;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 public class DeactivateHealthCareProfUseCase implements UseCaseOnlyInput<HealthCareProfIDDto> {
    @Autowired
-    private final HealthCareProfRepository repository; 
+    private final IHealthCareProfRepository repository; 
 
-    public DeactivateHealthCareProfUseCase(HealthCareProfRepository repository) {
+    public DeactivateHealthCareProfUseCase(IHealthCareProfRepository repository) {
         this.repository = repository;
     }
 

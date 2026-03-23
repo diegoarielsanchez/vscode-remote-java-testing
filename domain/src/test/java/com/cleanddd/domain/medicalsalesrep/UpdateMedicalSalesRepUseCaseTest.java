@@ -19,7 +19,7 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.UpdateMedicalSalesRepInputDTO;
@@ -29,14 +29,14 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 class UpdateMedicalSalesRepUseCaseTest {
 
-    private MedicalSalesRepRepository repository;
+    private IMedicalSalesRepRepository repository;
     private MedicalSalesRepFactory factory;
     private MedicalSalesRepMapper mapper;
     private UpdateMedicalSalesRepUseCase useCase;
 
     @BeforeEach
     void setUp() {
-        repository = mock(MedicalSalesRepRepository.class);
+        repository = mock(IMedicalSalesRepRepository.class);
         factory = mock(MedicalSalesRepFactory.class);
         mapper = mock(MedicalSalesRepMapper.class);
         useCase = new UpdateMedicalSalesRepUseCase(repository, factory, mapper);

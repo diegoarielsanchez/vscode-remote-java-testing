@@ -19,7 +19,7 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
@@ -29,7 +29,7 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 class CreateMedicalSalesRepUseCaseTest {
 
-    private MedicalSalesRepRepository medicalSalesRepRepositoryMock = mock(MedicalSalesRepRepository.class);
+    private IMedicalSalesRepRepository medicalSalesRepRepositoryMock = mock(IMedicalSalesRepRepository.class);
     private MedicalSalesRepFactory medicalSalesRepFactoryMock = mock(MedicalSalesRepFactory.class);
     private MedicalSalesRepMapper medicalSalesRepMapperMock = mock(MedicalSalesRepMapper.class);
     private CreateMedicalSalesRepUseCase createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(medicalSalesRepRepositoryMock,medicalSalesRepFactoryMock,medicalSalesRepMapperMock);
@@ -59,7 +59,7 @@ class CreateMedicalSalesRepUseCaseTest {
     @BeforeEach
     void setUp() {
       // Reset mocks before each test
-      medicalSalesRepRepositoryMock = mock(MedicalSalesRepRepository.class);
+      medicalSalesRepRepositoryMock = mock(IMedicalSalesRepRepository.class);
       medicalSalesRepFactoryMock = mock(MedicalSalesRepFactory.class);
       medicalSalesRepMapperMock = mock(MedicalSalesRepMapper.class);
       createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(medicalSalesRepRepositoryMock,medicalSalesRepFactoryMock,medicalSalesRepMapperMock);
@@ -113,7 +113,7 @@ class CreateMedicalSalesRepUseCaseTest {
       assertNotNull(medicalSalesRepFactoryMock);
     }
 /*     @Test
-    void shouldCreateMedicalSalesRepRepository() {
+    void shouldCreateIMedicalSalesRepRepository() {
       assertNotNull(medicalSalesRepRepositoryMock);
     } */
     @Test

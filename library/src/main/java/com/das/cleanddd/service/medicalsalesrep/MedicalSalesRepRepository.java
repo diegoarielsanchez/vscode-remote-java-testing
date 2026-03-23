@@ -11,15 +11,15 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
 @Service
-public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepRepository {
-	
+//public final class MedicalSalesRepRepository implements IMedicalSalesRepRepository {
+public final class MedicalSalesRepRepository  {	
 	 private final HashMap<String, MedicalSalesRep> medicalSalesReps = new HashMap<>();
 
-	@Override
+/* 	@Override
 	public List<MedicalSalesRep> searchAll() {
 
 		// Implement the method logic here
@@ -67,4 +67,4 @@ public final class InMemoryMedicalSalesRepRepository implements MedicalSalesRepR
 		//return Optional.ofNullable(medicalSalesReps.get(email.value()));
 		//throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
 	}
-}
+ */}

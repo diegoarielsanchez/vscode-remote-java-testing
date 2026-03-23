@@ -2,8 +2,8 @@ package com.das.cleanddd.domain.visit.usecases.services;
 
 import org.springframework.stereotype.Service;
 
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyOutput;
 import com.das.cleanddd.domain.visit.IVisitRepository;
@@ -25,8 +25,8 @@ public class VisitUseCaseFactory {
 
     public VisitUseCaseFactory(
         IVisitRepository visitRepository,
-        HealthCareProfRepository healthCareProfRepository,
-        MedicalSalesRepRepository medicalSalesRepRepository
+        IHealthCareProfRepository healthCareProfRepository,
+        IMedicalSalesRepRepository medicalSalesRepRepository
     ) {
         VisitMapper mapper = new VisitMapper();
         VisitFactory visitFactory = new VisitFactory();

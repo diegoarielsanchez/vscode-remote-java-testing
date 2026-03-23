@@ -11,11 +11,11 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
 @Service
-public final class InMemoryHealthCareProfRepository implements HealthCareProfRepository {
+public final class HealthCareProfRepository implements IHealthCareProfRepository {
 	
 	 private final HashMap<String, HealthCareProf> healthCareProfs = new HashMap<>();
 

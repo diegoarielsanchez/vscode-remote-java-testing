@@ -91,6 +91,17 @@
 			<artifactId>library</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.das.infraMySQL</groupId>
+			<artifactId>InfraMySQL</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- H2 in-memory DB for dev (replaces MySQL when not available) -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<!-- JWT Support -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

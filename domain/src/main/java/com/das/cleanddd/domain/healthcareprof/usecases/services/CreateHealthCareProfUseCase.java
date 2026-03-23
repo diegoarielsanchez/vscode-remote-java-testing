@@ -10,7 +10,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfFactory;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
 import com.das.cleanddd.domain.healthcareprof.entities.SpecialtyCatalog;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.CreateHealthCareProfInputDTO;
@@ -25,13 +25,13 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 public final class CreateHealthCareProfUseCase implements UseCase<CreateHealthCareProfInputDTO, HealthCareProfOutputDTO> {
 
     @Autowired
-    private final HealthCareProfRepository repository; 
+    private final IHealthCareProfRepository repository; 
     @Autowired
     private final HealthCareProfFactory factory;
     @Autowired
     private final HealthCareProfMapper mapper;
     
-    public CreateHealthCareProfUseCase(HealthCareProfRepository repository
+    public CreateHealthCareProfUseCase(IHealthCareProfRepository repository
         , HealthCareProfFactory factory
         , HealthCareProfMapper mapper
         ) {

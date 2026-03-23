@@ -17,10 +17,10 @@ import com.das.cleanddd.domain.visit.IVisitRepository;
 import com.das.cleanddd.domain.visit.entities.Visit;
 
 @Service
-public final class InMemoryVisitRepository implements IVisitRepository {
+public final class VisitRepository implements IVisitRepository {
     private final Map<String, Visit> visits = new LinkedHashMap<>();
 
-    public InMemoryVisitRepository() {
+    public VisitRepository() {
     }
 
     @Override

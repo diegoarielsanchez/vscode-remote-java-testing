@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfFactory;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.CreateHealthCareProfInputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfNamesInputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfIDDto;
@@ -19,7 +19,7 @@ import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 @Service
 public class HealthCareProfUseCaseFactory {
 
-    private final HealthCareProfRepository _repository;
+    private final IHealthCareProfRepository _repository;
     private final HealthCareProfFactory _factory = new HealthCareProfFactory();
     private final HealthCareProfMapper _mapper = new HealthCareProfMapper();
     
@@ -32,7 +32,7 @@ public class HealthCareProfUseCaseFactory {
     private final FindHealthCareProfBySpecialtyUseCase findHealthCareProfBySpecialtyUseCase;
     
 
-    public HealthCareProfUseCaseFactory(HealthCareProfRepository entityRepository) {
+    public HealthCareProfUseCaseFactory(IHealthCareProfRepository entityRepository) {
 
         this._repository = entityRepository;
         this.createHealthCareProfUseCase = new CreateHealthCareProfUseCase(this._repository, this._factory, this._mapper);

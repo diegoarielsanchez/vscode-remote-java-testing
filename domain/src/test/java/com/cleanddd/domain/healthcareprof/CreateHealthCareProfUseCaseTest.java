@@ -23,7 +23,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfFactory;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.CreateHealthCareProfInputDTO;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
@@ -33,7 +33,7 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 class CreateHealthCareProfUseCaseTest {
 
-    private HealthCareProfRepository healthCareProfRepositoryMock = mock(HealthCareProfRepository.class);
+    private IHealthCareProfRepository healthCareProfRepositoryMock = mock(IHealthCareProfRepository.class);
     private HealthCareProfFactory healthCareProfFactoryMock = mock(HealthCareProfFactory.class);
     private HealthCareProfMapper healthCareProfMapperMock = mock(HealthCareProfMapper.class);
     private CreateHealthCareProfUseCase createHealthCareProfUseCase = new CreateHealthCareProfUseCase(healthCareProfRepositoryMock,healthCareProfFactoryMock,healthCareProfMapperMock);
@@ -64,7 +64,7 @@ class CreateHealthCareProfUseCaseTest {
     @BeforeEach
     void setUp() {
       // Reset mocks before each test
-      healthCareProfRepositoryMock = mock(HealthCareProfRepository.class);
+      healthCareProfRepositoryMock = mock(IHealthCareProfRepository.class);
       healthCareProfFactoryMock = mock(HealthCareProfFactory.class);
       healthCareProfMapperMock = mock(HealthCareProfMapper.class);
       createHealthCareProfUseCase = new CreateHealthCareProfUseCase(healthCareProfRepositoryMock,healthCareProfFactoryMock,healthCareProfMapperMock);
@@ -118,7 +118,7 @@ class CreateHealthCareProfUseCaseTest {
       assertNotNull(healthCareProfFactoryMock);
     }
 /*     @Test
-    void shouldCreateHealthCareProfRepository() {
+    void shouldCreateIHealthCareProfRepository() {
       assertNotNull(healthCareProfRepositoryMock);
     } */
     @Test

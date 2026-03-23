@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.shared.UuidGenerator;
 
-@Service
+@Service("mysqlJavaUuidGenerator")
 public final class JavaUuidGenerator implements UuidGenerator {
     @Override
     public String generate() {

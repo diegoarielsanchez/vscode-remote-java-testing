@@ -13,11 +13,11 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepActive;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
 @Service
-public final class MongoDBMedicalSalesRepRepository implements MedicalSalesRepRepository {
+public final class MongoDBMedicalSalesRepRepository implements IMedicalSalesRepRepository {
 
     @Autowired
     private MedicalSalesRepMongoRepository mongoRepository;

@@ -20,7 +20,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfActive;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
@@ -30,13 +30,13 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 class FindHealthCareProfBySpecialtyUseCaseTest {
 
-    private HealthCareProfRepository repository;
+    private IHealthCareProfRepository repository;
     private HealthCareProfMapper mapper;
     private FindHealthCareProfBySpecialtyUseCase useCase;
 
     @BeforeEach
     void setUp() {
-        repository = mock(HealthCareProfRepository.class);
+        repository = mock(IHealthCareProfRepository.class);
         mapper = mock(HealthCareProfMapper.class);
         useCase = new FindHealthCareProfBySpecialtyUseCase(repository, mapper);
     }

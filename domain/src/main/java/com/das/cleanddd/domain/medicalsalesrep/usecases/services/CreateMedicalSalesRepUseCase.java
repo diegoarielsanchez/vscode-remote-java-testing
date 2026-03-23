@@ -9,7 +9,7 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
@@ -22,13 +22,13 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 public final class CreateMedicalSalesRepUseCase implements UseCase<CreateMedicalSalesRepInputDTO, MedicalSalesRepOutputDTO> {
 
     @Autowired
-    private final MedicalSalesRepRepository repository; 
+    private final IMedicalSalesRepRepository repository; 
     @Autowired
     private final MedicalSalesRepFactory factory;
     @Autowired
     private final MedicalSalesRepMapper mapper;
     
-    public CreateMedicalSalesRepUseCase(MedicalSalesRepRepository repository
+    public CreateMedicalSalesRepUseCase(IMedicalSalesRepRepository repository
         , MedicalSalesRepFactory factory
         , MedicalSalesRepMapper mapper
         ) {

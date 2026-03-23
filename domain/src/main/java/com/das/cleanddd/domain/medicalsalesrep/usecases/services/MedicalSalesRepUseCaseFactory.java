@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepFactory;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.CreateMedicalSalesRepInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepNamesInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepIDDto;
@@ -18,7 +18,7 @@ import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 @Service
 public class MedicalSalesRepUseCaseFactory {
 
-    private final MedicalSalesRepRepository medicalSalesRepRepository;
+    private final IMedicalSalesRepRepository medicalSalesRepRepository;
     private final MedicalSalesRepFactory medicalSalesRepFactory = new MedicalSalesRepFactory();
     private final MedicalSalesRepMapper medicalSalesRepMapper = new MedicalSalesRepMapper();
     
@@ -30,7 +30,7 @@ public class MedicalSalesRepUseCaseFactory {
     private final FindMedicalSalesRepByNameUseCase findMedicalSalesRepByNameUseCase;
     
 
-    public MedicalSalesRepUseCaseFactory(MedicalSalesRepRepository medicalSalesRepRepository) {
+    public MedicalSalesRepUseCaseFactory(IMedicalSalesRepRepository medicalSalesRepRepository) {
 
         this.medicalSalesRepRepository = medicalSalesRepRepository;
         this.createMedicalSalesRepUseCase = new CreateMedicalSalesRepUseCase(this.medicalSalesRepRepository, this.medicalSalesRepFactory, this.medicalSalesRepMapper);

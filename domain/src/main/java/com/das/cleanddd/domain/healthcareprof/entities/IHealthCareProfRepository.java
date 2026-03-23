@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
-public interface HealthCareProfRepository {
+public interface IHealthCareProfRepository {
 
     void save(HealthCareProf entity);
 

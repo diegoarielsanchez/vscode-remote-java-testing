@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepNamesInputDTO;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepMapper;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepOutputDTO;
@@ -16,11 +16,11 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 public class FindMedicalSalesRepByNameUseCase implements UseCase<MedicalSalesRepNamesInputDTO, List<MedicalSalesRepOutputDTO>> {
 
     @Autowired
-    private final MedicalSalesRepRepository repository; 
+    private final IMedicalSalesRepRepository repository; 
     @Autowired
     private final MedicalSalesRepMapper mapper;
 
-    public FindMedicalSalesRepByNameUseCase(MedicalSalesRepRepository repository
+    public FindMedicalSalesRepByNameUseCase(IMedicalSalesRepRepository repository
         , MedicalSalesRepMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;   

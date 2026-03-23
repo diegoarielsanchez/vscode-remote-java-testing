@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRep;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.medicalsalesrep.usecases.dtos.MedicalSalesRepIDDto;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 public class DeactivateMedicalSalesRepUseCase implements UseCaseOnlyInput<MedicalSalesRepIDDto> {
    @Autowired
-    private final MedicalSalesRepRepository repository; 
+    private final IMedicalSalesRepRepository repository; 
 
-    public DeactivateMedicalSalesRepUseCase(MedicalSalesRepRepository repository) {
+    public DeactivateMedicalSalesRepUseCase(IMedicalSalesRepRepository repository) {
         this.repository = repository;
     }
 

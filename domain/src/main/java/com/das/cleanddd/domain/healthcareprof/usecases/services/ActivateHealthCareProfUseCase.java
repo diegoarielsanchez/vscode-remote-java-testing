@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfId;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfIDDto;
 import com.das.cleanddd.domain.shared.UseCaseOnlyInput;
 import com.das.cleanddd.domain.shared.exceptions.DomainException;
@@ -16,10 +16,10 @@ public class ActivateHealthCareProfUseCase implements UseCaseOnlyInput<HealthCar
     //private final HealthCareProf HealdCareProfRep;
     //private final CustomerDataAccess customerDataAccess;
     @Autowired
-    private final HealthCareProfRepository repository; 
+    private final IHealthCareProfRepository repository; 
 
 
-    public ActivateHealthCareProfUseCase(HealthCareProfRepository repository) {
+    public ActivateHealthCareProfUseCase(IHealthCareProfRepository repository) {
         this.repository = repository;
     }
 

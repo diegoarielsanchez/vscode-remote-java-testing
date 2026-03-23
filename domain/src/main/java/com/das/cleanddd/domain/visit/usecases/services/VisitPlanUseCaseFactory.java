@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
 import com.das.cleanddd.domain.shared.UseCase;
 import com.das.cleanddd.domain.shared.UseCaseOnlyOutput;
 import com.das.cleanddd.domain.visit.IVisitPlanRepository;
@@ -26,8 +26,8 @@ public class VisitPlanUseCaseFactory {
 
     public VisitPlanUseCaseFactory(
         IVisitPlanRepository visitPlanRepository,
-        HealthCareProfRepository healthCareProfRepository,
-        MedicalSalesRepRepository medicalSalesRepRepository
+        IHealthCareProfRepository healthCareProfRepository,
+        IMedicalSalesRepRepository medicalSalesRepRepository
     ) {
         VisitPlanMapper mapper = new VisitPlanMapper();
         VisitPlanFactory visitPlanFactory = new VisitPlanFactory();

@@ -23,7 +23,7 @@ import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProf;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfEmail;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfFactory;
 import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfName;
-import com.das.cleanddd.domain.healthcareprof.entities.HealthCareProfRepository;
+import com.das.cleanddd.domain.healthcareprof.entities.IHealthCareProfRepository;
 import com.das.cleanddd.domain.healthcareprof.entities.Specialty;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfMapper;
 import com.das.cleanddd.domain.healthcareprof.usecases.dtos.HealthCareProfOutputDTO;
@@ -34,7 +34,7 @@ import com.das.cleanddd.domain.shared.exceptions.DomainException;
 
 class UpdateHealthCareProfUseCaseTest {
 
-    private HealthCareProfRepository repository;
+    private IHealthCareProfRepository repository;
     private HealthCareProfFactory factory;
     private HealthCareProfMapper mapper;
     private UpdateHealthCareProfUseCase useCase;
@@ -45,7 +45,7 @@ class UpdateHealthCareProfUseCaseTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        repository = mock(HealthCareProfRepository.class);
+        repository = mock(IHealthCareProfRepository.class);
         factory = mock(HealthCareProfFactory.class);
         mapper = mock(HealthCareProfMapper.class);
         useCase = new UpdateHealthCareProfUseCase(repository, factory, mapper);

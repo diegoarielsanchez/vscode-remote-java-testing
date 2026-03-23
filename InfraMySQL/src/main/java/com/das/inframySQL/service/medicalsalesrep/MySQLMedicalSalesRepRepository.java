@@ -1,7 +1,6 @@
 package com.das.inframySQL.service.medicalsalesrep;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -13,11 +12,13 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepActive;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepEmail;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepName;
-import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepRepository;
+import com.das.cleanddd.domain.medicalsalesrep.entities.IMedicalSalesRepRepository;
+import org.springframework.context.annotation.Primary;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 
+@Primary
 @Service
-public final class MySQLMedicalSalesRepRepository implements MedicalSalesRepRepository {
+public final class MySQLMedicalSalesRepRepository implements IMedicalSalesRepRepository {
 
     @Autowired
     private MedicalSalesRepJpaRepository jpaRepository;
@@ -55,7 +56,11 @@ public final class MySQLMedicalSalesRepRepository implements MedicalSalesRepRepo
 
     @Override
     public Optional<MedicalSalesRep> findById(MedicalSalesRepId identifier) {
-        return jpaRepository.findById(Objects.requireNonNull(identifier.value()))
+        String id = identifier.value();
+        if (id == null) {
+            return Optional.empty();
+        }
+        return jpaRepository.findById(id)
                 .map(this::toDomain);
     }
 

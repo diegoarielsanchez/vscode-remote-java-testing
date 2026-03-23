@@ -4,7 +4,7 @@ package com.das.inframySQL.service;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("mysqlMyService")
 @EnableConfigurationProperties(ServiceProperties.class)
 public class MyService {
 
