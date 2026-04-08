@@ -21,6 +21,7 @@
         <module>library</module>
         <module>InfraMySQL</module>
         <module>InfraMongoDB</module>
+        <module>InfraPostgreSQL</module>
     </modules>
 
     <properties>
