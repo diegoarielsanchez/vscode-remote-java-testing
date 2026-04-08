@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.das.cleanddd.service.MyService;
 
 //@SpringBootApplication(scanBasePackages = "com.das.cleanddd")
-@SpringBootApplication(scanBasePackages = {"com.das.cleanddd", "com.das.cleanddd.application",  "com.das.cleanddd.service", "com.das.cleanddd.domain","com.das.infraMySQL"})
+@SpringBootApplication(scanBasePackages = {"com.das.cleanddd", "com.das.cleanddd.application",  "com.das.cleanddd.service", "com.das.cleanddd.domain","com.das.inframySQL"})
 @EnableJpaRepositories(basePackages = "com.das.inframySQL")
 @EntityScan(basePackages = "com.das.inframySQL")
 //@ComponentScan(basePackages = {"com.das.cleanddd.domain", "com.das.cleanddd.service"})

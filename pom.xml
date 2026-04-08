@@ -20,7 +20,6 @@
         <module>domain</module>
         <module>library</module>
         <module>InfraMySQL</module>
-        <module>InfraSQLServer</module>
         <module>InfraMongoDB</module>
     </modules>
 
