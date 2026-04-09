@@ -55,15 +55,16 @@ public class FindHealthCareProfByNameUseCase implements UseCase<HealthCareProfNa
           surname = new HealthCareProfName(inputDTO.surname());
         }
       }
-      //HealthCareProfName HealthCareProfRepName = new HealthCareProfName(inputDTO.name());
-      //HealthCareProfName HealthCareProfRepSurname = new HealthCareProfName(inputDTO.surname());
-      List<HealthCareProf> listHealthCareProfs = repository.findByName(name, surname , inputDTO.page(), inputDTO.pageSize());
-      //List<HealthCareProf> listHealthCareProfs = repository.findByName(inputDTO.name(), inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
+      List<HealthCareProf> listHealthCareProfs;
+      if (name == null && surname == null) {
+        listHealthCareProfs = repository.searchAll();
+      } else {
+        listHealthCareProfs = repository.findByName(name, surname, inputDTO.page(), inputDTO.pageSize());
+      }
       if(listHealthCareProfs.isEmpty()) {
         throw new DomainException("Health Care Professional not found.");
       }    
       // Convert response to output and return
-      //return listHealthCareProfs; //mapper.outputFromEntityList(listHealthCareProfs);
       return mapper.outputFromEntityList(listHealthCareProfs);
   }
 }

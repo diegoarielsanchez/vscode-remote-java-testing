@@ -45,7 +45,9 @@ public final class HealthCareProfRepository implements IHealthCareProfRepository
 		// Implement the method logic here
 		return healthCareProfs.entrySet().stream()
 				.map(entry -> entry.getValue())
-				.filter(healthCareProf -> healthCareProf.getName().equals(name) || healthCareProf.getSurname().equals(surname))
+				.filter(healthCareProf ->
+						(name != null && healthCareProf.getName().value().equals(name.value())) ||
+						(surname != null && healthCareProf.getSurname().value().equals(surname.value())))
 				.skip(((long) (page - 1)) * pageSize)
 				.limit(pageSize)
 				.collect(Collectors.toList());

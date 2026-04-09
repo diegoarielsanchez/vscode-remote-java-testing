@@ -55,15 +55,16 @@ public class FindMedicalSalesRepByNameUseCase implements UseCase<MedicalSalesRep
           medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
         }
       }
-      //MedicalSalesRepName medicalSalesRepName = new MedicalSalesRepName(inputDTO.name());
-      //MedicalSalesRepName medicalSalesRepSurname = new MedicalSalesRepName(inputDTO.surname());
-      List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(medicalSalesRepName, medicalSalesRepSurname, inputDTO.page(), inputDTO.pageSize());
-      //List<MedicalSalesRep> listMedicalSalesReps = repository.findByName(inputDTO.name(), inputDTO.surname(), inputDTO.page(), inputDTO.pageSize());
+      List<MedicalSalesRep> listMedicalSalesReps;
+      if (medicalSalesRepName == null && medicalSalesRepSurname == null) {
+        listMedicalSalesReps = repository.searchAll();
+      } else {
+        listMedicalSalesReps = repository.findByName(medicalSalesRepName, medicalSalesRepSurname, inputDTO.page(), inputDTO.pageSize());
+      }
       if(listMedicalSalesReps.isEmpty()) {
         throw new DomainException("Medical Sales Representative not found.");
       }    
       // Convert response to output and return
-      //return listMedicalSalesReps; //mapper.outputFromEntityList(listMedicalSalesReps);
       return mapper.outputFromEntityList(listMedicalSalesReps);
   }
 }

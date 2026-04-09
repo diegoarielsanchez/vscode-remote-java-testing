@@ -47,7 +47,9 @@ public final class PostgreSQLHealthCareProfRepository implements IHealthCareProf
 
     @Override
     public List<HealthCareProf> findByName(HealthCareProfName name, HealthCareProfName surname, int page, int pageSize) {
-        return jpaRepository.findByNameOrSurname(name.value(), surname.value()).stream()
+        String nameValue = name != null ? name.value() : null;
+        String surnameValue = surname != null ? surname.value() : null;
+        return jpaRepository.findByNameOrSurname(nameValue, surnameValue).stream()
                 .map(this::toDomain)
                 .skip((long) (page - 1) * pageSize)
                 .limit(pageSize)

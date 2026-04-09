@@ -46,7 +46,9 @@ public final class MySQLMedicalSalesRepRepository implements IMedicalSalesRepRep
 
     @Override
     public List<MedicalSalesRep> findByName(MedicalSalesRepName name, MedicalSalesRepName surname, int page, int pageSize) {
-        List<MedicalSalesRepEntity> entities = jpaRepository.findByNameOrSurname(name.value(), surname.value());
+        String nameValue = name != null ? name.value() : null;
+        String surnameValue = surname != null ? surname.value() : null;
+        List<MedicalSalesRepEntity> entities = jpaRepository.findByNameOrSurname(nameValue, surnameValue);
         return entities.stream()
                 .map(this::toDomain)
                 .skip((long) (page - 1) * pageSize)
