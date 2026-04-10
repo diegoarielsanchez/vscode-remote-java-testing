@@ -14,10 +14,8 @@ import com.das.cleanddd.domain.medicalsalesrep.entities.MedicalSalesRepId;
 import com.das.cleanddd.domain.shared.Identifier;
 import com.das.cleanddd.domain.shared.criteria.Criteria;
 import com.das.cleanddd.domain.visit.IVisitRepository;
-import org.springframework.context.annotation.Primary;
 import com.das.cleanddd.domain.visit.entities.Visit;
 
-@Primary
 @Service
 public final class VisitRepository implements IVisitRepository {
     private final Map<String, Visit> visits = new LinkedHashMap<>();
