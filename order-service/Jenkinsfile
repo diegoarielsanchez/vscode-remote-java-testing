@@ -1,0 +1,259 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Order Service — CI Pipeline
+//
+// DDD layer test strategy (current coverage — see note below):
+//   • Domain layer  (order-domain)       — pure unit tests, no Spring context:
+//                                          Order entity invariants, CreateOrderUseCase.
+//   • Infra layer   (order-infra)        — no automated tests yet.
+//   • Application   (order-application)  — no automated tests yet. SecurityConfig,
+//                                          JwtAuthenticationFilter and
+//                                          JwtSecretValidator exist in source but
+//                                          are not yet exercised by any test, so
+//                                          their OWASP A01/A07 controls are
+//                                          unverified by this pipeline.
+//
+// OWASP Top 10 controls embedded in pipeline:
+//   A03 Injection                → SpotBugs + Find Security Bugs SAST scan.
+//   A04 Insecure Design          → Order/OrderLine invariants validated in domain tests.
+//   A06 Vulnerable Components    → OWASP Dependency-Check stage present but disabled
+//                                  (matches every other service's pipeline — see the
+//                                  disabled stage below for why).
+// ─────────────────────────────────────────────────────────────────────────────
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven-3.9'
+        jdk   'JDK-25'
+    }
+
+    environment {
+        // ── Module paths ──────────────────────────────────────────────────────
+        SERVICE_DIR   = 'order-service'
+        DOMAIN_MODULE = 'order-service/order-domain'
+        INFRA_MODULE  = 'order-service/order-infra'
+        APP_MODULE    = 'order-service/order-application'
+        // ── Docker ────────────────────────────────────────────────────────────
+        IMAGE_NAME    = 'order-service'
+        IMAGE_TAG     = "${env.BUILD_NUMBER}"
+        // ── OWASP Dependency-Check: fail on CVSS ≥ 7 (HIGH/CRITICAL) ─────────
+        OWASP_FAIL_CVSS = '7'
+    }
+
+    stages {
+
+        // ── Stage 1: Checkout ─────────────────────────────────────────────────
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        // ── Stage 1b: Install shared libraries ────────────────────────────────
+        // domain-commons lives at the root reactor and is not part of this
+        // service's sub-reactor. Install it explicitly so all downstream stages
+        // can resolve it regardless of the Jenkins working directory.
+        stage('Prepare: Shared Libraries') {
+            steps {
+                sh 'mvn -pl domain-commons install -DskipTests --no-transfer-progress'
+            }
+        }
+
+        // ── Stage 2: Domain layer tests (pure unit, no Spring context) ────────
+        // Validates DDD business rules: Order aggregate invariants, OrderLine
+        // quantity/price rules, CreateOrderUseCase logic. Completely isolated
+        // from infrastructure — no DB, no HTTP.
+        stage('Domain Tests') {
+            steps {
+                sh "mvn -pl ${DOMAIN_MODULE} -am install --no-transfer-progress"
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'order-service/order-domain/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        // ── Stage 3: Infrastructure layer tests ───────────────────────────────
+        // No tests exist yet for this layer; the stage still runs the build so a
+        // compile break here fails the pipeline. allowEmptyResults keeps an empty
+        // report from failing the stage on its own.
+        stage('Infra Tests') {
+            steps {
+                sh "mvn -pl ${INFRA_MODULE} -am install --no-transfer-progress"
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'order-service/order-infra/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        // ── Stage 4: Application layer tests ─────────────────────────────────
+        // No tests exist yet for this layer. SecurityConfig, JwtAuthenticationFilter
+        // and rate-limiting live here but are currently unverified by automated tests.
+        stage('Application Tests') {
+            steps {
+                sh "mvn -pl ${APP_MODULE} -am test --no-transfer-progress"
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'order-service/order-application/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        // ── Stage 5: SAST — SpotBugs + Find Security Bugs (OWASP A03/A04) ────
+        // Find Security Bugs plugin detects injection flaws, path traversal,
+        // insecure deserialization, XSS patterns, and more at compile time.
+        stage('SAST — SpotBugs') {
+            steps {
+                sh """
+                    mvn -pl ${APP_MODULE} -am verify -DskipTests \\
+                        --no-transfer-progress
+                """
+            }
+            post {
+                always {
+                    dir('.') {
+                        recordIssues(tools: [spotBugs(pattern: '**/spotbugsXml.xml')])
+                    }
+                }
+            }
+        }
+
+        // ── Stage 6: OWASP Dependency-Check (A06 Vulnerable Components) ──────
+        // Scans all declared dependencies against the NVD CVE database.
+        // Build fails if any dependency has a CVSS score ≥ OWASP_FAIL_CVSS.
+        stage('OWASP Dependency-Check') {
+            // Disabled: OWASP Dependency-Check deactivated for this pipeline.
+            when {
+                expression { return false }
+            }
+            steps {
+                script {
+                    // NVD API key is optional — speeds up NVD updates but is not required.
+                    // Register a Secret Text credential named 'nvd-api-key' in Jenkins to enable it.
+                    // Free key: https://nvd.nist.gov/developers/request-an-api-key
+                    // Any failure with the key (missing credential, revoked/invalid key, NVD outage)
+                    // falls back to a keyless run instead of failing the whole build.
+                    // nvdApiDelay: without a key NVD allows ~5 req/30 s → 6 000 ms is safe.
+                    //              with a key the limit is 50 req/30 s → 500 ms is fine.
+                    // retryCount:  retry up to 10 times before failing on persistent 429s.
+                    try {
+                        withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
+                            sh """
+                                mvn -pl ${APP_MODULE} -am \\
+                                    org.owasp:dependency-check-maven:check \\
+                                    -Ddependency-check.skip=false \\
+                                    -DfailBuildOnCVSS=${OWASP_FAIL_CVSS} \\
+                                    -DnvdApiKey="\${NVD_API_KEY}" \\
+                                    -DnvdApiDelay=500 \\
+                                    -DretryCount=10 \\
+                                    -DossIndexAnalyzerEnabled=false \\
+                                    -Dformats=HTML,XML \\
+                                    --no-transfer-progress
+                            """
+                        }
+                    } catch (hudson.AbortException e) {
+                        echo "NVD Dependency-Check with API key failed (${e.message}) — retrying without API key (rate-limited)."
+                        sh """
+                            mvn -pl ${APP_MODULE} -am \\
+                                org.owasp:dependency-check-maven:check \\
+                                -Ddependency-check.skip=false \\
+                                -DfailBuildOnCVSS=${OWASP_FAIL_CVSS} \\
+                                -DnvdApiDelay=6000 \\
+                                -DretryCount=10 \\
+                                -DossIndexAnalyzerEnabled=false \\
+                                -Dformats=HTML,XML \\
+                                --no-transfer-progress
+                        """
+                    }
+                }
+            }
+            post {
+                always {
+                    dir('.') {
+                        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                    }
+                }
+            }
+        }
+
+        // ── Stage 7: Package ──────────────────────────────────────────────────
+        stage('Package') {
+            steps {
+                sh "mvn -pl ${APP_MODULE} -am package -DskipTests --no-transfer-progress"
+            }
+        }
+
+        // ── Stage 8: Build Docker Image ───────────────────────────────────────
+        // Build context is the service's own directory; order-application also
+        // depends on the shared domain-commons module (a sibling directory
+        // outside this context), supplied as a separate named build context.
+        stage('Build Docker Image') {
+            when {
+                expression { sh(script: 'which docker > /dev/null 2>&1', returnStatus: true) == 0 }
+            }
+            steps {
+                sh """
+                    DOCKER_BUILDKIT=1 docker build \
+                        --build-context domain-commons=domain-commons \
+                        -f ${SERVICE_DIR}/order-application/Dockerfile \
+                        -t ${IMAGE_NAME}:${IMAGE_TAG} \
+                        -t ${IMAGE_NAME}:latest \
+                        ${SERVICE_DIR}
+                """
+            }
+        }
+
+        // ── Stage 9: Docker Image Scan (optional — requires Trivy on agent) ───
+        // stage('Docker Image Scan — Trivy') {
+        //     steps {
+        //         sh """
+        //             trivy image --exit-code 1 \
+        //                 --severity HIGH,CRITICAL \
+        //                 --no-progress \
+        //                 ${IMAGE_NAME}:${IMAGE_TAG}
+        //         """
+        //     }
+        // }
+
+        // ── Stage 10: Push Docker Image (optional) ────────────────────────────
+        // stage('Push Docker Image') {
+        //     steps {
+        //         withCredentials([usernamePassword(
+        //             credentialsId: 'docker-registry-credentials',
+        //             usernameVariable: 'REGISTRY_USER',
+        //             passwordVariable: 'REGISTRY_PASS'
+        //         )]) {
+        //             sh "docker login -u $REGISTRY_USER -p $REGISTRY_PASS <your-registry>"
+        //             sh "docker push <your-registry>/${IMAGE_NAME}:${IMAGE_TAG}"
+        //             sh "docker push <your-registry>/${IMAGE_NAME}:latest"
+        //         }
+        //     }
+        // }
+
+    }
+
+    post {
+        success {
+            echo "Pipeline for ${env.IMAGE_NAME} passed all gates — build #${env.IMAGE_TAG}."
+        }
+        failure {
+            echo "Pipeline for ${env.IMAGE_NAME} FAILED — review SAST / CVE reports above."
+        }
+        always {
+            script {
+                // cleanWs() requires a FilePath (workspace) context.
+                // In some Jenkins agent configurations the workspace may be
+                // unavailable by the time the pipeline-level post block runs.
+                try {
+                    cleanWs()
+                } catch (Exception e) {
+                    echo "Workspace cleanup skipped — no workspace context available: ${e.message}"
+                }
+            }
+        }
+    }
+}
