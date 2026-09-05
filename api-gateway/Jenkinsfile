@@ -14,6 +14,13 @@
 pipeline {
     agent any
 
+    // Builds on push: GitHub delivers the event to Jenkins' /github-webhook/ endpoint.
+    // Requires the GitHub plugin, a Jenkins URL GitHub can reach, and a repo webhook
+    // pointing at <JENKINS_URL>/github-webhook/ (trailing slash required).
+    triggers {
+        githubPush()
+    }
+
     tools {
         maven 'Maven-3.9'
         jdk   'JDK-25'
@@ -43,7 +50,7 @@ pipeline {
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: "${MODULE}/target/surefire-reports/*.xml"
+                    junit allowEmptyResults: false, testResults: "${MODULE}/target/surefire-reports/*.xml"
                 }
             }
         }

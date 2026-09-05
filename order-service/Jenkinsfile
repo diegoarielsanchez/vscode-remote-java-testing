@@ -22,6 +22,13 @@
 pipeline {
     agent any
 
+    // Builds on push: GitHub delivers the event to Jenkins' /github-webhook/ endpoint.
+    // Requires the GitHub plugin, a Jenkins URL GitHub can reach, and a repo webhook
+    // pointing at <JENKINS_URL>/github-webhook/ (trailing slash required).
+    triggers {
+        githubPush()
+    }
+
     tools {
         maven 'Maven-3.9'
         jdk   'JDK-25'
@@ -69,7 +76,7 @@ pipeline {
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: 'order-service/order-domain/target/surefire-reports/*.xml'
+                    junit allowEmptyResults: false, testResults: 'order-service/order-domain/target/surefire-reports/*.xml'
                 }
             }
         }
@@ -84,7 +91,7 @@ pipeline {
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: 'order-service/order-infra/target/surefire-reports/*.xml'
+                    junit allowEmptyResults: false, testResults: 'order-service/order-infra/target/surefire-reports/*.xml'
                 }
             }
         }
@@ -98,7 +105,7 @@ pipeline {
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: 'order-service/order-application/target/surefire-reports/*.xml'
+                    junit allowEmptyResults: false, testResults: 'order-service/order-application/target/surefire-reports/*.xml'
                 }
             }
         }
