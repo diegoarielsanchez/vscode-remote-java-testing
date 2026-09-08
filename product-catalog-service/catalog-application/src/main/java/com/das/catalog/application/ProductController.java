@@ -2,7 +2,6 @@ package com.das.catalog.application;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,7 +42,6 @@ import jakarta.validation.constraints.Min;
 @SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
-    @Autowired
     private final UseCase<CreateProductInputDTO, ProductOutputDTO> createProductUseCase;
     private final UseCase<UpdateProductInputDTO, ProductOutputDTO> updateProductUseCase;
     private final UseCaseOnlyInput<ProductIDDto> activateProductUseCase;
